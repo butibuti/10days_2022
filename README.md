@@ -1,2 +1,3 @@
-# 10days_2022
-10daysジャム2022年版
+# ButiEngine
+
+DirectX12を使用した自作エンジン

@@ -27,12 +27,24 @@
     <ClCompile Include="DefaultGameComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WorldSpeedManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx_u.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TestBehavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldSpeedManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

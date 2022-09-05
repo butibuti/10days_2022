@@ -350,6 +350,7 @@ cd ..\</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DefaultGameComponent.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">/wd4996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -360,10 +361,13 @@ cd ..\</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestBehavior.cpp" />
+    <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="stdafx_u.h" />
     <ClInclude Include="TestBehavior.h" />
+    <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

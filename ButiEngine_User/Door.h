@@ -22,7 +22,11 @@ namespace ButiEngine {
 			archive(m_nextSceneName);
 		}
 	private:
+		void ChangeScene();
+
+
 		std::string m_nextSceneName;
+		bool m_isHitPlayer;
 	};
 
 }

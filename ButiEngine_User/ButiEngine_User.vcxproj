@@ -349,6 +349,7 @@ cd ..\</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DefaultGameComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp">
@@ -365,6 +366,7 @@ cd ..\</Command>
     <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx_u.h" />

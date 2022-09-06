@@ -1,15 +1,6 @@
 #pragma once
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
-
-	enum class GunType
-	{
-		PlayerGun,
-		SpreadGun,
-		BombGun,
-		LaserGun,
-	};
-
 	class Gun :public GameComponent
 	{
 	public:
@@ -27,20 +18,36 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-			archive(m_gunType);
+			archive(m_diffusion);
+			archive(m_range);
+			archive(m_power);
+			archive(m_rate);
+			archive(m_bulletSpeed);
+			archive(m_bulletCount);
+			archive(m_offset);
 		}
+
+		void SetIsShoot(const bool arg_isShoot);
 
 		void Shoot();
 	private:
-		void ShootPlayerGun();
-		void ShootSpreadGun();
-		void ShootBombGun();
-		void ShootLaserGun();
+		Value_ptr<RelativeTimer> m_vlp_shootInterval;
+		bool m_isShoot;
 
-
-		GunType m_gunType;
-
-		std::int32_t m_gui_typeNum;
+		//ŠgU
+		float m_diffusion = 10.0f;
+		//Ë’ö
+		float m_range = 10.0f;
+		//ˆĞ—Í
+		float m_power = 1.0f;
+		//˜AË‘¬“x
+		std::int32_t m_rate = 10;
+		//’e‘¬
+		float m_bulletSpeed = 10.0f;
+		//ˆê‰ñ‚É”­Ë‚³‚ê‚é’e‚Ì”
+		std::int32_t m_bulletCount = 3;
+		//’e‚ª¶¬‚³‚ê‚éˆÊ’u
+		Vector3 m_offset = Vector3Const::Zero;
 	};
 
 }

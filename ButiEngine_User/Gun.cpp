@@ -4,6 +4,10 @@
 
 void ButiEngine::Gun::OnUpdate()
 {
+	if (m_isShoot && m_vlp_shootInterval->Update())
+	{
+		Shoot();
+	}
 }
 
 void ButiEngine::Gun::OnSet()
@@ -12,6 +16,10 @@ void ButiEngine::Gun::OnSet()
 
 void ButiEngine::Gun::Start()
 {
+	m_vlp_shootInterval = ObjectFactory::Create<RelativeTimer>(m_rate);
+	m_vlp_shootInterval->Start();
+
+	m_isShoot = false;
 }
 
 void ButiEngine::Gun::OnRemove()
@@ -20,52 +28,70 @@ void ButiEngine::Gun::OnRemove()
 
 void ButiEngine::Gun::OnShowUI()
 {
-	GUI::RadioButton("PlayerGun", m_gui_typeNum, 0);
-	GUI::RadioButton("SpreadGun", m_gui_typeNum, 1);
-	GUI::RadioButton("BombGun", m_gui_typeNum, 2);
-	GUI::RadioButton("LaserGun", m_gui_typeNum, 3);
+	GUI::BulletText(u8"ägéU");
+	GUI::DragFloat("##diffusion", &m_diffusion, 1.0f, 0.0f, 100.0f);
 
-	m_gunType = static_cast<GunType>(m_gui_typeNum);
+	GUI::BulletText(u8"éÀíˆ");
+	GUI::DragFloat("##range", &m_range, 1.0f, 0.0f, 100.0f);
+
+	GUI::BulletText(u8"à–óÕ");
+	GUI::DragFloat("##power", &m_power, 1.0f, 0.0f, 100.0f);
+
+	GUI::BulletText(u8"òAéÀë¨ìx");
+	if (GUI::DragInt("##rate", &m_rate, 1.0f, 0.0f, 100.0f))
+	{
+		m_vlp_shootInterval->ChangeCountFrame(m_rate);
+	}
+
+	GUI::BulletText(u8"íeë¨");
+	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 1.0f, 0.0f, 100.0f);
+
+	GUI::BulletText(u8"àÍâÒÇ…î≠éÀÇ≥ÇÍÇÈíeÇÃêî");
+	GUI::DragInt("##bulletCount", &m_bulletCount, 1.0f, 0.0f, 100.0f);
+
+	GUI::BulletText(u8"íeÇ™ê∂ê¨Ç≥ÇÍÇÈà íu");
+	GUI::DragFloat3("##offset", &m_offset.x, 0.1f, -100.0f, 100.0f);
+
+	if (GUI::Button("ShootStart"))
+	{
+		SetIsShoot(true);
+	}
+	GUI::SameLine();
+	if (GUI::Button("ShootStop"))
+	{
+		SetIsShoot(false);
+	}
+
+	if (GUI::Button("OneShoot"))
+	{
+		Shoot();
+	}
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Gun::Clone()
 {
 	auto output = ObjectFactory::Create<Gun>();
-	output->m_gunType = m_gunType;
+	output->m_diffusion = m_diffusion;
+	output->m_range = m_range;
+	output->m_power = m_power;
+	output->m_rate = m_rate;
+	output->m_bulletSpeed = m_bulletSpeed;
+	output->m_offset = m_offset;
 	return output;
+}
+
+void ButiEngine::Gun::SetIsShoot(const bool arg_isShoot)
+{
+	//isShootÇ™trueÇ…Ç»Ç¡ÇΩÉtÉåÅ[ÉÄÇ…àÍî≠åÇÇ¬
+	if (arg_isShoot && !m_isShoot)
+	{
+		Shoot();
+	}
+
+	m_isShoot = arg_isShoot;
 }
 
 void ButiEngine::Gun::Shoot()
 {
-	switch (m_gunType)
-	{
-	case GunType::PlayerGun:
-		ShootPlayerGun();
-		break;
-	case GunType::SpreadGun:
-		ShootSpreadGun();
-		break;
-	case GunType::BombGun:
-		ShootBombGun();
-		break;
-	case GunType::LaserGun:
-		ShootLaserGun();
-		break;
-	}
-}
-
-void ButiEngine::Gun::ShootPlayerGun()
-{
-}
-
-void ButiEngine::Gun::ShootSpreadGun()
-{
-}
-
-void ButiEngine::Gun::ShootBombGun()
-{
-}
-
-void ButiEngine::Gun::ShootLaserGun()
-{
+	m_vlp_shootInterval->Reset();
 }

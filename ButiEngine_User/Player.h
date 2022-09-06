@@ -3,6 +3,7 @@
 namespace ButiEngine {
 
 	class RigidBodyComponent;
+	class Gun;
 
 	class Player :public GameComponent
 	{
@@ -27,12 +28,19 @@ namespace ButiEngine {
 		void Dead();
 	private:
 		void Move();
+		void Shoot();
 
+		void CreateGun();
 
+		//物理挙動関連
 		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
 
-		//DrawObject
+		//描画用オブジェクト関連
 		Value_weak_ptr<Transform> m_vwp_drawObjectTransform;
+
+		//銃関連
+		Value_weak_ptr<GameObject> m_vwp_gun;
+		Value_weak_ptr<Gun> m_vwp_gunComponent;
 	};
 
 }

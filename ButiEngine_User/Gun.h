@@ -2,14 +2,20 @@
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
 
-	class RigidBodyComponent;
+	enum class GunType
+	{
+		PlayerGun,
+		SpreadGun,
+		BombGun,
+		LaserGun,
+	};
 
-	class Player :public GameComponent
+	class Gun :public GameComponent
 	{
 	public:
 
 		std::string GetGameComponentName()const override {
-			return "Player";
+			return "Gun";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -21,20 +27,22 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-
+			archive(m_gunType);
 		}
 
-		void Dead();
+		void Shoot();
 	private:
-		void Move();
+		void ShootPlayerGun();
+		void ShootSpreadGun();
+		void ShootBombGun();
+		void ShootLaserGun();
 
 
-		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
+		GunType m_gunType;
 
-		//DrawObject
-		Value_weak_ptr<Transform> m_vwp_drawObjectTransform;
+		std::int32_t m_gui_typeNum;
 	};
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(Player, true);
+BUTI_REGIST_GAMECOMPONENT(Gun, true);

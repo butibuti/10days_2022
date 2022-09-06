@@ -2,14 +2,12 @@
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
 
-	class RigidBodyComponent;
-
-	class Player :public GameComponent
+	class Door :public GameComponent
 	{
 	public:
 
 		std::string GetGameComponentName()const override {
-			return "Player";
+			return "Door";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -21,20 +19,16 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-
+			archive(m_nextSceneName);
 		}
-
-		void Dead();
 	private:
-		void Move();
+		void ChangeScene();
 
 
-		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
-
-		//DrawObject
-		Value_weak_ptr<Transform> m_vwp_drawObjectTransform;
+		std::string m_nextSceneName;
+		bool m_isHitPlayer;
 	};
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(Player, true);
+BUTI_REGIST_GAMECOMPONENT(Door, true);

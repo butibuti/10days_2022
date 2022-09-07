@@ -23,7 +23,10 @@ namespace ButiEngine {
 		Value_weak_ptr<GameObject> GetGun() { return m_vwp_gun; }
 
 		void Dead();
+		Value_weak_ptr<GameObject> ChangeGun(const std::string& arg_gunName);
 	private:
+		void CreateGun();
+
 		Value_weak_ptr<GameObject> m_vwp_gun;
 
 		std::string m_equipGunName = "Gun_Player_Normal";

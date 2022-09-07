@@ -4,6 +4,7 @@
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "SeparateDrawObject.h"
 #include "Gun.h"
+#include "EquipGun.h"
 
 void ButiEngine::Player::OnUpdate()
 {
@@ -20,6 +21,9 @@ void ButiEngine::Player::Start()
 	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
 
 	m_vwp_drawObjectTransform = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock()->transform;
+
+	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
+	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
 }
 
 void ButiEngine::Player::OnRemove()
@@ -38,7 +42,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Player::Clone()
 void ButiEngine::Player::Dead()
 {
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
-	m_vwp_gun.lock()->SetIsRemove(true);
+	m_vwp_equipGunComponent.lock()->Dead();
 	gameObject.lock()->SetIsRemove(true);
 }
 
@@ -52,8 +56,18 @@ void ButiEngine::Player::Move()
 
 void ButiEngine::Player::Shoot()
 {
-	//if (InputManager::IsPushShootKey())
-	//{
-	//	m_vwp_gunComponent.lock()->Shoot();
-	//}
+	if (InputManager::IsTriggerShootKey())
+	{
+		m_vwp_gunComponent.lock()->ShootStart();
+	}
+	else if (InputManager::IsReleaseShootKey())
+	{
+		m_vwp_gunComponent.lock()->ShootStop();
+	}
+
+	if (InputManager::IsTriggerCancelKey())
+	{
+		auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun("Gun_Player_HighRate");
+		m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
+	}
 }

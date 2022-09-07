@@ -29,7 +29,7 @@ namespace ButiEngine {
 		void Dead();
 	private:
 		void Move();
-		void DecideVelocity();
+		void DecideDirection();
 		void Shoot();
 
 		void CreateGun();
@@ -48,10 +48,10 @@ namespace ButiEngine {
 		Value_weak_ptr<GameObject> m_vwp_player;
 
 		//ˆÚ“®
-		Value_ptr<RelativeTimer> m_vlp_velocityDicisionInterval;
+		Value_ptr<RelativeTimer> m_vlp_directionDicisionInterval;
 		std::int32_t m_moveRate = 10;
 		float m_speed = 1.0f;
-		Vector3 m_velocity;
+		Vector3 m_direction;
 	};
 
 }

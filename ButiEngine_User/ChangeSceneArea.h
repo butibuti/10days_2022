@@ -2,12 +2,12 @@
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
 
-	class Door :public GameComponent
+	class ChangeSceneArea :public GameComponent
 	{
 	public:
 
 		std::string GetGameComponentName()const override {
-			return "Door";
+			return "ChangeSceneArea";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -31,4 +31,4 @@ namespace ButiEngine {
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(Door, true);
+BUTI_REGIST_GAMECOMPONENT(ChangeSceneArea, true);

@@ -1,9 +1,9 @@
 #include "stdafx_u.h"
-#include "Door.h"
+#include "ChangeSceneArea.h"
 #include "InputManager.h"
 #include "ButiBulletWrap/ButiBulletWrap/Common.h"
 
-void ButiEngine::Door::OnUpdate()
+void ButiEngine::ChangeSceneArea::OnUpdate()
 {
 	//Playerが触れている状態で決定キーを押したら次のシーンへ移行する
 	if (m_isHitPlayer && InputManager::IsTriggerDecideKey())
@@ -12,7 +12,7 @@ void ButiEngine::Door::OnUpdate()
 	}
 }
 
-void ButiEngine::Door::OnSet()
+void ButiEngine::ChangeSceneArea::OnSet()
 {
 	gameObject.lock()->AddCollisionEnterReaction(
 		[this](ButiBullet::ContactData& arg_other) 
@@ -41,16 +41,20 @@ void ButiEngine::Door::OnSet()
 	);
 }
 
-void ButiEngine::Door::Start()
+void ButiEngine::ChangeSceneArea::Start()
 {
 }
 
-void ButiEngine::Door::OnRemove()
+void ButiEngine::ChangeSceneArea::OnRemove()
 {
 }
 
-void ButiEngine::Door::OnShowUI()
+void ButiEngine::ChangeSceneArea::OnShowUI()
 {
+	if (m_isHitPlayer)
+	{
+		GUI::Text("Hit");
+	}
 	GUI::Text("NextSceneName:" + m_nextSceneName);
 
 	static char nextSceneNameBuff[128];
@@ -63,14 +67,14 @@ void ButiEngine::Door::OnShowUI()
 
 }
 
-ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Door::Clone()
+ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::ChangeSceneArea::Clone()
 {
-	auto output = ObjectFactory::Create<Door>();
+	auto output = ObjectFactory::Create<ChangeSceneArea>();
 	output->m_nextSceneName = m_nextSceneName;
 	return output;
 }
 
-void ButiEngine::Door::ChangeScene()
+void ButiEngine::ChangeSceneArea::ChangeScene()
 {
 	if (m_nextSceneName == "") { return; }
 

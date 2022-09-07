@@ -48,7 +48,7 @@ namespace ButiEngine {
 		//’e‚Ì–¼‘O
 		std::string m_bulletName = "Bullet_Player_Normal";
 		//’e‘¬
-		float m_bulletSpeed = 10.0f;
+		float m_bulletSpeed = 0.2f;
 		//ˆê‰ñ‚É”­Ë‚³‚ê‚é’e‚Ì”
 		std::int32_t m_bulletCount = 3;
 		//’e‚ª¶¬‚³‚ê‚éˆÊ’u

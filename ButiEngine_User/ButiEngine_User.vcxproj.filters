@@ -1,98 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="DefaultGameComponent.cpp" />
+    <ClCompile Include="ChangeSceneArea.cpp" />
+    <ClCompile Include="EquipGun.cpp" />
+    <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LesserEnemy.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SeparateDrawObject.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TestBehavior.cpp" />
+    <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestBehavior.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DefaultGameComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldSpeedManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Door.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SeparateDrawObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Gun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EquipGun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LesserEnemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="ChangeSceneArea.h" />
+    <ClInclude Include="EquipGun.h" />
+    <ClInclude Include="Gun.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LesserEnemy.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="SeparateDrawObject.h" />
+    <ClInclude Include="stdafx_u.h" />
+    <ClInclude Include="TestBehavior.h" />
+    <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx_u.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestBehavior.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldSpeedManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Door.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SeparateDrawObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Gun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EquipGun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LesserEnemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini">
-      <Filter>Resource Files</Filter>
-    </None>
+    <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />
   </ItemGroup>
 </Project>

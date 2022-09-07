@@ -58,7 +58,7 @@ void ButiEngine::Gun::OnShowUI()
 	}
 
 	GUI::BulletText(u8"’e‘¬");
-	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 1.0f, 0.0f, 100.0f);
+	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 0.1f, 0.0f, 10.0f);
 
 	GUI::BulletText(u8"ˆê‰ñ‚É”­ŽË‚³‚ê‚é’e‚Ì”");
 	GUI::DragInt("##bulletCount", &m_bulletCount, 1.0f, 0.0f, 100.0f);
@@ -123,10 +123,10 @@ void ButiEngine::Gun::Shoot()
 		bullet.lock()->transform->Translate(m_offset * gameObject.lock()->transform->GetWorldRotation());
 		
 		//”ò‚ñ‚Å‚¢‚­•ûŒüÝ’è
-		float rotationAngleX = ButiRandom::GetRandom(-0.5f, 0.5f, 10.0f);
+		//float rotationAngleX = ButiRandom::GetRandom(0.0f, 0.5f, 10.0f);
 		float rotationAngleY = ButiRandom::GetRandom(-m_diffusion, m_diffusion, 10.0f);
 		bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
-		bullet.lock()->transform->RollLocalRotationX_Degrees(rotationAngleX);
+		//bullet.lock()->transform->RollLocalRotationX_Degrees(rotationAngleX);
 
 		//’e‚Ìî•ñÝ’è
 		auto bulletComponent = bullet.lock()->GetGameComponent<Bullet>();

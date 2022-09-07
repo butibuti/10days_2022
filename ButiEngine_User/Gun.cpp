@@ -1,6 +1,7 @@
 #include "stdafx_u.h"
 #include "Gun.h"
 #include "InputManager.h"
+#include "Bullet.h"
 
 void ButiEngine::Gun::OnUpdate()
 {
@@ -44,7 +45,7 @@ void ButiEngine::Gun::OnShowUI()
 	}
 
 	GUI::BulletText(u8"’e‘¬");
-	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 1.0f, 0.0f, 100.0f);
+	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 1.0f, 0.0f, 1000.0f);
 
 	GUI::BulletText(u8"ˆê‰ñ‚É”­ŽË‚³‚ê‚é’e‚Ì”");
 	GUI::DragInt("##bulletCount", &m_bulletCount, 1.0f, 0.0f, 100.0f);
@@ -94,4 +95,28 @@ void ButiEngine::Gun::SetIsShoot(const bool arg_isShoot)
 void ButiEngine::Gun::Shoot()
 {
 	m_vlp_shootInterval->Reset();
+
+	for (std::int32_t i = 0; i < m_bulletCount; i++)
+	{
+		auto bulletTransform = gameObject.lock()->transform->Clone();
+
+		bulletTransform->Translate(m_offset * gameObject.lock()->transform->GetWorldRotation());
+
+		bulletTransform->SetLocalScale(0.35f);
+
+		float rotationAngleX = ButiRandom::GetRandom(-0.5f, 0.5f, 10.0f);
+		float rotationAngleY = ButiRandom::GetRandom(-m_diffusion, m_diffusion, 10.0f);
+		bulletTransform->RollLocalRotationY_Degrees(rotationAngleY);
+		bulletTransform->RollLocalRotationX_Degrees(rotationAngleX);
+
+		Vector3 velocity = bulletTransform->GetFront();
+		
+		auto bullet = GetManager().lock()->AddObjectFromCereal("Bullet", bulletTransform);
+		auto bulletComponent = bullet.lock()->GetGameComponent<Bullet>();
+		bulletComponent->SetPower(m_power);
+		bulletComponent->SetRange(m_range);
+		bulletComponent->SetVelocity(velocity * m_bulletSpeed * GameDevice::WorldSpeed);
+	}
+
+
 }

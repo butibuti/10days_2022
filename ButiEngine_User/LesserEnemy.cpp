@@ -63,8 +63,6 @@ void ButiEngine::LesserEnemy::Dead()
 void ButiEngine::LesserEnemy::Move()
 {
 	//Player‚É‹ß‚Ã‚«‚½‚¢
-	/*Vector2 rightStick = InputManager::GetRightStick();
-	Vector3 velocity = Vector3(rightStick.x, 0.0f, rightStick.y).Normalize() * speed;*/
 	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(m_velocity * m_speed * GameDevice::WorldSpeed);
 }
 
@@ -81,7 +79,9 @@ void ButiEngine::LesserEnemy::DecideVelocity()
 	float minimumDistance = 3.0f;
 	if (distance <= minimumDistance)
 	{
-		//ƒ‰ƒ“ƒ_ƒ€‚É‚µ‚½‚¢
+		float sin, cos;
+		MathHelper::SinCos(sin, cos, ButiRandom::GetInt(0, 360));
+		m_velocity = Vector3(cos, 0, sin);
 	}
 	else
 	{

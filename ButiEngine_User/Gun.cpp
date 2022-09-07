@@ -30,7 +30,7 @@ void ButiEngine::Gun::OnRemove()
 void ButiEngine::Gun::OnShowUI()
 {
 	GUI::BulletText(u8"ŠgŽU");
-	GUI::DragFloat("##diffusion", &m_diffusion, 1.0f, 0.0f, 100.0f);
+	GUI::DragFloat("##diffusion", &m_diffusion, 1.0f, 0.0f, 180.0f);
 
 	GUI::BulletText(u8"ŽË’ö");
 	GUI::DragFloat("##range", &m_range, 1.0f, 0.0f, 100.0f);
@@ -41,11 +41,14 @@ void ButiEngine::Gun::OnShowUI()
 	GUI::BulletText(u8"˜AŽË‘¬“x");
 	if (GUI::DragInt("##rate", &m_rate, 1.0f, 0.0f, 100.0f))
 	{
-		m_vlp_shootInterval->ChangeCountFrame(m_rate);
+		if (m_vlp_shootInterval)
+		{
+			m_vlp_shootInterval->ChangeCountFrame(m_rate);
+		}
 	}
 
 	GUI::BulletText(u8"’e‘¬");
-	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 1.0f, 0.0f, 1000.0f);
+	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 1.0f, 0.0f, 100.0f);
 
 	GUI::BulletText(u8"ˆê‰ñ‚É”­ŽË‚³‚ê‚é’e‚Ì”");
 	GUI::DragInt("##bulletCount", &m_bulletCount, 1.0f, 0.0f, 100.0f);
@@ -117,6 +120,4 @@ void ButiEngine::Gun::Shoot()
 		bulletComponent->SetRange(m_range);
 		bulletComponent->SetVelocity(velocity * m_bulletSpeed * GameDevice::WorldSpeed);
 	}
-
-
 }

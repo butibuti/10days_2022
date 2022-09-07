@@ -11,10 +11,7 @@ void ButiEngine::EquipGun::OnSet()
 
 void ButiEngine::EquipGun::Start()
 {
-	//Gunì¬
-	m_vwp_gun = GetManager().lock()->AddObjectFromCereal(m_equipGunName);
-	m_vwp_gun.lock()->SetObjectName("Gun_" + gameObject.lock()->GetGameObjectName());
-	m_vwp_gun.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
+	CreateGun();
 }
 
 void ButiEngine::EquipGun::OnRemove()
@@ -44,4 +41,23 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::EquipGun::Clone()
 void ButiEngine::EquipGun::Dead()
 {
 	m_vwp_gun.lock()->SetIsRemove(true);
+}
+
+ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::EquipGun::ChangeGun(const std::string& arg_gunName)
+{
+	m_equipGunName = arg_gunName;
+	if (m_vwp_gun.lock())
+	{
+		m_vwp_gun.lock()->SetIsRemove(true);
+	}
+
+	CreateGun();
+	return m_vwp_gun;
+}
+
+void ButiEngine::EquipGun::CreateGun()
+{
+	//Gunì¬
+	m_vwp_gun = GetManager().lock()->AddObjectFromCereal(m_equipGunName);
+	m_vwp_gun.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
 }

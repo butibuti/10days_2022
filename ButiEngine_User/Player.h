@@ -4,6 +4,7 @@ namespace ButiEngine {
 
 	class RigidBodyComponent;
 	class Gun;
+	class EquipGun;
 
 	class Player :public GameComponent
 	{
@@ -37,8 +38,8 @@ namespace ButiEngine {
 		Value_weak_ptr<Transform> m_vwp_drawObjectTransform;
 
 		//èeä÷òA
-		Value_weak_ptr<GameObject> m_vwp_gun;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;
+		Value_weak_ptr<EquipGun> m_vwp_equipGunComponent;
 	};
 
 }

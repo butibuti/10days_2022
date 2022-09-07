@@ -31,8 +31,6 @@ void ButiEngine::SeparateDrawObject::Start()
 	m_vwp_drawObject.lock()->AddGameComponent(meshDrawComponent->Clone());
 
 	//’Ç‰ÁŒãGameObject‚É‚Â‚¢‚Ä‚¢‚éMeshDrawComponent‚Ííœ
-	meshDrawComponent->AddTransform();
-	meshDrawComponent->GetTransform()->SetLocalScale(0.0f);
 	meshDrawComponent->SetIsRemove(true);
 }
 

@@ -68,12 +68,12 @@ void ButiEngine::Gun::OnShowUI()
 
 	if (GUI::Button("ShootStart"))
 	{
-		SetIsShoot(true);
+		ShootStart();
 	}
 	GUI::SameLine();
 	if (GUI::Button("ShootStop"))
 	{
-		SetIsShoot(false);
+		ShootStop();
 	}
 
 	if (GUI::Button("OneShoot"))
@@ -95,15 +95,19 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Gun::Clone()
 	return output;
 }
 
-void ButiEngine::Gun::SetIsShoot(const bool arg_isShoot)
+void ButiEngine::Gun::ShootStart()
 {
-	//isShoot‚ªtrue‚É‚È‚Á‚½ƒtƒŒ[ƒ€‚Éˆê”­Œ‚‚Â
-	if (arg_isShoot && !m_isShoot)
-	{
-		Shoot();
-	}
+	if (m_isShoot) { return; }
 
-	m_isShoot = arg_isShoot;
+	Shoot();
+	m_isShoot = true;
+}
+
+void ButiEngine::Gun::ShootStop()
+{
+	if (!m_isShoot) { return; }
+
+	m_isShoot = false;
 }
 
 void ButiEngine::Gun::Shoot()
@@ -129,6 +133,6 @@ void ButiEngine::Gun::Shoot()
 		bulletComponent->SetPower(m_power);
 		bulletComponent->SetRange(m_range);
 		Vector3 velocity = bullet.lock()->transform->GetFront();
-		bulletComponent->SetVelocity(velocity * m_bulletSpeed * GameDevice::WorldSpeed);
+		bulletComponent->SetVelocity(velocity * m_bulletSpeed);
 	}
 }

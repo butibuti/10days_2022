@@ -28,10 +28,12 @@ namespace ButiEngine {
 			archive(m_offset);
 		}
 
-		void SetIsShoot(const bool arg_isShoot);
-
-		void Shoot();
+		void ShootStart();
+		void ShootStop();
 	private:
+		void Shoot();
+
+
 		Value_ptr<RelativeTimer> m_vlp_shootInterval;
 		bool m_isShoot;
 

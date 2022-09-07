@@ -2,8 +2,6 @@
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
 
-	class RigidBodyComponent;
-
 	class Bullet :public GameComponent
 	{
 	public:
@@ -29,7 +27,6 @@ namespace ButiEngine {
 
 		void Dead();
 	private:
-		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
 
 		float m_power;
 		float m_range;

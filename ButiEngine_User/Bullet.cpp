@@ -6,8 +6,7 @@
 
 void ButiEngine::Bullet::OnUpdate()
 {
-	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(m_velocity);
-
+	gameObject.lock()->transform->Translate(m_velocity * GameDevice::WorldSpeed);
 	//ŽË’ö”ÍˆÍ‚ð’´‚¦‚½‚çŽ€‚Ê
 	Vector3 pos = gameObject.lock()->transform->GetLocalPosition();
 	float distanceSqr = (pos - m_startPos).GetLengthSqr();
@@ -34,8 +33,6 @@ void ButiEngine::Bullet::OnSet()
 
 void ButiEngine::Bullet::Start()
 {
-	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
-
 	m_startPos = gameObject.lock()->transform->GetLocalPosition();
 }
 

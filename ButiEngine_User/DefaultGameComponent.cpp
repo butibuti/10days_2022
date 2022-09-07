@@ -12,3 +12,4 @@
 #include"Header/GameObjects/DefaultGameComponent/RotationAnimationComponent.h"
 #include"Header/GameObjects/DefaultGameComponent/OutlineDrawComponent.h"
 #include"Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
+#include"Header/GameObjects/DefaultGameComponent/TriggerComponent.h"

@@ -23,6 +23,7 @@ void ButiEngine::SeparateDrawObject::Start()
 	std::string objectName = "DrawObject_" + gameObject.lock()->GetGameObjectTags()[0].GetID();
 
 	m_vwp_drawObject = GetManager().lock()->AddObjectFromCereal(objectName);
+	m_vwp_drawObject.lock()->SetObjectName("DrawObject_" + gameObject.lock()->GetGameObjectName());
 	m_vwp_drawObject.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
 
 	//GameObject‚©‚çMeshDrawComponent‚Ìî•ñ‚ðŽ‚Á‚Ä‚«‚ÄDrawObject‚É’Ç‰Á
@@ -30,6 +31,8 @@ void ButiEngine::SeparateDrawObject::Start()
 	m_vwp_drawObject.lock()->AddGameComponent(meshDrawComponent->Clone());
 
 	//’Ç‰ÁŒãGameObject‚É‚Â‚¢‚Ä‚¢‚éMeshDrawComponent‚Ííœ
+	meshDrawComponent->AddTransform();
+	meshDrawComponent->GetTransform()->SetLocalScale(0.0f);
 	meshDrawComponent->SetIsRemove(true);
 }
 

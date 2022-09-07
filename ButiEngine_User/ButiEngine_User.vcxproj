@@ -352,6 +352,7 @@ cd ..\</Command>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DefaultGameComponent.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="EquipGun.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LesserEnemy.cpp" />
@@ -371,6 +372,7 @@ cd ..\</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Door.h" />
+    <ClInclude Include="EquipGun.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="InputManager.h" />

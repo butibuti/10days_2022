@@ -1,16 +1,11 @@
 #pragma once
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
-
-	class RigidBodyComponent;
-	class Gun;
-
-	class Player :public GameComponent
+	class EquipGun :public GameComponent
 	{
 	public:
-
 		std::string GetGameComponentName()const override {
-			return "Player";
+			return "EquipGun";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -22,25 +17,18 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-
+			archive(m_equipGunName);
 		}
+
+		Value_weak_ptr<GameObject> GetGun() { return m_vwp_gun; }
 
 		void Dead();
 	private:
-		void Move();
-		void Shoot();
-
-		//物理挙動関連
-		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
-
-		//描画用オブジェクト関連
-		Value_weak_ptr<Transform> m_vwp_drawObjectTransform;
-
-		//銃関連
 		Value_weak_ptr<GameObject> m_vwp_gun;
-		Value_weak_ptr<Gun> m_vwp_gunComponent;
+
+		std::string m_equipGunName = "Gun_Player_Normal";
 	};
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(Player, true);
+BUTI_REGIST_GAMECOMPONENT(EquipGun, true);

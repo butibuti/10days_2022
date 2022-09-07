@@ -20,8 +20,6 @@ void ButiEngine::Player::Start()
 	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
 
 	m_vwp_drawObjectTransform = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock()->transform;
-
-	CreateGun();
 }
 
 void ButiEngine::Player::OnRemove()
@@ -58,12 +56,4 @@ void ButiEngine::Player::Shoot()
 	//{
 	//	m_vwp_gunComponent.lock()->Shoot();
 	//}
-}
-
-void ButiEngine::Player::CreateGun()
-{
-	//m_vwp_gun = GetManager().lock()->AddObjectFromCereal("Gun_Player");
-	//m_vwp_gun.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
-
-	//m_vwp_gunComponent = m_vwp_gun.lock()->GetGameComponent<Gun>();
 }

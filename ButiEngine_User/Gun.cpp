@@ -47,6 +47,16 @@ void ButiEngine::Gun::OnShowUI()
 		}
 	}
 
+	GUI::Text(u8"’e‚Ì–¼‘O:" + m_bulletName);
+
+	static char bulletNameBuff[128];
+	GUI::InputTextWithHint("##bulletName", m_bulletName, bulletNameBuff, sizeof(bulletNameBuff));
+	if (GUI::Button("Set"))
+	{
+		m_bulletName = bulletNameBuff;
+		memset(bulletNameBuff, 0, 128);
+	}
+
 	GUI::BulletText(u8"’e‘¬");
 	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 1.0f, 0.0f, 100.0f);
 
@@ -79,6 +89,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Gun::Clone()
 	output->m_range = m_range;
 	output->m_power = m_power;
 	output->m_rate = m_rate;
+	output->m_bulletName = m_bulletName;
 	output->m_bulletSpeed = m_bulletSpeed;
 	output->m_offset = m_offset;
 	return output;
@@ -101,23 +112,23 @@ void ButiEngine::Gun::Shoot()
 
 	for (std::int32_t i = 0; i < m_bulletCount; i++)
 	{
-		auto bulletTransform = gameObject.lock()->transform->Clone();
+		auto bullet = GetManager().lock()->AddObjectFromCereal(m_bulletName);
 
-		bulletTransform->Translate(m_offset * gameObject.lock()->transform->GetWorldRotation());
-
-		bulletTransform->SetLocalScale(0.35f);
-
+		//¶¬ˆÊ’uÝ’è
+		bullet.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+		bullet.lock()->transform->Translate(m_offset * gameObject.lock()->transform->GetWorldRotation());
+		
+		//”ò‚ñ‚Å‚¢‚­•ûŒüÝ’è
 		float rotationAngleX = ButiRandom::GetRandom(-0.5f, 0.5f, 10.0f);
 		float rotationAngleY = ButiRandom::GetRandom(-m_diffusion, m_diffusion, 10.0f);
-		bulletTransform->RollLocalRotationY_Degrees(rotationAngleY);
-		bulletTransform->RollLocalRotationX_Degrees(rotationAngleX);
+		bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
+		bullet.lock()->transform->RollLocalRotationX_Degrees(rotationAngleX);
 
-		Vector3 velocity = bulletTransform->GetFront();
-		
-		auto bullet = GetManager().lock()->AddObjectFromCereal("Bullet", bulletTransform);
+		//’e‚Ìî•ñÝ’è
 		auto bulletComponent = bullet.lock()->GetGameComponent<Bullet>();
 		bulletComponent->SetPower(m_power);
 		bulletComponent->SetRange(m_range);
+		Vector3 velocity = bullet.lock()->transform->GetFront();
 		bulletComponent->SetVelocity(velocity * m_bulletSpeed * GameDevice::WorldSpeed);
 	}
 }

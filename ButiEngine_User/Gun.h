@@ -22,6 +22,7 @@ namespace ButiEngine {
 			archive(m_range);
 			archive(m_power);
 			archive(m_rate);
+			archive(m_bulletName);
 			archive(m_bulletSpeed);
 			archive(m_bulletCount);
 			archive(m_offset);
@@ -42,6 +43,8 @@ namespace ButiEngine {
 		float m_power = 1.0f;
 		//˜AË‘¬“x
 		std::int32_t m_rate = 10;
+		//’e‚Ì–¼‘O
+		std::string m_bulletName = "Bullet_Player_Normal";
 		//’e‘¬
 		float m_bulletSpeed = 10.0f;
 		//ˆê‰ñ‚É”­Ë‚³‚ê‚é’e‚Ì”

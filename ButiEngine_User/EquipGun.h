@@ -17,7 +17,7 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-
+			archive(m_equipGunName);
 		}
 
 		Value_weak_ptr<GameObject> GetGun() { return m_vwp_gun; }
@@ -25,6 +25,8 @@ namespace ButiEngine {
 		void Dead();
 	private:
 		Value_weak_ptr<GameObject> m_vwp_gun;
+
+		std::string m_equipGunName = "Gun_Player_Normal";
 	};
 
 }

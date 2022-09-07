@@ -30,8 +30,6 @@ namespace ButiEngine {
 		void Move();
 		void Shoot();
 
-		void CreateGun();
-
 		//•¨—‹““®ŠÖ˜A
 		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
 

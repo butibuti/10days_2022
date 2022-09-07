@@ -24,6 +24,7 @@ namespace ButiEngine {
 			archive(isActive);
 			archive(m_speed);
 			archive(m_moveRate);
+			archive(m_minimumDistance);
 		}
 
 		void Dead();
@@ -51,6 +52,7 @@ namespace ButiEngine {
 		Value_ptr<RelativeTimer> m_vlp_directionDicisionInterval;
 		std::int32_t m_moveRate = 10;
 		float m_speed = 1.0f;
+		float m_minimumDistance = 3.0f;
 		Vector3 m_direction;
 	};
 

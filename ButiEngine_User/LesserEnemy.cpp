@@ -47,6 +47,9 @@ void ButiEngine::LesserEnemy::OnShowUI()
 			m_vlp_directionDicisionInterval->ChangeCountFrame(m_moveRate);
 		}
 	}
+
+	GUI::BulletText(u8"‹ßÚ‹——£–Ú•W");
+	GUI::DragFloat("##minimumDistance", &m_minimumDistance, 1.0f, 0.0f, 100.0f);
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::LesserEnemy::Clone()
@@ -54,6 +57,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::LesserEnemy::Clone(
 	auto output = ObjectFactory::Create<LesserEnemy>();
 	output->m_speed = m_speed;
 	output->m_moveRate = m_moveRate;
+	output->m_minimumDistance = m_minimumDistance;
 	return output;
 }
 
@@ -79,8 +83,7 @@ void ButiEngine::LesserEnemy::DecideDirection()
 	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
 	float distance = playerPosition.Distance(position);
 	
-	float minimumDistance = 3.0f;
-	if (distance <= minimumDistance)
+	if (distance <= m_minimumDistance)
 	{
 		float sin, cos;
 		MathHelper::SinCos(sin, cos, MathHelper::ToRadian(ButiRandom::GetInt(0, 360)));

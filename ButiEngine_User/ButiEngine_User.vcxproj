@@ -349,6 +349,7 @@ cd ..\</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseItem.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DefaultGameComponent.cpp" />
     <ClCompile Include="ChangeSceneArea.cpp" />
@@ -371,6 +372,7 @@ cd ..\</Command>
     <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseItem.h" />
     <ClInclude Include="ChangeSceneArea.h" />
     <ClInclude Include="EquipGun.h" />
     <ClInclude Include="Gun.h" />

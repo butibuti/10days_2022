@@ -14,6 +14,7 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestBehavior.cpp" />
     <ClCompile Include="WorldSpeedManager.cpp" />
+    <ClCompile Include="BaseItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -27,6 +28,7 @@
     <ClInclude Include="stdafx_u.h" />
     <ClInclude Include="TestBehavior.h" />
     <ClInclude Include="WorldSpeedManager.h" />
+    <ClInclude Include="BaseItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

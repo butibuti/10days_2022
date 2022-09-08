@@ -1,5 +1,7 @@
 #include "stdafx_u.h"
 #include "EquipGun.h"
+#include "SeparateDrawObject.h"
+#include "Gun.h"
 
 void ButiEngine::EquipGun::OnUpdate()
 {
@@ -59,5 +61,8 @@ void ButiEngine::EquipGun::CreateGun()
 {
 	//Gunì¬
 	m_vwp_gun = GetManager().lock()->AddObjectFromCereal(m_equipGunName);
-	m_vwp_gun.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
+	auto drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();
+	m_vwp_gun.lock()->transform->SetBaseTransform(drawObject.lock()->transform, true);
+
+	m_vwp_gun.lock()->GetGameComponent<Gun>()->SetOwner(gameObject);
 }

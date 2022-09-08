@@ -28,18 +28,25 @@ namespace ButiEngine {
 
 		void Dead();
 	private:
+		void Control();
 		void Move();
+		void Rotate();
 		void Shoot();
+
+		void SetLookAtParameter();
 
 		//物理挙動関連
 		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
 
 		//描画用オブジェクト関連
-		Value_weak_ptr<Transform> m_vwp_drawObjectTransform;
+		Value_weak_ptr<GameObject> m_vwp_drawObject;
 
 		//銃関連
 		Value_weak_ptr<Gun> m_vwp_gunComponent;
 		Value_weak_ptr<EquipGun> m_vwp_equipGunComponent;
+
+		//プレイヤーの向く方向設定関連
+		Value_weak_ptr<LookAtComponent> m_vwp_lookAt;
 	};
 
 }

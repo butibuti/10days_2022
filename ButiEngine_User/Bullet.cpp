@@ -7,6 +7,7 @@
 void ButiEngine::Bullet::OnUpdate()
 {
 	gameObject.lock()->transform->Translate(m_velocity * GameDevice::WorldSpeed);
+
 	//ŽË’ö”ÍˆÍ‚ð’´‚¦‚½‚çŽ€‚Ê
 	Vector3 pos = gameObject.lock()->transform->GetLocalPosition();
 	float distanceSqr = (pos - m_startPos).GetLengthSqr();
@@ -25,7 +26,10 @@ void ButiEngine::Bullet::OnSet()
 		{
 			if (arg_other.vwp_gameObject.lock())
 			{
-				Dead();
+				if (arg_other.vwp_gameObject.lock() != m_vwp_owner.lock())
+				{
+					Dead();
+				}
 			}
 		}
 	);

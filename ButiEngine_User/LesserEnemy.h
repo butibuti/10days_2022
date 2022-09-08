@@ -4,6 +4,7 @@ namespace ButiEngine {
 
 	class RigidBodyComponent;
 	class Gun;
+	class EquipGun;
 
 	class LesserEnemy :public GameComponent
 	{
@@ -29,6 +30,7 @@ namespace ButiEngine {
 
 		void Dead();
 	private:
+		void Control();
 		void Move();
 		void Rotate();
 		void DecideDirection();
@@ -43,8 +45,8 @@ namespace ButiEngine {
 		Value_weak_ptr<GameObject> m_vwp_drawObject;
 
 		//eŠÖ˜A
-		Value_weak_ptr<GameObject> m_vwp_gun;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;
+		Value_weak_ptr<EquipGun> m_vwp_equipGunComponent;
 
 		//Œü‚­•ûŒüİ’èŠÖ˜A
 		Value_weak_ptr<LookAtComponent> m_vwp_lookAt;

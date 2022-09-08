@@ -4,16 +4,12 @@
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "SeparateDrawObject.h"
 #include "Gun.h"
+#include "EquipGun.h"
 #include "Player.h"
 
 void ButiEngine::LesserEnemy::OnUpdate()
 {
-	if (m_vlp_directionDicisionInterval->Update())
-	{
-		DecideDirection();
-	}
-	Move();
-	Rotate();
+	Control();
 }
 
 void ButiEngine::LesserEnemy::OnSet()
@@ -24,6 +20,8 @@ void ButiEngine::LesserEnemy::Start()
 {
 	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock();
+	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
+	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
 	m_vwp_player = GetManager().lock()->GetGameObject("Player");
 	m_vlp_directionDicisionInterval = ObjectFactory::Create<RelativeTimer>(m_moveRate);
 	m_vlp_directionDicisionInterval->Start();
@@ -75,9 +73,20 @@ void ButiEngine::LesserEnemy::Dead()
 	gameObject.lock()->SetIsRemove(true);
 }
 
+void ButiEngine::LesserEnemy::Control()
+{
+	Move();
+	Rotate();
+	Shoot();
+}
+
 void ButiEngine::LesserEnemy::Move()
 {
 	//Player‚É‹ß‚Ã‚«‚½‚¢
+	if (m_vlp_directionDicisionInterval->Update())
+	{
+		DecideDirection();
+	}
 	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(m_direction * m_speed * GameDevice::WorldSpeed);
 }
 
@@ -87,7 +96,7 @@ void ButiEngine::LesserEnemy::Rotate()
 	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
 	lookTarget->SetLocalPosition(drawObjectTransform->GetLocalPosition() + drawObjectTransform->GetFront() * 100.0f);
 
-	Vector3 playerPosition = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>().Clone()->GetRigidBody()->GetPosition();
+	Vector3 playerPosition = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->GetPosition();
 	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
 	lookTarget->Translate(Vector3(playerPosition.x - position.x, 0.0f, playerPosition.z - position.z).Normalize() * 100.0f);
 }
@@ -118,6 +127,20 @@ void ButiEngine::LesserEnemy::DecideDirection()
 
 void ButiEngine::LesserEnemy::Shoot()
 {
+	//‹——£ŒvŽZ
+	Value_weak_ptr<RigidBodyComponent> playerRigidBody = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>();
+	Vector3 playerPosition = playerRigidBody.lock()->GetRigidBody()->GetPosition();
+	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
+	float distance = playerPosition.Distance(position);
+
+	if (distance <= m_minimumDistance)
+	{
+		m_vwp_gunComponent.lock()->ShootStart();
+	}
+	else
+	{
+		m_vwp_gunComponent.lock()->ShootStop();
+	}
 }
 
 void ButiEngine::LesserEnemy::SetLookAtParameter()

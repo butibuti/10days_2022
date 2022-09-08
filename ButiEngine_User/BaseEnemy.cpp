@@ -104,6 +104,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseEnemy::Clone()
 	output->m_directionDicisionInterval = m_directionDicisionInterval;
 	output->m_minimumDistance = m_minimumDistance;
 	output->m_hitPoint = m_hitPoint;
+	output->m_maxHitPoint = m_maxHitPoint;
 	output->m_invincivleInterval = m_invincivleInterval;
 	output->m_attackInterval = m_attackInterval;
 	return output;

@@ -21,12 +21,14 @@ namespace ButiEngine {
 
 		}
 
+		void SetOwner(Value_weak_ptr<GameObject> arg_owner) { m_vwp_owner = arg_owner; }
 		void SetPower(const float arg_power) { m_power = arg_power; }
 		void SetRange(const float arg_range) { m_range = arg_range; }
 		void SetVelocity(const Vector3& arg_velocity) { m_velocity = arg_velocity; }
 
 		void Dead();
 	private:
+		Value_weak_ptr<GameObject> m_vwp_owner;
 
 		float m_power;
 		float m_range;

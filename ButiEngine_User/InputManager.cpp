@@ -137,19 +137,19 @@ void ButiEngine::InputManager::SetLeftVibrationPower(const float arg_power)
 bool ButiEngine::InputManager::IsPushShootKey()
 {
 	return (/*GameDevice::GetInput()->GetMouseButton(MouseButtons::LeftClick) ||*/
-		GameDevice::GetInput()->GetPadButton(PadButtons::XBOX_A));
+		GameDevice::GetInput()->GetPadButton(PadButtons::XBOX_BUTTON_RIGHT));
 }
 
 bool ButiEngine::InputManager::IsTriggerShootKey()
 {
 	return (/*GameDevice::GetInput()->GetMouseTrigger(MouseButtons::LeftClick) ||*/
-		GameDevice::GetInput()->GetPadButtonTrigger(PadButtons::XBOX_A));
+		GameDevice::GetInput()->GetPadButtonTrigger(PadButtons::XBOX_BUTTON_RIGHT));
 }
 
 bool ButiEngine::InputManager::IsReleaseShootKey()
 {
 	return (/*GameDevice::GetInput()->GetMouseReleaseTrigger(MouseButtons::LeftClick) ||*/
-		GameDevice::GetInput()->GetPadButtonRelease(PadButtons::XBOX_A));
+		GameDevice::GetInput()->GetPadButtonRelease(PadButtons::XBOX_BUTTON_RIGHT));
 }
 
 bool ButiEngine::InputManager::IsTriggerPauseKey()

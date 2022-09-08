@@ -5,8 +5,14 @@
 
 void ButiEngine::Gun::OnUpdate()
 {
-	if (m_isShoot && m_vlp_shootInterval->Update())
+	if (m_vlp_shootInterval->Update())
 	{
+		if (!m_isShoot)
+		{
+			m_vlp_shootInterval->Reset();
+			m_vlp_shootInterval->Stop();
+			return;
+		}
 		Shoot();
 	}
 }
@@ -91,6 +97,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Gun::Clone()
 	output->m_rate = m_rate;
 	output->m_bulletName = m_bulletName;
 	output->m_bulletSpeed = m_bulletSpeed;
+	output->m_bulletCount = m_bulletCount;
 	output->m_offset = m_offset;
 	return output;
 }
@@ -99,8 +106,12 @@ void ButiEngine::Gun::ShootStart()
 {
 	if (m_isShoot) { return; }
 
-	Shoot();
 	m_isShoot = true;
+	if (!m_vlp_shootInterval->IsOn())
+	{
+		Shoot();
+		m_vlp_shootInterval->Start();
+	}
 }
 
 void ButiEngine::Gun::ShootStop()
@@ -112,7 +123,7 @@ void ButiEngine::Gun::ShootStop()
 
 void ButiEngine::Gun::Shoot()
 {
-	m_vlp_shootInterval->Reset();
+	if (!m_isShoot) { return; }
 
 	for (std::int32_t i = 0; i < m_bulletCount; i++)
 	{
@@ -123,13 +134,13 @@ void ButiEngine::Gun::Shoot()
 		bullet.lock()->transform->Translate(m_offset * gameObject.lock()->transform->GetWorldRotation());
 		
 		//”ò‚ñ‚Å‚¢‚­•ûŒüÝ’è
-		//float rotationAngleX = ButiRandom::GetRandom(0.0f, 0.5f, 10.0f);
+		bullet.lock()->transform->SetLocalRotation(gameObject.lock()->transform->GetWorldRotation());
 		float rotationAngleY = ButiRandom::GetRandom(-m_diffusion, m_diffusion, 10.0f);
 		bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
-		//bullet.lock()->transform->RollLocalRotationX_Degrees(rotationAngleX);
 
 		//’e‚Ìî•ñÝ’è
 		auto bulletComponent = bullet.lock()->GetGameComponent<Bullet>();
+		bulletComponent->SetOwner(m_vwp_owner);
 		bulletComponent->SetPower(m_power);
 		bulletComponent->SetRange(m_range);
 		Vector3 velocity = bullet.lock()->transform->GetFront();

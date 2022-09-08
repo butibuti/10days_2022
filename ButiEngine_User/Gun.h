@@ -28,11 +28,15 @@ namespace ButiEngine {
 			archive(m_offset);
 		}
 
+		void SetOwner(Value_weak_ptr<GameObject> arg_owner) { m_vwp_owner = arg_owner; }
+
 		void ShootStart();
 		void ShootStop();
 	private:
 		void Shoot();
 
+
+		Value_weak_ptr<GameObject> m_vwp_owner;
 
 		Value_ptr<RelativeTimer> m_vlp_shootInterval;
 		bool m_isShoot;

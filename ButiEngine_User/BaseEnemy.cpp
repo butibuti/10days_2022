@@ -3,6 +3,7 @@
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "SeparateDrawObject.h"
 #include "Player.h"
+#include "Bullet.h"
 
 void ButiEngine::BaseEnemy::OnUpdate()
 {
@@ -11,6 +12,20 @@ void ButiEngine::BaseEnemy::OnUpdate()
 
 void ButiEngine::BaseEnemy::OnSet()
 {
+	//Bullet_Playerタグを持っていたらダメージを受ける
+	gameObject.lock()->AddCollisionEnterReaction(
+		[this](ButiBullet::ContactData& arg_other)
+		{
+			if (arg_other.vwp_gameObject.lock())
+			{
+				//タグ判定
+				if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("Bullet_Player") && !m_isInvincivle)
+				{
+					Damage(arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>().Clone()->GetPower());
+				}
+			}
+		}
+	);
 }
 
 void ButiEngine::BaseEnemy::Start()
@@ -23,6 +38,7 @@ void ButiEngine::BaseEnemy::Start()
 	m_hitPoint = m_maxHitPoint;
 	m_vlp_invincivleTime = ObjectFactory::Create<RelativeTimer>(m_invincivleInterval);
 	m_vlp_invincivleTime->Start();
+	m_isInvincivle = false;
 	m_vlp_attackTime = ObjectFactory::Create<RelativeTimer>(m_attackInterval);
 	m_vlp_attackTime->Start();
 	m_direction = Vector3();
@@ -75,9 +91,6 @@ void ButiEngine::BaseEnemy::OnShowUI()
 			m_vlp_attackTime->ChangeCountFrame(m_attackInterval);
 		}
 	}
-	
-	GUI::BulletText(u8"攻撃力");
-	GUI::DragInt("##power", &m_power);
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseEnemy::Clone()
@@ -103,6 +116,11 @@ void ButiEngine::BaseEnemy::Control()
 	Move();
 	Rotate();
 	Attack();
+
+	if (m_vlp_invincivleTime->Update())
+	{
+		m_isInvincivle = false;
+	}
 }
 
 void ButiEngine::BaseEnemy::Move()
@@ -156,6 +174,19 @@ void ButiEngine::BaseEnemy::Attack()
 
 void ButiEngine::BaseEnemy::Damage(const int32_t arg_power)
 {
+	if (m_isInvincivle)
+	{
+		return;
+	}
+
+	m_isInvincivle = true;
+	m_vlp_invincivleTime->Reset();
+	m_hitPoint -= arg_power;
+
+	if (m_hitPoint <= 0)
+	{
+		Dead();
+	}
 }
 
 void ButiEngine::BaseEnemy::SetLookAtParameter()

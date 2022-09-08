@@ -21,6 +21,8 @@ namespace ButiEngine {
 
 		}
 
+		const std::int32_t GetPower()const { return static_cast<std::int32_t>(m_power); }
+
 		void SetOwner(Value_weak_ptr<GameObject> arg_owner) { m_vwp_owner = arg_owner; }
 		void SetPower(const float arg_power) { m_power = arg_power; }
 		void SetRange(const float arg_range) { m_range = arg_range; }

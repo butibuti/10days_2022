@@ -27,11 +27,9 @@ namespace ButiEngine {
 			archive(m_maxHitPoint);
 			archive(m_invincivleInterval);
 			archive(m_attackInterval);
-			archive(m_power);
 		}
 
 		virtual void Dead();
-		virtual const int32_t GetPower()const { return m_power; }
 	protected:
 		virtual void Control();
 		virtual void Move();
@@ -66,11 +64,11 @@ namespace ButiEngine {
 		std::int32_t m_maxHitPoint = 10;
 		Value_ptr<RelativeTimer> m_vlp_invincivleTime;
 		std::int32_t m_invincivleInterval = 20;
+		bool m_isInvincivle;
 
 		//çUåÇä÷òA
 		Value_ptr<RelativeTimer> m_vlp_attackTime;
 		std::int32_t m_attackInterval = 60;
-		std::int32_t m_power = 1;
 	};
 
 }

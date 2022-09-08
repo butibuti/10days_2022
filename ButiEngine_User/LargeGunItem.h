@@ -4,11 +4,11 @@
 namespace ButiEngine {
 	class Player;
 
-	class LergeGunItem :public BaseItem
+	class LargeGunItem :public BaseItem
 	{
 	public:
 		std::string GetGameComponentName()const override {
-			return "LergeGunItem";
+			return "LargeGunItem";
 		}
 		void OnUpdate()override;
 		void OnShowUI()override;
@@ -27,4 +27,4 @@ namespace ButiEngine {
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(LergeGunItem, true);
+BUTI_REGIST_GAMECOMPONENT(LargeGunItem, true);

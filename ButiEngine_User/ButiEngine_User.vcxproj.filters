@@ -17,7 +17,7 @@
     <ClCompile Include="BaseItem.cpp" />
     <ClCompile Include="GunAction_AssaultRifle.cpp" />
     <ClCompile Include="GunAction_Gatling.cpp" />
-    <ClCompile Include="LergeGunItem.cpp" />
+    <ClCompile Include="LargeGunItem.cpp" />
     <ClCompile Include="BaseEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -35,7 +35,7 @@
     <ClInclude Include="BaseItem.h" />
     <ClInclude Include="GunAction_AssaultRifle.h" />
     <ClInclude Include="GunAction_Gatling.h" />
-    <ClInclude Include="LergeGunItem.h" />
+    <ClInclude Include="LargeGunItem.h" />
     <ClInclude Include="BaseEnemy.h" />
   </ItemGroup>
   <ItemGroup>

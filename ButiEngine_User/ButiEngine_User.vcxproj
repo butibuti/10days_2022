@@ -359,7 +359,7 @@ cd ..\</Command>
     <ClCompile Include="GunAction_AssaultRifle.cpp" />
     <ClCompile Include="GunAction_Gatling.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="LergeGunItem.cpp" />
+    <ClCompile Include="LargeGunItem.cpp" />
     <ClCompile Include="LesserEnemy.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">/wd4996 %(AdditionalOptions)</AdditionalOptions>
@@ -385,7 +385,7 @@ cd ..\</Command>
     <ClInclude Include="GunAction_AssaultRifle.h" />
     <ClInclude Include="GunAction_Gatling.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="LergeGunItem.h" />
+    <ClInclude Include="LargeGunItem.h" />
     <ClInclude Include="LesserEnemy.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeparateDrawObject.h" />

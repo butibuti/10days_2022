@@ -26,6 +26,7 @@ namespace ButiEngine {
 			archive(m_bulletSpeed);
 			archive(m_bulletCount);
 			archive(m_offset);
+			archive(m_vlp_recoilTransform);
 		}
 
 		void SetOwner(Value_weak_ptr<GameObject> arg_owner) { m_vwp_owner = arg_owner; }
@@ -34,6 +35,7 @@ namespace ButiEngine {
 		void ShootStop();
 	private:
 		void Shoot();
+		void Recoil();
 
 
 		Value_weak_ptr<GameObject> m_vwp_owner;
@@ -57,6 +59,8 @@ namespace ButiEngine {
 		std::int32_t m_bulletCount = 3;
 		//íeÇ™ê∂ê¨Ç≥ÇÍÇÈà íu
 		Vector3 m_offset = Vector3Const::Zero;
+		//îΩìÆå„Transform
+		Value_ptr<Transform> m_vlp_recoilTransform;
 	};
 
 }

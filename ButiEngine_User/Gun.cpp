@@ -24,6 +24,7 @@ void ButiEngine::Gun::OnSet()
 void ButiEngine::Gun::Start()
 {
 	m_vlp_shootInterval = ObjectFactory::Create<RelativeTimer>(m_rate);
+
 	m_vlp_shootInterval->Start();
 
 	m_isShoot = false;
@@ -72,6 +73,24 @@ void ButiEngine::Gun::OnShowUI()
 	GUI::BulletText(u8"’e‚ª¶¬‚³‚ê‚éˆÊ’u");
 	GUI::DragFloat3("##offset", &m_offset.x, 0.1f, -100.0f, 100.0f);
 
+	if (GUI::TreeNode("RecoilTransform"))
+	{
+		if (m_vlp_recoilTransform)
+		{
+			GUI::Edit(*m_vlp_recoilTransform);
+			if (GUI::Button("Remove"))
+			{
+				m_vlp_recoilTransform = nullptr;
+			}
+		}
+		else if (GUI::Button("AddRecoilTransform"))
+		{
+			m_vlp_recoilTransform = gameObject.lock()->transform->Clone();
+			m_vlp_recoilTransform->SetBaseTransform(nullptr, true);
+		}
+		GUI::TreePop();
+	}
+
 	if (GUI::Button("ShootStart"))
 	{
 		ShootStart();
@@ -99,6 +118,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Gun::Clone()
 	output->m_bulletSpeed = m_bulletSpeed;
 	output->m_bulletCount = m_bulletCount;
 	output->m_offset = m_offset;
+	output->m_vlp_recoilTransform = m_vlp_recoilTransform;
 	return output;
 }
 
@@ -146,4 +166,16 @@ void ButiEngine::Gun::Shoot()
 		Vector3 velocity = bullet.lock()->transform->GetFront();
 		bulletComponent->SetVelocity(velocity * m_bulletSpeed);
 	}
+
+	Recoil();
+}
+
+void ButiEngine::Gun::Recoil()
+{
+	if (!m_vlp_recoilTransform) { return; }
+
+	auto anim = gameObject.lock()->AddGameComponent<TransformAnimation>();
+	anim->SetTargetTransform(m_vlp_recoilTransform);
+	anim->SetSpeed(1.0f / (m_rate / 1.5f));
+	anim->SetEaseType(Easing::EasingType::Parabola);
 }

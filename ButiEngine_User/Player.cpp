@@ -42,7 +42,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Player::Clone()
 
 void ButiEngine::Player::PowerUp(const std::string& arg_gunName)
 {
-	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun("Gun_Player_HighRate");
+	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
 	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
 }
 

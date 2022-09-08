@@ -8,15 +8,15 @@ namespace ButiEngine {
 	class BaseItem :public GameComponent
 	{
 	public:
-		std::string GetGameComponentName()const override {
+		virtual std::string GetGameComponentName()const override {
 			return "BaseItem";
 		}
-		void OnUpdate()override;
+		virtual void OnUpdate()override;
 		void OnSet()override;
 		void Start()override;
 		void OnRemove()override;
-		void OnShowUI()override;
-		Value_ptr<GameComponent> Clone()override;
+		virtual void OnShowUI()override;
+		virtual Value_ptr<GameComponent> Clone()override;
 		template<class Archive>
 		void serialize(Archive& archive)
 		{
@@ -25,8 +25,8 @@ namespace ButiEngine {
 		}
 
 		virtual void PowerUpPlayer(Value_weak_ptr<Player> arg_vwp_player);
-		void Dead();
-	private:
+		virtual void Dead();
+	protected:
 		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
 	};
 

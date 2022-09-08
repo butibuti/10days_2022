@@ -5,6 +5,7 @@
 #include "SeparateDrawObject.h"
 #include "Gun.h"
 #include "EquipGun.h"
+#include "Bullet.h"
 #include "GunAction_AssaultRifle.h"
 
 void ButiEngine::Player::OnUpdate()
@@ -14,6 +15,20 @@ void ButiEngine::Player::OnUpdate()
 
 void ButiEngine::Player::OnSet()
 {
+	//Bullet_Enemyタグを持っていたらダメージを受ける
+	gameObject.lock()->AddCollisionEnterReaction(
+		[this](ButiBullet::ContactData& arg_other)
+		{
+			if (arg_other.vwp_gameObject.lock())
+			{
+				//タグ判定
+				if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("Bullet_Enemy") && !m_isInvincible)
+				{
+					Damage(arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>().Clone()->GetPower());
+				}
+			}
+		}
+	);
 }
 
 void ButiEngine::Player::Start()
@@ -25,9 +40,14 @@ void ButiEngine::Player::Start()
 	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
 	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
 
+	m_hitPoint = m_maxHitPoint;
+	m_vlp_invincibleTime = ObjectFactory::Create<RelativeTimer>(m_invincibleInterval);
+	m_vlp_invincibleTime->Start();
+	m_isInvincible = false;
+
 	SetLookAtParameter();
 
-	m_isInvincible = false;
+	m_canAcceptInput = true;
 }
 
 void ButiEngine::Player::OnRemove()
@@ -36,6 +56,21 @@ void ButiEngine::Player::OnRemove()
 
 void ButiEngine::Player::OnShowUI()
 {
+	GUI::BulletText(u8"最大体力");
+	if (GUI::DragInt("##maxHitPoint", &m_maxHitPoint))
+	{
+		m_hitPoint = m_maxHitPoint;
+	}
+	GUI::Text(m_hitPoint);
+
+	GUI::BulletText(u8"無敵時間");
+	if (GUI::DragInt("##invincibleInterval", &m_invincibleInterval, 1.0f, 1.0f, 30.0f))
+	{
+		if (m_vlp_invincibleTime)
+		{
+			m_vlp_invincibleTime->ChangeCountFrame(m_invincibleInterval);
+		}
+	}
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Player::Clone()
@@ -65,10 +100,20 @@ ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::Player::ChangeGun(const 
 
 void ButiEngine::Player::Control()
 {
-	if (m_isInvincible) { return; }
+	if (!m_canAcceptInput)
+	{ 
+		m_isInvincible = true;
+		return;
+	}
+
 	Move();
 	Rotate();
 	Shoot();
+
+	if (m_vlp_invincibleTime->Update())
+	{
+		m_isInvincible = false;
+	}
 }
 
 void ButiEngine::Player::Move()
@@ -107,6 +152,24 @@ void ButiEngine::Player::Shoot()
 	{
 		gameObject.lock()->AddGameComponent<GunAction_AssaultRifle>();
 		//PowerUp("Gun_Player_HighRate");
+	}
+}
+
+void ButiEngine::Player::Damage(const int32_t arg_power)
+{
+	if (m_isInvincible)
+	{
+		return;
+	}
+
+	m_isInvincible = true;
+	m_vlp_invincibleTime->Reset();
+	m_hitPoint -= arg_power;
+
+	if (m_hitPoint <= 0)
+	{
+		//Dead();
+		m_hitPoint = 0;
 	}
 }
 

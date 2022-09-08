@@ -23,10 +23,12 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-
+			archive(m_maxHitPoint);
+			archive(m_invincibleInterval);
 		}
 
 		void SetIsInvincible(const bool arg_isInvincible) { m_isInvincible = arg_isInvincible; }
+		void SetCanAcceptInput(const bool arg_canAcceptInput) { m_canAcceptInput = arg_canAcceptInput; }
 
 		void PowerUp(const std::string& arg_gunName);
 		void Dead();
@@ -36,6 +38,7 @@ namespace ButiEngine {
 		void Move();
 		void Rotate();
 		void Shoot();
+		void Damage(const int32_t arg_power);
 
 		void SetLookAtParameter();
 
@@ -52,7 +55,14 @@ namespace ButiEngine {
 		//プレイヤーの向く方向設定関連
 		Value_weak_ptr<LookAtComponent> m_vwp_lookAt;
 
+		//体力管理
+		std::int32_t m_hitPoint = 10;
+		std::int32_t m_maxHitPoint = 10;
+		Value_ptr<RelativeTimer> m_vlp_invincibleTime;
+		std::int32_t m_invincibleInterval = 20;
 		bool m_isInvincible;
+
+		bool m_canAcceptInput;
 	};
 
 }

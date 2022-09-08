@@ -2,6 +2,8 @@
 #include "BaseEnemy.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "SeparateDrawObject.h"
+#include "Gun.h"
+#include "EquipGun.h"
 #include "Player.h"
 #include "Bullet.h"
 
@@ -32,6 +34,8 @@ void ButiEngine::BaseEnemy::Start()
 {
 	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock();
+	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
+	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
 	m_vwp_player = GetManager().lock()->GetGameObject("Player");
 	m_vlp_directionDicisionTime = ObjectFactory::Create<RelativeTimer>(m_directionDicisionInterval);
 	m_vlp_directionDicisionTime->Start();
@@ -108,6 +112,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseEnemy::Clone()
 void ButiEngine::BaseEnemy::Dead()
 {
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
+	m_vwp_equipGunComponent.lock()->Dead();
 	gameObject.lock()->SetIsRemove(true);
 }
 
@@ -170,6 +175,20 @@ void ButiEngine::BaseEnemy::DecideDirection()
 
 void ButiEngine::BaseEnemy::Attack()
 {
+	//‹——£ŒvŽZ
+	Value_weak_ptr<RigidBodyComponent> playerRigidBody = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>();
+	Vector3 playerPosition = playerRigidBody.lock()->GetRigidBody()->GetPosition();
+	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
+	float distance = playerPosition.Distance(position);
+
+	if (distance <= m_minimumDistance)
+	{
+		m_vwp_gunComponent.lock()->ShootStart();
+	}
+	else
+	{
+		m_vwp_gunComponent.lock()->ShootStop();
+	}
 }
 
 void ButiEngine::BaseEnemy::Damage(const int32_t arg_power)

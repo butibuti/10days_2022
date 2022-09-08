@@ -43,6 +43,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::EquipGun::Clone()
 void ButiEngine::EquipGun::Dead()
 {
 	m_vwp_gun.lock()->SetIsRemove(true);
+	gameObject.lock()->SetIsRemove(true);
 }
 
 ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::EquipGun::ChangeGun(const std::string& arg_gunName)

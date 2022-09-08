@@ -27,7 +27,7 @@ namespace ButiEngine {
 			archive(m_directionDicisionInterval);
 			archive(m_minimumDistance);
 			archive(m_maxHitPoint);
-			archive(m_invincivleInterval);
+			archive(m_invincibleInterval);
 			archive(m_attackInterval);
 		}
 
@@ -68,9 +68,9 @@ namespace ButiEngine {
 		//ëÃóÕä«óù
 		std::int32_t m_hitPoint = 10;
 		std::int32_t m_maxHitPoint = 10;
-		Value_ptr<RelativeTimer> m_vlp_invincivleTime;
-		std::int32_t m_invincivleInterval = 20;
-		bool m_isInvincivle;
+		Value_ptr<RelativeTimer> m_vlp_invincibleTime;
+		std::int32_t m_invincibleInterval = 20;
+		bool m_isInvincible;
 
 		//çUåÇä÷òA
 		Value_ptr<RelativeTimer> m_vlp_attackTime;

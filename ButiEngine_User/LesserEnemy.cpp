@@ -26,7 +26,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::LesserEnemy::Clone(
 	output->m_minimumDistance = m_minimumDistance;
 	output->m_hitPoint = m_hitPoint;
 	output->m_maxHitPoint = m_maxHitPoint;
-	output->m_invincivleInterval = m_invincivleInterval;
+	output->m_invincibleInterval = m_invincibleInterval;
 	output->m_attackInterval = m_attackInterval;
 	return output;
 }
@@ -44,9 +44,9 @@ void ButiEngine::LesserEnemy::Control()
 	Rotate();
 	Attack();
 
-	if (m_vlp_invincivleTime->Update())
+	if (m_vlp_invincibleTime->Update())
 	{
-		m_isInvincivle = false;
+		m_isInvincible = false;
 	}
 }
 
@@ -115,13 +115,13 @@ void ButiEngine::LesserEnemy::Attack()
 
 void ButiEngine::LesserEnemy::Damage(const int32_t arg_power)
 {
-	if (m_isInvincivle)
+	if (m_isInvincible)
 	{
 		return;
 	}
 
-	m_isInvincivle = true;
-	m_vlp_invincivleTime->Reset();
+	m_isInvincible = true;
+	m_vlp_invincibleTime->Reset();
 	m_hitPoint -= arg_power;
 
 	if (m_hitPoint <= 0)

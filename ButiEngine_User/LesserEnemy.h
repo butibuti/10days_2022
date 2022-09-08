@@ -25,7 +25,7 @@ namespace ButiEngine {
 			archive(m_directionDicisionInterval);
 			archive(m_minimumDistance);
 			archive(m_maxHitPoint);
-			archive(m_invincivleInterval);
+			archive(m_invincibleInterval);
 			archive(m_attackInterval);
 		}
 

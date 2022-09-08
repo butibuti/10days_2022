@@ -1,90 +1,121 @@
 #include "stdafx_u.h"
-#include "LesserEnemy.h"
-#include "InputManager.h"
+#include "BaseEnemy.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "SeparateDrawObject.h"
-#include "Gun.h"
-#include "EquipGun.h"
 #include "Player.h"
 
-void ButiEngine::LesserEnemy::OnUpdate()
+void ButiEngine::BaseEnemy::OnUpdate()
 {
 	Control();
 }
 
-void ButiEngine::LesserEnemy::OnSet()
+void ButiEngine::BaseEnemy::OnSet()
 {
 }
 
-void ButiEngine::LesserEnemy::Start()
+void ButiEngine::BaseEnemy::Start()
 {
 	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock();
-	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
-	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
 	m_vwp_player = GetManager().lock()->GetGameObject("Player");
-	m_vlp_directionDicisionInterval = ObjectFactory::Create<RelativeTimer>(m_moveRate);
-	m_vlp_directionDicisionInterval->Start();
+	m_vlp_directionDicisionTime = ObjectFactory::Create<RelativeTimer>(m_directionDicisionInterval);
+	m_vlp_directionDicisionTime->Start();
+	m_hitPoint = m_maxHitPoint;
+	m_vlp_invincivleTime = ObjectFactory::Create<RelativeTimer>(m_invincivleInterval);
+	m_vlp_invincivleTime->Start();
+	m_vlp_attackTime = ObjectFactory::Create<RelativeTimer>(m_attackInterval);
+	m_vlp_attackTime->Start();
 	m_direction = Vector3();
 	SetLookAtParameter();
 	DecideDirection();
 }
 
-void ButiEngine::LesserEnemy::OnRemove()
+void ButiEngine::BaseEnemy::OnRemove()
 {
 }
 
-void ButiEngine::LesserEnemy::OnShowUI()
+void ButiEngine::BaseEnemy::OnShowUI()
 {
 	GUI::BulletText(u8"à⁄ìÆë¨ìx");
 	GUI::DragFloat("##speed", &m_speed, 1.0f, 0.0f, 10.0f);
-
+	
 	GUI::BulletText(u8"à⁄ìÆï˚å¸åàíËä‘äu");
-	if (GUI::DragInt("##moveRate", &m_moveRate, 1.0f, 1.0f, 60.0f))
+	if (GUI::DragInt("##moveRate", &m_directionDicisionInterval, 1.0f, 1.0f, 60.0f))
 	{
-		if (m_vlp_directionDicisionInterval)
+		if (m_vlp_directionDicisionTime)
 		{
-			m_vlp_directionDicisionInterval->ChangeCountFrame(m_moveRate);
+			m_vlp_directionDicisionTime->ChangeCountFrame(m_directionDicisionInterval);
 		}
 	}
-
+	
 	GUI::BulletText(u8"ãﬂê⁄ãóó£ñ⁄ïW");
 	GUI::DragFloat("##minimumDistance", &m_minimumDistance, 1.0f, 0.0f, 100.0f);
+	
+	GUI::BulletText(u8"ç≈ëÂëÃóÕ");
+	if (GUI::DragInt("##maxHitPoint", &m_maxHitPoint))
+	{
+		m_hitPoint = m_maxHitPoint;
+	}
+	GUI::Text(m_hitPoint);
+	
+	GUI::BulletText(u8"ñ≥ìGéûä‘");
+	if (GUI::DragInt("##invincivleInterval", &m_invincivleInterval, 1.0f, 1.0f, 30.0f))
+	{
+		if (m_vlp_invincivleTime)
+		{
+			m_vlp_invincivleTime->ChangeCountFrame(m_invincivleInterval);
+		}
+	}
+	
+	GUI::BulletText(u8"çUåÇä‘äu");
+	if (GUI::DragInt("##attackInterval", &m_attackInterval, 1.0f, 1.0f, 120.0f))
+	{
+		if (m_vlp_attackTime)
+		{
+			m_vlp_attackTime->ChangeCountFrame(m_attackInterval);
+		}
+	}
+	
+	GUI::BulletText(u8"çUåÇóÕ");
+	GUI::DragInt("##power", &m_power);
 }
 
-ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::LesserEnemy::Clone()
+ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseEnemy::Clone()
 {
-	auto output = ObjectFactory::Create<LesserEnemy>();
+	auto output = ObjectFactory::Create<BaseEnemy>();
 	output->m_speed = m_speed;
-	output->m_moveRate = m_moveRate;
+	output->m_directionDicisionInterval = m_directionDicisionInterval;
 	output->m_minimumDistance = m_minimumDistance;
+	output->m_hitPoint = m_hitPoint;
+	output->m_invincivleInterval = m_invincivleInterval;
+	output->m_attackInterval = m_attackInterval;
 	return output;
 }
 
-void ButiEngine::LesserEnemy::Dead()
+void ButiEngine::BaseEnemy::Dead()
 {
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
 	gameObject.lock()->SetIsRemove(true);
 }
 
-void ButiEngine::LesserEnemy::Control()
+void ButiEngine::BaseEnemy::Control()
 {
 	Move();
 	Rotate();
-	Shoot();
+	Attack();
 }
 
-void ButiEngine::LesserEnemy::Move()
+void ButiEngine::BaseEnemy::Move()
 {
 	//PlayerÇ…ãﬂÇ√Ç´ÇΩÇ¢
-	if (m_vlp_directionDicisionInterval->Update())
+	if (m_vlp_directionDicisionTime->Update())
 	{
 		DecideDirection();
 	}
 	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(m_direction * m_speed * GameDevice::WorldSpeed);
 }
 
-void ButiEngine::LesserEnemy::Rotate()
+void ButiEngine::BaseEnemy::Rotate()
 {
 	auto lookTarget = m_vwp_lookAt.lock()->GetLookTarget();
 	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
@@ -95,16 +126,16 @@ void ButiEngine::LesserEnemy::Rotate()
 	lookTarget->Translate(Vector3(playerPosition.x - position.x, 0.0f, playerPosition.z - position.z).Normalize() * 100.0f);
 }
 
-void ButiEngine::LesserEnemy::DecideDirection()
+void ButiEngine::BaseEnemy::DecideDirection()
 {
-	m_vlp_directionDicisionInterval->Reset();
+	m_vlp_directionDicisionTime->Reset();
 
 	//ãóó£åvéZ
 	Value_weak_ptr<RigidBodyComponent> playerRigidBody = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>();
 	Vector3 playerPosition = playerRigidBody.lock()->GetRigidBody()->GetPosition();
 	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
 	float distance = playerPosition.Distance(position);
-	
+
 	if (distance <= m_minimumDistance)
 	{
 		float sin, cos;
@@ -119,25 +150,15 @@ void ButiEngine::LesserEnemy::DecideDirection()
 	}
 }
 
-void ButiEngine::LesserEnemy::Shoot()
+void ButiEngine::BaseEnemy::Attack()
 {
-	//ãóó£åvéZ
-	Value_weak_ptr<RigidBodyComponent> playerRigidBody = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>();
-	Vector3 playerPosition = playerRigidBody.lock()->GetRigidBody()->GetPosition();
-	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
-	float distance = playerPosition.Distance(position);
-
-	if (distance <= m_minimumDistance)
-	{
-		m_vwp_gunComponent.lock()->ShootStart();
-	}
-	else
-	{
-		m_vwp_gunComponent.lock()->ShootStop();
-	}
 }
 
-void ButiEngine::LesserEnemy::SetLookAtParameter()
+void ButiEngine::BaseEnemy::Damage(const int32_t arg_power)
+{
+}
+
+void ButiEngine::BaseEnemy::SetLookAtParameter()
 {
 	m_vwp_lookAt = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>();
 	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;

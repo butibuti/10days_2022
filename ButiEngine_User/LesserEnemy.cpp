@@ -13,6 +13,7 @@ void ButiEngine::LesserEnemy::OnUpdate()
 		DecideDirection();
 	}
 	Move();
+	Rotate();
 }
 
 void ButiEngine::LesserEnemy::OnSet()
@@ -22,11 +23,12 @@ void ButiEngine::LesserEnemy::OnSet()
 void ButiEngine::LesserEnemy::Start()
 {
 	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
-	m_vwp_drawObjectTransform = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock()->transform;
+	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock();
 	m_vwp_player = GetManager().lock()->GetGameObject("Player");
 	m_vlp_directionDicisionInterval = ObjectFactory::Create<RelativeTimer>(m_moveRate);
 	m_vlp_directionDicisionInterval->Start();
 	m_direction = Vector3();
+	SetLookAtParameter();
 	DecideDirection();
 }
 
@@ -79,6 +81,17 @@ void ButiEngine::LesserEnemy::Move()
 	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(m_direction * m_speed * GameDevice::WorldSpeed);
 }
 
+void ButiEngine::LesserEnemy::Rotate()
+{
+	auto lookTarget = m_vwp_lookAt.lock()->GetLookTarget();
+	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
+	lookTarget->SetLocalPosition(drawObjectTransform->GetLocalPosition() + drawObjectTransform->GetFront() * 100.0f);
+
+	Vector3 playerPosition = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>().Clone()->GetRigidBody()->GetPosition();
+	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
+	lookTarget->Translate(Vector3(playerPosition.x - position.x, 0.0f, playerPosition.z - position.z).Normalize() * 100.0f);
+}
+
 void ButiEngine::LesserEnemy::DecideDirection()
 {
 	m_vlp_directionDicisionInterval->Reset();
@@ -107,6 +120,11 @@ void ButiEngine::LesserEnemy::Shoot()
 {
 }
 
-void ButiEngine::LesserEnemy::CreateGun()
+void ButiEngine::LesserEnemy::SetLookAtParameter()
 {
+	m_vwp_lookAt = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>();
+	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
+	m_vwp_lookAt.lock()->SetLookTarget(drawObjectTransform->Clone());
+	m_vwp_lookAt.lock()->GetLookTarget()->Translate(drawObjectTransform->GetFront() * 100.0f);
+	m_vwp_lookAt.lock()->SetSpeed(0.3f);
 }

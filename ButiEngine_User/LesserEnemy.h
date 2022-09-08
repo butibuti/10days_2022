@@ -30,20 +30,24 @@ namespace ButiEngine {
 		void Dead();
 	private:
 		void Move();
+		void Rotate();
 		void DecideDirection();
 		void Shoot();
 
-		void CreateGun();
+		void SetLookAtParameter();
 
 		//物理挙動関連
 		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
 
 		//描画用オブジェクト関連
-		Value_weak_ptr<Transform> m_vwp_drawObjectTransform;
+		Value_weak_ptr<GameObject> m_vwp_drawObject;
 
 		//銃関連
 		Value_weak_ptr<GameObject> m_vwp_gun;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;
+
+		//向く方向設定関連
+		Value_weak_ptr<LookAtComponent> m_vwp_lookAt;
 
 		//Player視認用
 		Value_weak_ptr<GameObject> m_vwp_player;

@@ -4,6 +4,7 @@
 #include "Gun.h"
 #include "SeparateDrawObject.h"
 #include "Player.h"
+#include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 
 std::int32_t constexpr shootFrames[3] = {30, 30, 60};
 float constexpr rotationAngles[3] = { -30.0f, 60.0f, -30.0f };
@@ -47,6 +48,8 @@ void ButiEngine::GunAction_AssaultRifle::OnSet()
 
 	m_vwp_playerComponent = gameObject.lock()->GetGameComponent<Player>();
 	m_vwp_playerComponent.lock()->SetIsInvincible(true);
+
+	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->SetVelocity(Vector3Const::Zero);
 
 	m_vwp_gunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_AssaultRifle");
 

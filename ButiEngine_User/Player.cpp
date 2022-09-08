@@ -40,6 +40,12 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Player::Clone()
 	return ObjectFactory::Create<Player>();
 }
 
+void ButiEngine::Player::PowerUp(const std::string& arg_gunName)
+{
+	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun("Gun_Player_HighRate");
+	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
+}
+
 void ButiEngine::Player::Dead()
 {
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
@@ -88,8 +94,7 @@ void ButiEngine::Player::Shoot()
 
 	if (InputManager::IsTriggerCancelKey())
 	{
-		auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun("Gun_Player_HighRate");
-		m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
+		PowerUp("Gun_Player_HighRate");
 	}
 }
 

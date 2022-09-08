@@ -50,6 +50,12 @@ void ButiEngine::LesserEnemy::OnShowUI()
 
 	GUI::BulletText(u8"近接距離目標");
 	GUI::DragFloat("##minimumDistance", &m_minimumDistance, 1.0f, 0.0f, 100.0f);
+
+	//デバッグ用表示
+	GUI::Text(m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition());
+	GUI::Text(m_direction);
+	GUI::Text(m_speed);
+	GUI::Text(m_direction * m_speed);
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::LesserEnemy::Clone()

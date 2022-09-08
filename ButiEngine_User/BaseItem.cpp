@@ -17,7 +17,7 @@ void ButiEngine::BaseItem::OnSet()
 			Value_weak_ptr<GameObject> vwp_obj = arg_other.vwp_gameObject;
 			if (vwp_obj.lock() && vwp_obj.lock()->GetGameObjectName() == "Player")
 			{
-				//派生クラスでPlayerの呼び出したい関数を指定する
+				PowerUpPlayer(vwp_obj.lock()->GetGameComponent<Player>());
 				Dead();
 			}
 		}
@@ -40,6 +40,11 @@ void ButiEngine::BaseItem::OnShowUI()
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseItem::Clone()
 {
 	return ObjectFactory::Create<BaseItem>();
+}
+
+void ButiEngine::BaseItem::PowerUpPlayer(Value_weak_ptr<Player> arg_vwp_player)
+{
+	arg_vwp_player.lock()->PowerUp("Gun_Player_HighRate");
 }
 
 void ButiEngine::BaseItem::Dead()

@@ -26,6 +26,7 @@ namespace ButiEngine {
 
 		}
 
+		void PowerUp(const std::string& arg_gunName);
 		void Dead();
 	private:
 		void Control();

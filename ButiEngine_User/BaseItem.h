@@ -24,6 +24,7 @@ namespace ButiEngine {
 
 		}
 
+		virtual void PowerUpPlayer(Value_weak_ptr<Player> arg_vwp_player);
 		void Dead();
 	private:
 		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;

@@ -16,6 +16,7 @@
     <ClCompile Include="WorldSpeedManager.cpp" />
     <ClCompile Include="BaseItem.cpp" />
     <ClCompile Include="GunAction_AssaultRifle.cpp" />
+    <ClCompile Include="GunAction_Gatling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="WorldSpeedManager.h" />
     <ClInclude Include="BaseItem.h" />
     <ClInclude Include="GunAction_AssaultRifle.h" />
+    <ClInclude Include="GunAction_Gatling.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

@@ -26,8 +26,11 @@ namespace ButiEngine {
 
 		}
 
+		void SetIsInvincible(const bool arg_isInvincible) { m_isInvincible = arg_isInvincible; }
+
 		void PowerUp(const std::string& arg_gunName);
 		void Dead();
+		Value_weak_ptr<Gun> ChangeGun(const std::string& arg_gunName);
 	private:
 		void Control();
 		void Move();
@@ -48,6 +51,8 @@ namespace ButiEngine {
 
 		//プレイヤーの向く方向設定関連
 		Value_weak_ptr<LookAtComponent> m_vwp_lookAt;
+
+		bool m_isInvincible;
 	};
 
 }

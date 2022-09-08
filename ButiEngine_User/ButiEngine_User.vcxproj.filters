@@ -15,6 +15,8 @@
     <ClCompile Include="TestBehavior.cpp" />
     <ClCompile Include="WorldSpeedManager.cpp" />
     <ClCompile Include="BaseItem.cpp" />
+    <ClCompile Include="GunAction_AssaultRifle.cpp" />
+    <ClCompile Include="GunAction_Gatling.cpp" />
     <ClCompile Include="LergeGunItem.cpp" />
     <ClCompile Include="BaseEnemy.cpp" />
   </ItemGroup>
@@ -31,6 +33,8 @@
     <ClInclude Include="TestBehavior.h" />
     <ClInclude Include="WorldSpeedManager.h" />
     <ClInclude Include="BaseItem.h" />
+    <ClInclude Include="GunAction_AssaultRifle.h" />
+    <ClInclude Include="GunAction_Gatling.h" />
     <ClInclude Include="LergeGunItem.h" />
     <ClInclude Include="BaseEnemy.h" />
   </ItemGroup>

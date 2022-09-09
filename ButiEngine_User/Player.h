@@ -33,6 +33,7 @@ namespace ButiEngine {
 		void PowerUp(const std::string& arg_gunName);
 		void Dead();
 		Value_weak_ptr<Gun> ChangeGun(const std::string& arg_gunName);
+		void EquipAssaultRifle();
 	private:
 		void Control();
 		void Move();

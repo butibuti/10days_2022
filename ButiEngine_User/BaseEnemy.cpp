@@ -221,6 +221,10 @@ void ButiEngine::BaseEnemy::Damage(const int32_t arg_power)
 void ButiEngine::BaseEnemy::EmitItem()
 {
 	Value_weak_ptr<ItemEmitParameter> vwp_itemEmitParameterComponent = gameObject.lock()->GetGameComponent<ItemEmitParameter>();
+	if (!vwp_itemEmitParameterComponent.lock())
+	{
+		return;
+	}
 	std::string emitType = vwp_itemEmitParameterComponent.lock()->CalculateItemEmitType();
 	
 	if (emitType == "BaseItem")

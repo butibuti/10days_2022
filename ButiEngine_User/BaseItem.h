@@ -28,6 +28,8 @@ namespace ButiEngine {
 		virtual void Dead();
 	protected:
 		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
+
+		bool m_isHitInCurrentFrame;
 	};
 
 }

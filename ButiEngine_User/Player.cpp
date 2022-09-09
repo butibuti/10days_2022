@@ -98,6 +98,11 @@ ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::Player::ChangeGun(const 
 	return m_vwp_gunComponent;
 }
 
+void ButiEngine::Player::EquipAssaultRifle()
+{
+	gameObject.lock()->AddGameComponent<GunAction_AssaultRifle>();
+}
+
 void ButiEngine::Player::Control()
 {
 	if (!m_canAcceptInput)
@@ -150,7 +155,7 @@ void ButiEngine::Player::Shoot()
 
 	if (InputManager::IsTriggerCancelKey())
 	{
-		gameObject.lock()->AddGameComponent<GunAction_AssaultRifle>();
+		EquipAssaultRifle();
 		//PowerUp("Gun_Player_HighRate");
 	}
 }

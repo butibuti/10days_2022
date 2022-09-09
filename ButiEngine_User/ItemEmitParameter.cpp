@@ -18,7 +18,7 @@ void ButiEngine::ItemEmitParameter::OnRemove()
 
 void ButiEngine::ItemEmitParameter::OnShowUI()
 {
-	GUI::BulletText(u8"全体の生成確率");
+	GUI::BulletText(u8"全体の生成確率%");
 	GUI::DragInt("##emitPercentage", &m_emitPercentage, 1.0f, 0, 100);
 
 	if (GUI::Button("Add"))
@@ -29,13 +29,16 @@ void ButiEngine::ItemEmitParameter::OnShowUI()
 	static char itemNameBuff[128];
 	for (int i = 0; i < m_emitTypeRatios.size(); i++)
 	{
-		GUI::InputTextWithHint("##itemName", m_emitTypeRatios[i].first, itemNameBuff, sizeof(itemNameBuff));
-		if (GUI::Button("Set"))
+		GUI::BulletText(u8"" + std::to_string(i) + "番");
+		GUI::BulletText(u8"名前：" + m_emitTypeRatios[i].first);
+		GUI::InputText("##itemName_" + std::to_string(i), itemNameBuff, sizeof(itemNameBuff));
+		if (GUI::Button("Set" + std::to_string(i)))
 		{
 			m_emitTypeRatios[i].first = itemNameBuff;
 			memset(itemNameBuff, 0, 128);
 		}
-		GUI::DragInt("##emitRatio_" + i, &m_emitTypeRatios[i].second, 1.0f, 0, 100);
+		GUI::BulletText(u8"生成比率");
+		GUI::DragInt("##emitRatio_" + std::to_string(i), &m_emitTypeRatios[i].second, 1.0f, 0, 100);
 	}
 
 	static std::string answer;

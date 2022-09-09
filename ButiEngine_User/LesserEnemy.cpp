@@ -58,7 +58,7 @@ void ButiEngine::LesserEnemy::Move()
 	{
 		DecideDirection();
 	}
-	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(m_direction * m_speed * GameDevice::WorldSpeed);
+	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(m_direction * m_speed * GameDevice::GetWorldSpeed());
 }
 
 void ButiEngine::LesserEnemy::Rotate()

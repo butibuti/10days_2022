@@ -18,8 +18,12 @@ void ButiEngine::WorldSpeedManager::OnSet()
 
 void ButiEngine::WorldSpeedManager::OnShowUI()
 {
-	GUI::BulletText("WorldSpeed");
-	GUI::DragFloat("##speed", &GameDevice::WorldSpeed, 0.01f, 0.0f, 1.0f);
+	GUI::BulletText("GetWorldSpeed()");
+	auto temp = GameDevice::GetWorldSpeed();
+	if (GUI::DragFloat("##speed", temp, 0.01f, 0.0f, 1.0f)) {
+		GameDevice::SetWorldSpeed(temp);
+	}
+
 }
 
 void ButiEngine::WorldSpeedManager::Start()
@@ -36,7 +40,7 @@ void ButiEngine::WorldSpeedManager::OnChangeSpeed()
 {
 	if (g_vlp_timer->Update())
 	{
-		GameDevice::WorldSpeed = 1.0f;
+		GameDevice::SetWorldSpeed(1.0f);
 
 		g_vlp_timer->Stop();
 		g_vlp_timer->Reset();

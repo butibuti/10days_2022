@@ -126,7 +126,7 @@ void ButiEngine::Player::Move()
 	Vector2 leftStick = InputManager::GetLeftStick();
 	float speed = 5.0f;
 	Vector3 velocity = Vector3(leftStick.x, 0.0f, leftStick.y).Normalize() * speed;
-	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(velocity * GameDevice::WorldSpeed);
+	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(velocity * GameDevice::GetWorldSpeed());
 }
 
 void ButiEngine::Player::Rotate()

@@ -21,7 +21,7 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 
-		static void SetSpeed(const float arg_speed) { GameDevice::WorldSpeed = arg_speed; }
+		static void SetSpeed(const float arg_speed) { GameDevice::SetWorldSpeed(arg_speed); }
 		static void SetSpeed(const float arg_speed, const std::uint16_t arg_returnSpeedFrame)
 		{
 			if (g_isChangeSpeed) { return; }

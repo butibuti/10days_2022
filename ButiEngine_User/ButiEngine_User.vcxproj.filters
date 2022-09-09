@@ -16,9 +16,12 @@
     <ClCompile Include="WorldSpeedManager.cpp" />
     <ClCompile Include="BaseItem.cpp" />
     <ClCompile Include="GunAction_AssaultRifle.cpp" />
-    <ClCompile Include="GunAction_Gatling.cpp" />
+    <ClCompile Include="GunAction_GrenadeLauncher.cpp" />
     <ClCompile Include="LargeGunItem.cpp" />
     <ClCompile Include="BaseEnemy.cpp" />
+    <ClCompile Include="Bullet_GrenadeLauncher.cpp" />
+    <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="DamageArea.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -34,9 +37,12 @@
     <ClInclude Include="WorldSpeedManager.h" />
     <ClInclude Include="BaseItem.h" />
     <ClInclude Include="GunAction_AssaultRifle.h" />
-    <ClInclude Include="GunAction_Gatling.h" />
+    <ClInclude Include="GunAction_GrenadeLauncher.h" />
     <ClInclude Include="LargeGunItem.h" />
     <ClInclude Include="BaseEnemy.h" />
+    <ClInclude Include="Bullet_GrenadeLauncher.h" />
+    <ClInclude Include="Explosion.h" />
+    <ClInclude Include="DamageArea.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

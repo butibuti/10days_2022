@@ -23,7 +23,11 @@ void ButiEngine::BaseEnemy::OnSet()
 				//ƒ^ƒO”»’è
 				if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("Bullet_Player") && !m_isInvincible)
 				{
-					Damage(arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>().Clone()->GetPower());
+					auto bulletComponent = arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>();
+					if (bulletComponent)
+					{
+						Damage(bulletComponent->GetPower());
+					}
 				}
 			}
 		}

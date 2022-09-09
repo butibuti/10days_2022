@@ -2,6 +2,7 @@
 #include "Gun.h"
 #include "InputManager.h"
 #include "Bullet.h"
+#include "Bullet_GrenadeLauncher.h"
 
 void ButiEngine::Gun::OnUpdate()
 {
@@ -23,7 +24,7 @@ void ButiEngine::Gun::OnSet()
 
 void ButiEngine::Gun::Start()
 {
-	m_vlp_shootInterval = ObjectFactory::Create<RelativeTimer>(m_rate);
+	m_vlp_shootInterval = ObjectFactory::Create<RelativeTimer>(m_shootIntervalFrame + 1);
 
 	m_vlp_shootInterval->Start();
 
@@ -45,12 +46,12 @@ void ButiEngine::Gun::OnShowUI()
 	GUI::BulletText(u8"à–óÕ");
 	GUI::DragFloat("##power", &m_power, 1.0f, 0.0f, 100.0f);
 
-	GUI::BulletText(u8"òAéÀë¨ìx");
-	if (GUI::DragInt("##rate", &m_rate, 1.0f, 0.0f, 100.0f))
+	GUI::BulletText(u8"òAéÀä‘äu");
+	if (GUI::DragInt("##shootIntervalFrame", &m_shootIntervalFrame, 1.0f, 0.0f, 100.0f))
 	{
 		if (m_vlp_shootInterval)
 		{
-			m_vlp_shootInterval->ChangeCountFrame(m_rate);
+			m_vlp_shootInterval->ChangeCountFrame(m_shootIntervalFrame + 1);
 		}
 	}
 
@@ -65,7 +66,7 @@ void ButiEngine::Gun::OnShowUI()
 	}
 
 	GUI::BulletText(u8"íeë¨");
-	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 0.1f, 0.0f, 10.0f);
+	GUI::DragFloat("##bulletSpeed", &m_bulletSpeed, 0.1f, 0.0f, 1000.0f);
 
 	GUI::BulletText(u8"àÍâÒÇ…î≠éÀÇ≥ÇÍÇÈíeÇÃêî");
 	GUI::DragInt("##bulletCount", &m_bulletCount, 1.0f, 0.0f, 100.0f);
@@ -113,7 +114,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Gun::Clone()
 	output->m_diffusion = m_diffusion;
 	output->m_range = m_range;
 	output->m_power = m_power;
-	output->m_rate = m_rate;
+	output->m_shootIntervalFrame = m_shootIntervalFrame;
 	output->m_bulletName = m_bulletName;
 	output->m_bulletSpeed = m_bulletSpeed;
 	output->m_bulletCount = m_bulletCount;
@@ -159,15 +160,32 @@ void ButiEngine::Gun::Shoot()
 		bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
 
 		//íeÇÃèÓïÒê›íË
-		auto bulletComponent = bullet.lock()->GetGameComponent<Bullet>();
-		bulletComponent->SetOwner(m_vwp_owner);
-		bulletComponent->SetPower(m_power);
-		bulletComponent->SetRange(m_range);
-		Vector3 velocity = bullet.lock()->transform->GetFront();
-		bulletComponent->SetVelocity(velocity * m_bulletSpeed);
+		SetNormalBulletParameter(bullet);
+		SetGrenadeLauncherBulletParameter(bullet);
 	}
 
 	Recoil();
+}
+
+void ButiEngine::Gun::SetNormalBulletParameter(Value_weak_ptr<GameObject> arg_bullet)
+{
+	auto bulletComponent = arg_bullet.lock()->GetGameComponent<Bullet>();
+	if (!bulletComponent) { return; }
+
+	bulletComponent->SetOwner(m_vwp_owner);
+	bulletComponent->SetPower(m_power);
+	bulletComponent->SetRange(m_range);
+	Vector3 velocity = arg_bullet.lock()->transform->GetFront();
+	bulletComponent->SetVelocity(velocity * m_bulletSpeed);
+}
+
+void ButiEngine::Gun::SetGrenadeLauncherBulletParameter(Value_weak_ptr<GameObject> arg_bullet)
+{
+	auto bulletComponent = arg_bullet.lock()->GetGameComponent<Bullet_GrenadeLauncher>();
+	if (!bulletComponent) { return; }
+
+	Vector3 velocity = arg_bullet.lock()->transform->GetFront();
+	bulletComponent->SetVelocity(velocity * m_bulletSpeed);
 }
 
 void ButiEngine::Gun::Recoil()
@@ -176,6 +194,6 @@ void ButiEngine::Gun::Recoil()
 
 	auto anim = gameObject.lock()->AddGameComponent<TransformAnimation>();
 	anim->SetTargetTransform(m_vlp_recoilTransform);
-	anim->SetSpeed(1.0f / (m_rate / 1.5f));
+	anim->SetSpeed(1.0f / (m_shootIntervalFrame / 1.5f));
 	anim->SetEaseType(Easing::EasingType::Parabola);
 }

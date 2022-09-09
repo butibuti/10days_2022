@@ -32,6 +32,7 @@ namespace ButiEngine {
 		}
 
 		virtual void Dead();
+		virtual Value_weak_ptr<Gun> ChangeGun(const std::string& arg_gunName);
 	protected:
 		virtual void Control();
 		virtual void Move();

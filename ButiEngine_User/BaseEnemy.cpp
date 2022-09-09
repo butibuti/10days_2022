@@ -117,6 +117,13 @@ void ButiEngine::BaseEnemy::Dead()
 	gameObject.lock()->SetIsRemove(true);
 }
 
+ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::BaseEnemy::ChangeGun(const std::string& arg_gunName)
+{
+	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
+	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
+	return m_vwp_gunComponent;
+}
+
 void ButiEngine::BaseEnemy::Control()
 {
 	Move();

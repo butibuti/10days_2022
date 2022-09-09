@@ -6,7 +6,7 @@
 
 void ButiEngine::Bullet::OnUpdate()
 {
-	gameObject.lock()->transform->Translate(m_velocity);
+	gameObject.lock()->transform->Translate(m_velocity * GameDevice::WorldSpeed);
 
 	//ŽË’ö”ÍˆÍ‚ð’´‚¦‚½‚çŽ€‚Ê
 	Vector3 pos = gameObject.lock()->transform->GetLocalPosition();

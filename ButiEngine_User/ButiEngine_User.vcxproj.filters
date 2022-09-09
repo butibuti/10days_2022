@@ -19,6 +19,7 @@
     <ClCompile Include="GunAction_Gatling.cpp" />
     <ClCompile Include="LargeGunItem.cpp" />
     <ClCompile Include="BaseEnemy.cpp" />
+    <ClCompile Include="ItemEmitParameter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="GunAction_Gatling.h" />
     <ClInclude Include="LargeGunItem.h" />
     <ClInclude Include="BaseEnemy.h" />
+    <ClInclude Include="ItemEmitParameter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

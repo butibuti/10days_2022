@@ -6,6 +6,7 @@
 #include "EquipGun.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "ItemEmitParameter.h"
 
 void ButiEngine::BaseEnemy::OnUpdate()
 {
@@ -112,6 +113,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseEnemy::Clone()
 
 void ButiEngine::BaseEnemy::Dead()
 {
+	EmitItem();
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
 	m_vwp_equipGunComponent.lock()->Dead();
 	gameObject.lock()->SetIsRemove(true);
@@ -213,6 +215,23 @@ void ButiEngine::BaseEnemy::Damage(const int32_t arg_power)
 	if (m_hitPoint <= 0)
 	{
 		Dead();
+	}
+}
+
+void ButiEngine::BaseEnemy::EmitItem()
+{
+	Value_weak_ptr<ItemEmitParameter> vwp_itemEmitParameterComponent = gameObject.lock()->GetGameComponent<ItemEmitParameter>();
+	std::string emitType = vwp_itemEmitParameterComponent.lock()->CalculateItemEmitType();
+	
+	if (emitType == "BaseItem")
+	{
+		auto item = GetManager().lock()->AddObjectFromCereal("BaseItem");
+		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+	}
+	else if (emitType == "LargeGunItem")
+	{
+		auto item = GetManager().lock()->AddObjectFromCereal("LargeGunItem");
+		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
 	}
 }
 

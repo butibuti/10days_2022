@@ -40,6 +40,7 @@ namespace ButiEngine {
 		virtual void DecideDirection();
 		virtual void Attack();
 		virtual void Damage(const int32_t arg_power);
+		virtual void EmitItem();
 
 		virtual void SetLookAtParameter();
 

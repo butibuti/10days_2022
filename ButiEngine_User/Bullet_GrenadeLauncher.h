@@ -2,14 +2,11 @@
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
 
-	class Player;
-	class Gun;
-
-	class GunAction_Gutling :public GameComponent
+	class Bullet_GrenadeLauncher :public GameComponent
 	{
 	public:
 		std::string GetGameComponentName()const override {
-			return "GunAction_Gutling";
+			return "Bullet_GrenadeLauncher";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -21,16 +18,17 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-		}
-	private:
-		Value_ptr<RelativeTimer> m_vlp_rotateTimer;
 
-		Value_weak_ptr<Player> m_vwp_playerComponent;
-		Value_weak_ptr<Gun> m_vwp_gunComponent;
-		Value_weak_ptr<GameObject> m_vwp_drawObject;
-		Value_weak_ptr<Transform> m_vwp_lookTarget;
+		}
+
+		void SetVelocity(const Vector3& arg_velocity) { m_velocity = arg_velocity; }
+
+		void Dead();
+	private:
+		Value_ptr<RelativeTimer> m_vlp_lifeTimer;
+		Vector3 m_velocity;
 	};
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(GunAction_Gutling, true);
+BUTI_REGIST_GAMECOMPONENT(Bullet_GrenadeLauncher, true);

@@ -21,7 +21,7 @@ namespace ButiEngine {
 			archive(m_diffusion);
 			archive(m_range);
 			archive(m_power);
-			archive(m_rate);
+			archive(m_shootIntervalFrame);
 			archive(m_bulletName);
 			archive(m_bulletSpeed);
 			archive(m_bulletCount);
@@ -35,6 +35,8 @@ namespace ButiEngine {
 		void ShootStop();
 	private:
 		void Shoot();
+		void SetNormalBulletParameter(Value_weak_ptr<GameObject> arg_bullet);
+		void SetGrenadeLauncherBulletParameter(Value_weak_ptr<GameObject> arg_bullet);
 		void Recoil();
 
 
@@ -50,7 +52,7 @@ namespace ButiEngine {
 		//ˆÐ—Í
 		float m_power = 1.0f;
 		//˜AŽË‘¬“x
-		std::int32_t m_rate = 10;
+		std::int32_t m_shootIntervalFrame = 10;
 		//’e‚Ì–¼‘O
 		std::string m_bulletName = "Bullet_Player_Normal";
 		//’e‘¬

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "ItemEmitParameter.h"
+#include "DamageArea.h"
 
 void ButiEngine::BaseEnemy::OnUpdate()
 {
@@ -24,7 +25,19 @@ void ButiEngine::BaseEnemy::OnSet()
 				//ƒ^ƒO”»’è
 				if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("Bullet_Player") && !m_isInvincible)
 				{
-					Damage(arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>().Clone()->GetPower());
+					auto bulletComponent = arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>();
+					if (bulletComponent)
+					{
+						Damage(bulletComponent->GetPower());
+					}
+				}
+				else if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("DamageArea_Player") && !m_isInvincible)
+				{
+					auto damageArea = arg_other.vwp_gameObject.lock()->GetGameComponent<DamageArea>();
+					if (damageArea)
+					{
+						Damage(damageArea->GetPower());
+					}
 				}
 			}
 		}

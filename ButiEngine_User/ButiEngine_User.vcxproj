@@ -352,12 +352,15 @@ cd ..\</Command>
     <ClCompile Include="BaseEnemy.cpp" />
     <ClCompile Include="BaseItem.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Bullet_GrenadeLauncher.cpp" />
+    <ClCompile Include="DamageArea.cpp" />
     <ClCompile Include="DefaultGameComponent.cpp" />
     <ClCompile Include="ChangeSceneArea.cpp" />
     <ClCompile Include="EquipGun.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="GunAction_AssaultRifle.cpp" />
-    <ClCompile Include="GunAction_Gatling.cpp" />
+    <ClCompile Include="GunAction_GrenadeLauncher.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="ItemEmitParameter.cpp" />
     <ClCompile Include="LargeGunItem.cpp" />
@@ -379,12 +382,15 @@ cd ..\</Command>
   <ItemGroup>
     <ClInclude Include="BaseEnemy.h" />
     <ClInclude Include="BaseItem.h" />
+    <ClInclude Include="Bullet_GrenadeLauncher.h" />
     <ClInclude Include="ChangeSceneArea.h" />
+    <ClInclude Include="DamageArea.h" />
     <ClInclude Include="EquipGun.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="GunAction_AssaultRifle.h" />
-    <ClInclude Include="GunAction_Gatling.h" />
+    <ClInclude Include="GunAction_GrenadeLauncher.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="ItemEmitParameter.h" />
     <ClInclude Include="LargeGunItem.h" />

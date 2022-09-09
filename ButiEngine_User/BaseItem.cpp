@@ -44,7 +44,7 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseItem::Clone()
 
 void ButiEngine::BaseItem::PowerUpPlayer(Value_weak_ptr<Player> arg_vwp_player)
 {
-	arg_vwp_player.lock()->PowerUp("Gun_Player_HighRate");
+	arg_vwp_player.lock()->PowerUp("Gun_Player_AssaultRifle");
 }
 
 void ButiEngine::BaseItem::Dead()

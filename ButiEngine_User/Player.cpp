@@ -7,6 +7,7 @@
 #include "EquipGun.h"
 #include "Bullet.h"
 #include "GunAction_AssaultRifle.h"
+#include "GunAction_GrenadeLauncher.h"
 
 void ButiEngine::Player::OnUpdate()
 {
@@ -48,6 +49,7 @@ void ButiEngine::Player::Start()
 	SetLookAtParameter();
 
 	m_canAcceptInput = true;
+	m_canPickUpItem = true;
 }
 
 void ButiEngine::Player::OnRemove()
@@ -78,6 +80,20 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Player::Clone()
 	return ObjectFactory::Create<Player>();
 }
 
+void ButiEngine::Player::StartGunAction()
+{
+	m_canAcceptInput = false;
+	m_isInvincible = true;
+	m_canPickUpItem = false;
+}
+
+void ButiEngine::Player::FinishGunAction()
+{
+	m_canAcceptInput = true;
+	m_isInvincible = false;
+	m_canPickUpItem = true;
+}
+
 void ButiEngine::Player::PowerUp(const std::string& arg_gunName)
 {
 	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
@@ -101,6 +117,11 @@ ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::Player::ChangeGun(const 
 void ButiEngine::Player::EquipAssaultRifle()
 {
 	gameObject.lock()->AddGameComponent<GunAction_AssaultRifle>();
+}
+
+void ButiEngine::Player::EquipGrenadeLauncher()
+{
+	gameObject.lock()->AddGameComponent<GunAction_GrenadeLauncher>();
 }
 
 void ButiEngine::Player::Control()
@@ -155,8 +176,8 @@ void ButiEngine::Player::Shoot()
 
 	if (InputManager::IsTriggerCancelKey())
 	{
-		EquipAssaultRifle();
-		//PowerUp("Gun_Player_HighRate");
+		//EquipAssaultRifle();
+		EquipGrenadeLauncher();
 	}
 }
 

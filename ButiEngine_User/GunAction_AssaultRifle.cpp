@@ -25,8 +25,7 @@ void ButiEngine::GunAction_AssaultRifle::OnUpdate()
 		std::int32_t constexpr maxPhaseNum = 2;
 		if (m_phase > maxPhaseNum)
 		{
-			m_vwp_playerComponent.lock()->SetCanAcceptInput(true);
-			m_vwp_playerComponent.lock()->SetIsInvincible(false);
+			m_vwp_playerComponent.lock()->FinishGunAction();
 			m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
 			SetIsRemove(true);
 			return;
@@ -48,8 +47,7 @@ void ButiEngine::GunAction_AssaultRifle::OnSet()
 	m_vwp_lookTarget = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->GetLookTarget();
 
 	m_vwp_playerComponent = gameObject.lock()->GetGameComponent<Player>();
-	m_vwp_playerComponent.lock()->SetCanAcceptInput(false);
-	m_vwp_playerComponent.lock()->SetIsInvincible(true);
+	m_vwp_playerComponent.lock()->StartGunAction();
 
 	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->SetVelocity(Vector3Const::Zero);
 

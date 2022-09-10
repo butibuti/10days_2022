@@ -6,12 +6,12 @@
 
 void ButiEngine::Gun::OnUpdate()
 {
-	if (m_vlp_shootInterval->Update())
+	if (m_vlp_shootIntervalTimer->Update())
 	{
 		if (!m_isShoot)
 		{
-			m_vlp_shootInterval->Reset();
-			m_vlp_shootInterval->Stop();
+			m_vlp_shootIntervalTimer->Reset();
+			m_vlp_shootIntervalTimer->Stop();
 			return;
 		}
 		Shoot();
@@ -20,15 +20,13 @@ void ButiEngine::Gun::OnUpdate()
 
 void ButiEngine::Gun::OnSet()
 {
+	m_vlp_shootIntervalTimer = ObjectFactory::Create<RelativeTimer>(m_shootIntervalFrame + 1);
+
+	m_isShoot = false;
 }
 
 void ButiEngine::Gun::Start()
 {
-	m_vlp_shootInterval = ObjectFactory::Create<RelativeTimer>(m_shootIntervalFrame + 1);
-
-	m_vlp_shootInterval->Start();
-
-	m_isShoot = false;
 }
 
 void ButiEngine::Gun::OnRemove()
@@ -49,9 +47,9 @@ void ButiEngine::Gun::OnShowUI()
 	GUI::BulletText(u8"˜AŽËŠÔŠu");
 	if (GUI::DragInt("##shootIntervalFrame", &m_shootIntervalFrame, 1.0f, 0.0f, 100.0f))
 	{
-		if (m_vlp_shootInterval)
+		if (m_vlp_shootIntervalTimer)
 		{
-			m_vlp_shootInterval->ChangeCountFrame(m_shootIntervalFrame + 1);
+			m_vlp_shootIntervalTimer->ChangeCountFrame(m_shootIntervalFrame + 1);
 		}
 	}
 
@@ -91,7 +89,7 @@ void ButiEngine::Gun::OnShowUI()
 		}
 		GUI::TreePop();
 	}
-
+	
 	if (GUI::Button("ShootStart"))
 	{
 		ShootStart();
@@ -128,10 +126,10 @@ void ButiEngine::Gun::ShootStart()
 	if (m_isShoot) { return; }
 
 	m_isShoot = true;
-	if (!m_vlp_shootInterval->IsOn())
+	if (!m_vlp_shootIntervalTimer->IsOn())
 	{
 		Shoot();
-		m_vlp_shootInterval->Start();
+		m_vlp_shootIntervalTimer->Start();
 	}
 }
 

@@ -23,6 +23,7 @@
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="DamageArea.cpp" />
     <ClCompile Include="ItemEmitParameter.cpp" />
+    <ClCompile Include="EnemySpawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -45,6 +46,7 @@
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="DamageArea.h" />
     <ClInclude Include="ItemEmitParameter.h" />
+    <ClInclude Include="EnemySpawner.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

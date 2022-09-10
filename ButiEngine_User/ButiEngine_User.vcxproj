@@ -356,6 +356,7 @@ cd ..\</Command>
     <ClCompile Include="DamageArea.cpp" />
     <ClCompile Include="DefaultGameComponent.cpp" />
     <ClCompile Include="ChangeSceneArea.cpp" />
+    <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="EquipGun.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Gun.cpp" />
@@ -385,6 +386,7 @@ cd ..\</Command>
     <ClInclude Include="Bullet_GrenadeLauncher.h" />
     <ClInclude Include="ChangeSceneArea.h" />
     <ClInclude Include="DamageArea.h" />
+    <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="EquipGun.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="Gun.h" />

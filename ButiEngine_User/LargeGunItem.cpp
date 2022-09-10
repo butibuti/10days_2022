@@ -20,7 +20,11 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::LargeGunItem::Clone
 
 void ButiEngine::LargeGunItem::PowerUpPlayer(Value_weak_ptr<Player> arg_vwp_player)
 {
-	//arg_vwp_player.lock()->PowerUp("Gun_Player_AssaultRifle");
+	if (!arg_vwp_player.lock()->CanPickUpItem())
+	{
+		return;
+	}
+
 	arg_vwp_player.lock()->EquipAssaultRifle();
 }
 

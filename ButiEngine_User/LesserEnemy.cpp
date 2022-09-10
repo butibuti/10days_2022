@@ -41,6 +41,9 @@ void ButiEngine::LesserEnemy::Dead()
 
 void ButiEngine::LesserEnemy::Control()
 {
+	//直前フレームにダメージがあったかを判定
+	CheckHasDamageInPreviousFrame();
+
 	Move();
 	Rotate();
 	Attack();
@@ -121,8 +124,6 @@ void ButiEngine::LesserEnemy::Damage(const int32_t arg_power)
 		return;
 	}
 
-	m_isInvincible = true;
-	m_vlp_invincibleTime->Reset();
 	m_hitPoint -= arg_power;
 
 	if (m_hitPoint <= 0)

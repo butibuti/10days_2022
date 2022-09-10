@@ -26,16 +26,18 @@ void ButiEngine::BaseEnemy::OnSet()
 				if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("Bullet_Player") && !m_isInvincible)
 				{
 					auto bulletComponent = arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>();
-					if (bulletComponent)
+					if (bulletComponent && !ExistInHitComponent(bulletComponent))
 					{
+						m_vec_vwp_hitComponent.push_back(bulletComponent);
 						Damage(bulletComponent->GetPower());
 					}
 				}
 				else if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("DamageArea_Player") && !m_isInvincible)
 				{
 					auto damageArea = arg_other.vwp_gameObject.lock()->GetGameComponent<DamageArea>();
-					if (damageArea)
+					if (damageArea && !ExistInHitComponent(damageArea))
 					{
+						m_vec_vwp_hitComponent.push_back(damageArea);
 						Damage(damageArea->GetPower());
 					}
 				}
@@ -57,6 +59,7 @@ void ButiEngine::BaseEnemy::Start()
 	m_vlp_invincibleTime = ObjectFactory::Create<RelativeTimer>(m_invincibleInterval);
 	m_vlp_invincibleTime->Start();
 	m_isInvincible = false;
+	m_vec_vwp_hitComponent.clear();
 	m_vlp_attackTime = ObjectFactory::Create<RelativeTimer>(m_attackInterval);
 	m_vlp_attackTime->Start();
 	m_direction = Vector3();
@@ -141,6 +144,9 @@ ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::BaseEnemy::ChangeGun(con
 
 void ButiEngine::BaseEnemy::Control()
 {
+	//直前フレームにダメージがあったかを判定
+	CheckHasDamageInPreviousFrame();
+
 	Move();
 	Rotate();
 	Attack();
@@ -221,8 +227,6 @@ void ButiEngine::BaseEnemy::Damage(const int32_t arg_power)
 		return;
 	}
 
-	m_isInvincible = true;
-	m_vlp_invincibleTime->Reset();
 	m_hitPoint -= arg_power;
 
 	if (m_hitPoint <= 0)
@@ -250,6 +254,31 @@ void ButiEngine::BaseEnemy::EmitItem()
 		auto item = GetManager().lock()->AddObjectFromCereal("LargeGunItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
 	}
+}
+
+bool ButiEngine::BaseEnemy::ExistInHitComponent(Value_weak_ptr<GameComponent> arg_vwp_hitComponent)
+{
+	for (auto hitComponent : m_vec_vwp_hitComponent)
+	{
+		if (hitComponent == arg_vwp_hitComponent)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void ButiEngine::BaseEnemy::CheckHasDamageInPreviousFrame()
+{
+	if (m_vec_vwp_hitComponent.empty())
+	{
+		return;
+	}
+
+	m_isInvincible = true;
+	m_vlp_invincibleTime->Reset();
+	m_vec_vwp_hitComponent.clear();
 }
 
 void ButiEngine::BaseEnemy::SetLookAtParameter()

@@ -6,6 +6,7 @@
 
 void ButiEngine::Bullet::OnUpdate()
 {
+	m_isHitInCurrentFrame = false;
 	gameObject.lock()->transform->Translate(m_velocity * GameDevice::GetWorldSpeed());
 
 	//ŽË’ö”ÍˆÍ‚ð’´‚¦‚½‚çŽ€‚Ê
@@ -26,8 +27,9 @@ void ButiEngine::Bullet::OnSet()
 		{
 			if (arg_other.vwp_gameObject.lock())
 			{
-				if (arg_other.vwp_gameObject.lock() != m_vwp_owner.lock())
+				if (arg_other.vwp_gameObject.lock() != m_vwp_owner.lock() && !m_isHitInCurrentFrame)
 				{
+					m_isHitInCurrentFrame = true;
 					Dead();
 				}
 			}
@@ -38,6 +40,7 @@ void ButiEngine::Bullet::OnSet()
 void ButiEngine::Bullet::Start()
 {
 	m_startPos = gameObject.lock()->transform->GetLocalPosition();
+	m_isHitInCurrentFrame = false;
 }
 
 void ButiEngine::Bullet::OnRemove()

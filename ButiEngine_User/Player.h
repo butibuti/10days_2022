@@ -40,6 +40,8 @@ namespace ButiEngine {
 		void Rotate();
 		void Shoot();
 		void Damage(const int32_t arg_power);
+		virtual bool ExistInHitComponent(Value_weak_ptr<GameComponent> arg_vwp_hitComponent);
+		virtual void CheckHasDamageInPreviousFrame();
 
 		void SetLookAtParameter();
 
@@ -62,6 +64,7 @@ namespace ButiEngine {
 		Value_ptr<RelativeTimer> m_vlp_invincibleTime;
 		std::int32_t m_invincibleInterval = 20;
 		bool m_isInvincible;
+		std::vector<Value_weak_ptr<GameComponent>> m_vec_vwp_hitComponent;
 
 		bool m_canAcceptInput;
 	};

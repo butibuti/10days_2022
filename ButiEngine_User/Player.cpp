@@ -24,7 +24,13 @@ void ButiEngine::Player::OnSet()
 				//タグ判定
 				if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("Bullet_Enemy") && !m_isInvincible)
 				{
-					Damage(arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>().Clone()->GetPower());
+					auto bulletComponent = arg_other.vwp_gameObject.lock()->GetGameComponent<Bullet>();
+
+					if (bulletComponent && !ExistInHitComponent(bulletComponent))
+					{
+						m_vec_vwp_hitComponent.push_back(bulletComponent);
+						Damage(bulletComponent->GetPower());
+					}
 				}
 			}
 		}
@@ -44,6 +50,7 @@ void ButiEngine::Player::Start()
 	m_vlp_invincibleTime = ObjectFactory::Create<RelativeTimer>(m_invincibleInterval);
 	m_vlp_invincibleTime->Start();
 	m_isInvincible = false;
+	m_vec_vwp_hitComponent.clear();
 
 	SetLookAtParameter();
 
@@ -111,6 +118,9 @@ void ButiEngine::Player::Control()
 		return;
 	}
 
+	//直前フレームにダメージがあったかを判定
+	CheckHasDamageInPreviousFrame();
+
 	Move();
 	Rotate();
 	Shoot();
@@ -167,8 +177,6 @@ void ButiEngine::Player::Damage(const int32_t arg_power)
 		return;
 	}
 
-	m_isInvincible = true;
-	m_vlp_invincibleTime->Reset();
 	m_hitPoint -= arg_power;
 
 	if (m_hitPoint <= 0)
@@ -176,6 +184,31 @@ void ButiEngine::Player::Damage(const int32_t arg_power)
 		//Dead();
 		m_hitPoint = 0;
 	}
+}
+
+bool ButiEngine::Player::ExistInHitComponent(Value_weak_ptr<GameComponent> arg_vwp_hitComponent)
+{
+	for (auto hitComponent : m_vec_vwp_hitComponent)
+	{
+		if (hitComponent == arg_vwp_hitComponent)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void ButiEngine::Player::CheckHasDamageInPreviousFrame()
+{
+	if (m_vec_vwp_hitComponent.empty())
+	{
+		return;
+	}
+
+	m_isInvincible = true;
+	m_vlp_invincibleTime->Reset();
+	m_vec_vwp_hitComponent.clear();
 }
 
 void ButiEngine::Player::SetLookAtParameter()

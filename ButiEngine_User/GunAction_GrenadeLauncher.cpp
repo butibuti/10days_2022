@@ -22,13 +22,6 @@ void ButiEngine::GunAction_GrenadeLauncher::OnUpdate()
 
 void ButiEngine::GunAction_GrenadeLauncher::OnSet()
 {
-	std::int32_t shootPhaseFrame = 18;
-	m_vlp_shootTimer = ObjectFactory::Create<RelativeTimer>(shootPhaseFrame);
-	m_rotationAngle = 360.0f / shootPhaseFrame;
-
-	std::int32_t waitPhaseFrame = 60;
-	m_vlp_waitTimer = ObjectFactory::Create<RelativeTimer>(waitPhaseFrame);
-
 	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->SetVelocity(Vector3Const::Zero);
 
 	m_vwp_playerComponent = gameObject.lock()->GetGameComponent<Player>();
@@ -38,6 +31,14 @@ void ButiEngine::GunAction_GrenadeLauncher::OnSet()
 	m_vwp_lookTarget = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->GetLookTarget();
 
 	m_vwp_gunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_GrenadeLauncher");
+
+
+	std::int32_t shootPhaseFrame = 18;
+	m_vlp_shootTimer = ObjectFactory::Create<RelativeTimer>(shootPhaseFrame);
+	m_rotationAngle = 360.0f / shootPhaseFrame;
+
+	std::int32_t waitPhaseFrame = 60;
+	m_vlp_waitTimer = ObjectFactory::Create<RelativeTimer>(waitPhaseFrame);
 
 	StartShootPhase();
 }

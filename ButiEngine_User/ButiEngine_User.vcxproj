@@ -361,6 +361,7 @@ cd ..\</Command>
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="GunAction_AssaultRifle.cpp" />
     <ClCompile Include="GunAction_GrenadeLauncher.cpp" />
+    <ClCompile Include="GunAction_Shotgun.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="ItemEmitParameter.cpp" />
     <ClCompile Include="LargeGunItem.cpp" />
@@ -391,6 +392,7 @@ cd ..\</Command>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="GunAction_AssaultRifle.h" />
     <ClInclude Include="GunAction_GrenadeLauncher.h" />
+    <ClInclude Include="GunAction_Shotgun.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="ItemEmitParameter.h" />
     <ClInclude Include="LargeGunItem.h" />

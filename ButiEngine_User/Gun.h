@@ -42,7 +42,7 @@ namespace ButiEngine {
 
 		Value_weak_ptr<GameObject> m_vwp_owner;
 
-		Value_ptr<RelativeTimer> m_vlp_shootInterval;
+		Value_ptr<RelativeTimer> m_vlp_shootIntervalTimer;
 		bool m_isShoot;
 
 		//ŠgŽU

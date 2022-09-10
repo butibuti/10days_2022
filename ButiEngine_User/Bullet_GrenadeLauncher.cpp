@@ -21,7 +21,6 @@ void ButiEngine::Bullet_GrenadeLauncher::Start()
 	m_vlp_lifeTimer->Start();
 
 	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->ApplyImpulse(m_velocity);
-	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->ApplyTorque(m_velocity);
 }
 
 void ButiEngine::Bullet_GrenadeLauncher::OnRemove()

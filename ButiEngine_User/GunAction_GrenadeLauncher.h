@@ -5,6 +5,12 @@ namespace ButiEngine {
 	class Player;
 	class Gun;
 
+	enum class GunAction_GrenadeLauncherPhase
+	{
+		Shoot,
+		Wait,
+	};
+
 	class GunAction_GrenadeLauncher :public GameComponent
 	{
 	public:
@@ -23,9 +29,18 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 	private:
-		std::int32_t m_phase;
+		void StartShootPhase();
+		void UpdateShootPhase();
 
-		Value_ptr<RelativeTimer> m_vlp_phaseTimer;
+		void StartWaitPhase();
+		void UpdateWaitPhase();
+		
+		GunAction_GrenadeLauncherPhase m_phase;
+
+		Value_ptr<RelativeTimer> m_vlp_shootTimer;
+		float m_rotationAngle;
+
+		Value_ptr<RelativeTimer> m_vlp_waitTimer;
 
 		Value_weak_ptr<Player> m_vwp_playerComponent;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;

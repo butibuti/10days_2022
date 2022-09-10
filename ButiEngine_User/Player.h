@@ -27,13 +27,18 @@ namespace ButiEngine {
 			archive(m_invincibleInterval);
 		}
 
-		void SetIsInvincible(const bool arg_isInvincible) { m_isInvincible = arg_isInvincible; }
-		void SetCanAcceptInput(const bool arg_canAcceptInput) { m_canAcceptInput = arg_canAcceptInput; }
+		bool CanPickUpItem() { return m_canPickUpItem; }
+
+		void StartGunAction();
+		void FinishGunAction();
 
 		void PowerUp(const std::string& arg_gunName);
 		void Dead();
 		Value_weak_ptr<Gun> ChangeGun(const std::string& arg_gunName);
+
+		//ïêäÌïœçX
 		void EquipAssaultRifle();
+		void EquipGrenadeLauncher();
 	private:
 		void Control();
 		void Move();
@@ -67,6 +72,8 @@ namespace ButiEngine {
 		std::vector<Value_weak_ptr<GameComponent>> m_vec_vwp_hitComponent;
 
 		bool m_canAcceptInput;
+
+		bool m_canPickUpItem;
 	};
 
 }

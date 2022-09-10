@@ -23,7 +23,9 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 	private:
-		Value_ptr<RelativeTimer> m_vlp_rotateTimer;
+		std::int32_t m_phase;
+
+		Value_ptr<RelativeTimer> m_vlp_phaseTimer;
 
 		Value_weak_ptr<Player> m_vwp_playerComponent;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;

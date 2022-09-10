@@ -40,8 +40,8 @@ void ButiEngine::GunAction_AssaultRifle::OnSet()
 {
 	m_phase = 0;
 
-	std::int32_t waitFrame = 15;
-	m_vlp_rotateTimer = ObjectFactory::Create<RelativeTimer>(waitFrame);
+	std::int32_t rotateFrame = 15;
+	m_vlp_rotateTimer = ObjectFactory::Create<RelativeTimer>(rotateFrame);
 	m_vlp_shootTimer = ObjectFactory::Create<RelativeTimer>(shootFrames[m_phase]);
 
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();

@@ -6,7 +6,6 @@
 
 void ButiEngine::BaseItem::OnUpdate()
 {
-	m_isHitInCurrentFrame = false;
 }
 
 void ButiEngine::BaseItem::OnSet()

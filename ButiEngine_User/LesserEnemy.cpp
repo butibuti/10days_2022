@@ -123,6 +123,10 @@ void ButiEngine::LesserEnemy::Damage(const int32_t arg_power)
 	{
 		return;
 	}
+	if (m_hitPoint <= 0)
+	{
+		return;
+	}
 
 	m_hitPoint -= arg_power;
 

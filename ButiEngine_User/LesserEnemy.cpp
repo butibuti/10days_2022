@@ -9,6 +9,16 @@
 
 void ButiEngine::LesserEnemy::OnUpdate()
 {
+	if (m_vlp_invincibleTime->Update())
+	{
+		m_isInvincible = false;
+	}
+
+	if (m_isPause)
+	{
+		return;
+	}
+
 	Control();
 }
 
@@ -47,11 +57,6 @@ void ButiEngine::LesserEnemy::Control()
 	Move();
 	Rotate();
 	Attack();
-
-	if (m_vlp_invincibleTime->Update())
-	{
-		m_isInvincible = false;
-	}
 }
 
 void ButiEngine::LesserEnemy::Move()

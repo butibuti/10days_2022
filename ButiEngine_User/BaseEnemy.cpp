@@ -11,6 +11,16 @@
 
 void ButiEngine::BaseEnemy::OnUpdate()
 {
+	if (m_vlp_invincibleTime->Update())
+	{
+		m_isInvincible = false;
+	}
+
+	if (m_isPause)
+	{
+		return;
+	}
+
 	Control();
 }
 
@@ -63,6 +73,7 @@ void ButiEngine::BaseEnemy::Start()
 	m_vlp_attackTime = ObjectFactory::Create<RelativeTimer>(m_attackInterval);
 	m_vlp_attackTime->Start();
 	m_direction = Vector3();
+	m_isPause;
 	SetLookAtParameter();
 	DecideDirection();
 }
@@ -142,6 +153,27 @@ ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::BaseEnemy::ChangeGun(con
 	return m_vwp_gunComponent;
 }
 
+void ButiEngine::BaseEnemy::StartPause()
+{
+	m_isPause = true;
+	m_vlp_attackTime->Stop();
+	m_vlp_directionDicisionTime->Stop();
+	m_vwp_gunComponent.lock()->ShootStop();
+	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(Vector3());
+}
+
+void ButiEngine::BaseEnemy::FinishPause()
+{
+	if (!m_isPause)
+	{
+		return;
+	}
+
+	m_isPause = false;
+	m_vlp_attackTime->Start();
+	m_vlp_directionDicisionTime->Start();
+}
+
 void ButiEngine::BaseEnemy::Control()
 {
 	//直前フレームにダメージがあったかを判定
@@ -150,11 +182,6 @@ void ButiEngine::BaseEnemy::Control()
 	Move();
 	Rotate();
 	Attack();
-
-	if (m_vlp_invincibleTime->Update())
-	{
-		m_isInvincible = false;
-	}
 }
 
 void ButiEngine::BaseEnemy::Move()

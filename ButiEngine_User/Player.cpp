@@ -9,6 +9,8 @@
 #include "GunAction_AssaultRifle.h"
 #include "GunAction_GrenadeLauncher.h"
 #include "GunAction_Shotgun.h"
+#include "BaseEnemy.h"
+#include "LesserEnemy.h"
 
 void ButiEngine::Player::OnUpdate()
 {
@@ -100,6 +102,18 @@ void ButiEngine::Player::StartGunAction()
 	{
 		bullet->GetGameComponent<Bullet>()->StartPause();
 	}
+	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
+	for (auto enemy : enemies)
+	{
+		if (enemy->HasGameObjectTag("BaseEnemy"))
+		{
+			enemy->GetGameComponent<BaseEnemy>()->StartPause();
+		}
+		else if (enemy->HasGameObjectTag("LesserEnemy"))
+		{
+			enemy->GetGameComponent<LesserEnemy>()->StartPause();
+		}
+	}
 }
 
 void ButiEngine::Player::FinishGunAction()
@@ -113,6 +127,18 @@ void ButiEngine::Player::FinishGunAction()
 	for (auto bullet : bullets)
 	{
 		bullet->GetGameComponent<Bullet>()->FinishPause();
+	}
+	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
+	for (auto enemy : enemies)
+	{
+		if (enemy->HasGameObjectTag("BaseEnemy"))
+		{
+			enemy->GetGameComponent<BaseEnemy>()->FinishPause();
+		}
+		else if (enemy->HasGameObjectTag("LesserEnemy"))
+		{
+			enemy->GetGameComponent<LesserEnemy>()->FinishPause();
+		}
 	}
 }
 

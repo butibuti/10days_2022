@@ -33,6 +33,9 @@ namespace ButiEngine {
 
 		virtual void Dead();
 		virtual Value_weak_ptr<Gun> ChangeGun(const std::string& arg_gunName);
+
+		virtual void StartPause();
+		virtual void FinishPause();
 	protected:
 		virtual void Control();
 		virtual void Move();
@@ -82,6 +85,9 @@ namespace ButiEngine {
 		//UŒ‚ŠÖ˜A
 		Value_ptr<RelativeTimer> m_vlp_attackTime;
 		std::int32_t m_attackInterval = 60;
+
+		//‹Z”­“®‚Évelocity‚ğ•Û‘¶‚·‚é‚æ‚¤
+		bool m_isPause;
 	};
 
 }

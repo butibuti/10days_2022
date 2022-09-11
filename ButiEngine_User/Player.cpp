@@ -233,8 +233,8 @@ void ButiEngine::Player::Shoot()
 	if (InputManager::IsTriggerCancelKey())
 	{
 		//EquipAssaultRifle();
-		EquipGrenadeLauncher();
-		//EquipShotgun();
+		//EquipGrenadeLauncher();
+		EquipShotgun();
 	}
 }
 

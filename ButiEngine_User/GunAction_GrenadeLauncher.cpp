@@ -204,6 +204,7 @@ void ButiEngine::GunAction_GrenadeLauncher::UpdateReturnCenterPhase()
 {
 	if (m_vlp_returnCenterPhaseTimer->Update())
 	{
+		m_vlp_returnCenterPhaseTimer->Stop();
 		m_vwp_playerComponent.lock()->FinishGunAction();
 		GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(gameObject.lock()->transform);
 		m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetIsActive(true);

@@ -151,7 +151,7 @@ void ButiEngine::GunAction_GrenadeLauncher::StartShootPhase()
 
 void ButiEngine::GunAction_GrenadeLauncher::UpdateShootPhase()
 {
-	if (m_vlp_shootPhaseTimer->GetMaxCountFrame() - m_vlp_shootPhaseTimer->GetRemainFrame() == 3)
+	if (m_vlp_shootPhaseTimer->GetCurrentCountFrame() == m_vwp_leftGunComponent.lock()->GetShootIntervalFrame() * 0.5f)
 	{
 		m_vwp_leftGunComponent.lock()->ShootStart();
 	}

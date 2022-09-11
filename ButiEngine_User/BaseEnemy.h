@@ -65,7 +65,9 @@ namespace ButiEngine {
 		//ˆÚ“®
 		Value_ptr<RelativeTimer> m_vlp_directionDicisionTime;
 		std::int32_t m_directionDicisionInterval = 10;
+		std::int32_t m_baseDirectionDicisionInterval = 30;
 		float m_speed = 1.0f;
+		float m_baseSpeed = 1.0f;
 		float m_minimumDistance = 3.0f;
 		Vector3 m_direction;
 

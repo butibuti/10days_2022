@@ -1,8 +1,29 @@
 #include "stdafx_u.h"
 #include "EnemySpawner.h"
+#include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 
 void ButiEngine::EnemySpawner::OnUpdate()
 {
+	if (m_isPause)
+	{
+		return;
+	}
+
+	if (m_vlp_spawnTimer->Update())
+	{
+		//Spawn
+		//‹——£ŒvŽZ
+		Vector3 playerPosition = GetManager().lock()->GetGameObject("Player").lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->GetPosition();
+		float length = 20.0f;
+
+		float sin, cos;
+		MathHelper::SinCos(sin, cos, MathHelper::ToRadian(ButiRandom::GetInt(0, 360)));
+		Vector3 spawnDirection = Vector3(cos, 0, sin);
+		spawnDirection.Normalize();
+
+		auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
+		enemy.lock()->transform->SetLocalRotation(playerPosition + spawnDirection * length);
+	}
 }
 
 void ButiEngine::EnemySpawner::OnSet()
@@ -30,6 +51,13 @@ void ButiEngine::EnemySpawner::Start()
 			}
 		}
 	}
+
+	m_spawnInterVal = 300;
+	m_vlp_spawnTimer = ObjectFactory::Create<RelativeTimer>(m_spawnInterVal);
+	m_vlp_spawnTimer->Start();
+	m_isPause = false;
+
+	m_vwp_playerRigidBody = GetManager().lock()->GetGameObject("Player").lock()->GetGameComponent<RigidBodyComponent>();
 }
 
 void ButiEngine::EnemySpawner::OnRemove()
@@ -93,4 +121,16 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::EnemySpawner::Clone
 	auto output = ObjectFactory::Create<EnemySpawner>();
 	output->m_vec_vec_emitObjectParameter = m_vec_vec_emitObjectParameter;
 	return output;
+}
+
+void ButiEngine::EnemySpawner::StartPause()
+{
+	m_isPause = true;
+	m_vlp_spawnTimer->Stop();
+}
+
+void ButiEngine::EnemySpawner::FinishPause()
+{
+	m_isPause = false;
+	m_vlp_spawnTimer->Start();
 }

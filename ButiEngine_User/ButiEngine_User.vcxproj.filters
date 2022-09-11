@@ -25,6 +25,8 @@
     <ClCompile Include="ItemEmitParameter.cpp" />
     <ClCompile Include="GunAction_Shotgun.cpp" />
     <ClCompile Include="EnemySpawner.cpp" />
+    <ClCompile Include="ShotGunItem.cpp" />
+    <ClCompile Include="GrenadeLauncherItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -49,6 +51,8 @@
     <ClInclude Include="ItemEmitParameter.h" />
     <ClInclude Include="GunAction_Shotgun.h" />
     <ClInclude Include="EnemySpawner.h" />
+    <ClInclude Include="ShotGunItem.h" />
+    <ClInclude Include="GrenadeLauncherItem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

@@ -285,6 +285,16 @@ void ButiEngine::BaseEnemy::EmitItem()
 		auto item = GetManager().lock()->AddObjectFromCereal("LargeGunItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
 	}
+	else if (emitType == "ShotGunItem")
+	{
+		auto item = GetManager().lock()->AddObjectFromCereal("ShotGunItem");
+		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+	}
+	else if (emitType == "GrenadeLauncherItem")
+	{
+		auto item = GetManager().lock()->AddObjectFromCereal("GrenadeLauncherItem");
+		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+	}
 }
 
 bool ButiEngine::BaseEnemy::ExistInHitComponent(Value_weak_ptr<GameComponent> arg_vwp_hitComponent)

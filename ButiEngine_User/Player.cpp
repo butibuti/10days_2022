@@ -11,6 +11,7 @@
 #include "GunAction_Shotgun.h"
 #include "BaseEnemy.h"
 #include "LesserEnemy.h"
+#include "EnemySpawner.h"
 
 void ButiEngine::Player::OnUpdate()
 {
@@ -114,6 +115,8 @@ void ButiEngine::Player::StartGunAction()
 			enemy->GetGameComponent<LesserEnemy>()->StartPause();
 		}
 	}
+	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner").lock()->GetGameComponent<EnemySpawner>();
+	enemySpawner->StartPause();
 }
 
 void ButiEngine::Player::FinishGunAction()
@@ -140,6 +143,8 @@ void ButiEngine::Player::FinishGunAction()
 			enemy->GetGameComponent<LesserEnemy>()->FinishPause();
 		}
 	}
+	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner").lock()->GetGameComponent<EnemySpawner>();
+	enemySpawner->FinishPause();
 }
 
 void ButiEngine::Player::PowerUp(const std::string& arg_gunName)

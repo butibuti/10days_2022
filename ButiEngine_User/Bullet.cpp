@@ -7,6 +7,13 @@
 void ButiEngine::Bullet::OnUpdate()
 {
 	m_isHitInCurrentFrame = false;
+
+	//‹Z”­“®’†‚Í“®‚©‚È‚¢
+	if (m_isPause)
+	{
+		return;
+	}
+
 	gameObject.lock()->transform->Translate(m_velocity * GameDevice::GetWorldSpeed());
 
 	//ŽË’ö”ÍˆÍ‚ð’´‚¦‚½‚çŽ€‚Ê
@@ -48,6 +55,9 @@ void ButiEngine::Bullet::Start()
 	m_isHitInCurrentFrame = false;
 
 	m_vec_hitObjects.clear();
+
+	m_isPause = false;
+	m_beforePauseVelocity = Vector3();
 }
 
 void ButiEngine::Bullet::OnRemove()
@@ -71,6 +81,23 @@ void ButiEngine::Bullet::Dead()
 {
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
 	gameObject.lock()->SetIsRemove(true);
+}
+
+void ButiEngine::Bullet::StartPause()
+{
+	m_isPause = true;
+	m_beforePauseVelocity = m_velocity;
+}
+
+void ButiEngine::Bullet::FinishPause()
+{
+	if (!m_isPause)
+	{
+		return;
+	}
+
+	m_isPause = false;
+	m_velocity = m_beforePauseVelocity;
 }
 
 void ButiEngine::Bullet::AddHitObject(Value_weak_ptr<GameObject> arg_vwp_hitObject)

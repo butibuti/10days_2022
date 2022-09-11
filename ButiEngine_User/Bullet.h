@@ -30,6 +30,9 @@ namespace ButiEngine {
 		void SetVelocity(const Vector3& arg_velocity) { m_velocity = arg_velocity; }
 
 		void Dead();
+
+		void StartPause();
+		void FinishPause();
 	private:
 		void AddHitObject(Value_weak_ptr<GameObject> arg_vwp_hitObject);
 
@@ -45,6 +48,10 @@ namespace ButiEngine {
 
 		std::int32_t m_penetratingCount;
 		std::vector<Value_weak_ptr<GameObject>> m_vec_hitObjects;
+
+		//‹Z”­“®Žž‚Évelocity‚ð•Û‘¶‚·‚é‚æ‚¤
+		bool m_isPause;
+		Vector3 m_beforePauseVelocity;
 	};
 
 }

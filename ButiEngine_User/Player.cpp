@@ -93,6 +93,13 @@ void ButiEngine::Player::StartGunAction()
 	m_canAcceptInput = false;
 	m_isInvincible = true;
 	m_canPickUpItem = false;
+
+	//Œ»Ýo‚Ä‚¢‚é’e‚ð’âŽ~
+	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet"));
+	for (auto bullet : bullets)
+	{
+		bullet->GetGameComponent<Bullet>()->StartPause();
+	}
 }
 
 void ButiEngine::Player::FinishGunAction()
@@ -100,6 +107,13 @@ void ButiEngine::Player::FinishGunAction()
 	m_canAcceptInput = true;
 	m_isInvincible = false;
 	m_canPickUpItem = true;
+
+	//’e‚ÌPause‚ð‰ðœ
+	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet"));
+	for (auto bullet : bullets)
+	{
+		bullet->GetGameComponent<Bullet>()->FinishPause();
+	}
 }
 
 void ButiEngine::Player::PowerUp(const std::string& arg_gunName)

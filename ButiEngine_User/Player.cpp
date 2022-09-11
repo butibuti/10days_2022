@@ -8,6 +8,7 @@
 #include "Bullet.h"
 #include "GunAction_AssaultRifle.h"
 #include "GunAction_GrenadeLauncher.h"
+#include "GunAction_Shotgun.h"
 
 void ButiEngine::Player::OnUpdate()
 {
@@ -40,7 +41,7 @@ void ButiEngine::Player::OnSet()
 
 void ButiEngine::Player::Start()
 {
-	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
+	m_vwp_rigidBodyComponent = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
 
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock();
 
@@ -131,6 +132,11 @@ void ButiEngine::Player::EquipGrenadeLauncher()
 	gameObject.lock()->AddGameComponent<GunAction_GrenadeLauncher>();
 }
 
+void ButiEngine::Player::EquipShotgun()
+{
+	gameObject.lock()->AddGameComponent<GunAction_Shotgun>();
+}
+
 void ButiEngine::Player::Control()
 {
 	if (!m_canAcceptInput)
@@ -157,12 +163,12 @@ void ButiEngine::Player::Move()
 	Vector2 leftStick = InputManager::GetLeftStick();
 	float speed = 5.0f;
 	Vector3 velocity = Vector3(leftStick.x, 0.0f, leftStick.y).Normalize() * speed;
-	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(velocity * GameDevice::GetWorldSpeed());
+	m_vwp_rigidBodyComponent.lock()->GetRigidBody()->SetVelocity(velocity * GameDevice::GetWorldSpeed());
 }
 
 void ButiEngine::Player::Rotate()
 {
-	auto lookTarget = m_vwp_lookAt.lock()->GetLookTarget();
+	auto lookTarget = m_vwp_lookAtComponent.lock()->GetLookTarget();
 	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
 	lookTarget->SetLocalPosition(drawObjectTransform->GetWorldPosition() + drawObjectTransform->GetFront() * 100.0f);
 
@@ -188,6 +194,7 @@ void ButiEngine::Player::Shoot()
 	{
 		//EquipAssaultRifle();
 		EquipGrenadeLauncher();
+		//EquipShotgun();
 	}
 }
 
@@ -238,9 +245,9 @@ void ButiEngine::Player::CheckHasDamageInPreviousFrame()
 
 void ButiEngine::Player::SetLookAtParameter()
 {
-	m_vwp_lookAt = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>();
+	m_vwp_lookAtComponent = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>();
 	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
-	m_vwp_lookAt.lock()->SetLookTarget(ObjectFactory::Create<Transform>(drawObjectTransform->GetWorldPosition()));
-	m_vwp_lookAt.lock()->GetLookTarget()->Translate(drawObjectTransform->GetFront() * 100.0f);
-	m_vwp_lookAt.lock()->SetSpeed(0.3f);
+	m_vwp_lookAtComponent.lock()->SetLookTarget(ObjectFactory::Create<Transform>(drawObjectTransform->GetWorldPosition()));
+	m_vwp_lookAtComponent.lock()->GetLookTarget()->Translate(drawObjectTransform->GetFront() * 100.0f);
+	m_vwp_lookAtComponent.lock()->SetSpeed(0.3f);
 }

@@ -1,5 +1,5 @@
 #include "stdafx_u.h"
-#include "GunAction_GrenadeLauncher.h"
+#include "GunAction_Shotgun.h"
 #include "EquipGun.h"
 #include "Gun.h"
 #include "SeparateDrawObject.h"
@@ -7,23 +7,17 @@
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "Header/GameObjects/DefaultGameComponent/PositionAnimationComponent.h"
 
-void ButiEngine::GunAction_GrenadeLauncher::OnUpdate()
+void ButiEngine::GunAction_Shotgun::OnUpdate()
 {
 	switch (m_phase)
 	{
-	case ButiEngine::GunAction_GrenadeLauncherPhase::MoveOffScreen:
+	case ButiEngine::GunAction_ShotgunPhase::MoveOffScreen:
 		UpdateMoveOffScreenPhase();
 		break;
-	case ButiEngine::GunAction_GrenadeLauncherPhase::MoveOffScreenWait:
-		UpdateMoveOffScreenWaitPhase();
-		break;
-	case ButiEngine::GunAction_GrenadeLauncherPhase::Shoot:
+	case ButiEngine::GunAction_ShotgunPhase::Shoot:
 		UpdateShootPhase();
 		break;
-	case ButiEngine::GunAction_GrenadeLauncherPhase::ShootWait:
-		UpdateShootWaitPhase();
-		break;
-	case ButiEngine::GunAction_GrenadeLauncherPhase::ReturnCenter:
+	case ButiEngine::GunAction_ShotgunPhase::ReturnCenter:
 		UpdateReturnCenterPhase();
 		break;
 	default:
@@ -31,7 +25,7 @@ void ButiEngine::GunAction_GrenadeLauncher::OnUpdate()
 	}
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::OnSet()
+void ButiEngine::GunAction_Shotgun::OnSet()
 {
 	GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(nullptr);
 
@@ -52,14 +46,8 @@ void ButiEngine::GunAction_GrenadeLauncher::OnSet()
 	std::int32_t moveOffScreenPhaseFrame = 20;
 	m_vlp_moveOffScreenPhaseTimer = ObjectFactory::Create<RelativeTimer>(moveOffScreenPhaseFrame);
 
-	std::int32_t moveOffScreenWaitPhaseFrame = 30;
-	m_vlp_moveOffScreenWaitPhaseTimer = ObjectFactory::Create<RelativeTimer>(moveOffScreenWaitPhaseFrame);
-
 	std::int32_t shootPhaseFrame = 60;
 	m_vlp_shootPhaseTimer = ObjectFactory::Create<RelativeTimer>(shootPhaseFrame);
-
-	std::int32_t shootWaitPhaseFrame = 90;
-	m_vlp_shootWaitPhaseTimer = ObjectFactory::Create<RelativeTimer>(shootWaitPhaseFrame);
 
 	std::int32_t returnCenterPhaseFrame = 20;
 	m_vlp_returnCenterPhaseTimer = ObjectFactory::Create<RelativeTimer>(returnCenterPhaseFrame);
@@ -70,26 +58,26 @@ void ButiEngine::GunAction_GrenadeLauncher::OnSet()
 	StartMoveOffScreenPhase();
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::Start()
+void ButiEngine::GunAction_Shotgun::Start()
 {
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::OnRemove()
+void ButiEngine::GunAction_Shotgun::OnRemove()
 {
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::OnShowUI()
+void ButiEngine::GunAction_Shotgun::OnShowUI()
 {
 }
 
-ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::GunAction_GrenadeLauncher::Clone()
+ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::GunAction_Shotgun::Clone()
 {
-	return ObjectFactory::Create<GunAction_GrenadeLauncher>();
+	return ObjectFactory::Create<GunAction_Shotgun>();
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::StartMoveOffScreenPhase()
+void ButiEngine::GunAction_Shotgun::StartMoveOffScreenPhase()
 {
-	m_phase = GunAction_GrenadeLauncherPhase::MoveOffScreen;
+	m_phase = GunAction_ShotgunPhase::MoveOffScreen;
 
 	m_vwp_drawObject.lock()->transform->SetLocalRotationY_Degrees(-90.0f);
 
@@ -105,33 +93,18 @@ void ButiEngine::GunAction_GrenadeLauncher::StartMoveOffScreenPhase()
 	m_vlp_moveOffScreenPhaseTimer->Start();
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::UpdateMoveOffScreenPhase()
+void ButiEngine::GunAction_Shotgun::UpdateMoveOffScreenPhase()
 {
 	if (m_vlp_moveOffScreenPhaseTimer->Update())
 	{
 		m_vlp_moveOffScreenPhaseTimer->Stop();
-		StartMoveOffScreenWaitPhase();
-	}
-}
-
-void ButiEngine::GunAction_GrenadeLauncher::StartMoveOffScreenWaitPhase()
-{
-	m_phase = GunAction_GrenadeLauncherPhase::MoveOffScreenWait;
-	m_vlp_moveOffScreenWaitPhaseTimer->Start();
-}
-
-void ButiEngine::GunAction_GrenadeLauncher::UpdateMoveOffScreenWaitPhase()
-{
-	if (m_vlp_moveOffScreenWaitPhaseTimer->Update())
-	{
-		m_vlp_moveOffScreenWaitPhaseTimer->Stop();
 		StartShootPhase();
 	}
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::StartShootPhase()
+void ButiEngine::GunAction_Shotgun::StartShootPhase()
 {
-	m_phase = GunAction_GrenadeLauncherPhase::Shoot;
+	m_phase = GunAction_ShotgunPhase::Shoot;
 
 	m_vwp_drawObject.lock()->transform->SetLocalRotationY_Degrees(90.0f);
 
@@ -149,7 +122,7 @@ void ButiEngine::GunAction_GrenadeLauncher::StartShootPhase()
 	m_vlp_shootPhaseTimer->Start();
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::UpdateShootPhase()
+void ButiEngine::GunAction_Shotgun::UpdateShootPhase()
 {
 	if (m_vlp_shootPhaseTimer->GetMaxCountFrame() - m_vlp_shootPhaseTimer->GetRemainFrame() == 3)
 	{
@@ -160,32 +133,16 @@ void ButiEngine::GunAction_GrenadeLauncher::UpdateShootPhase()
 		m_vlp_shootPhaseTimer->Stop();
 		m_vwp_rightGunComponent.lock()->ShootStop();
 		m_vwp_leftGunComponent.lock()->ShootStop();
-
-		StartShootWaitPhase();
-	}
-}
-
-void ButiEngine::GunAction_GrenadeLauncher::StartShootWaitPhase()
-{
-	m_phase = GunAction_GrenadeLauncherPhase::ShootWait;
-	m_vlp_shootWaitPhaseTimer->Start();
-}
-
-void ButiEngine::GunAction_GrenadeLauncher::UpdateShootWaitPhase()
-{
-	if (m_vlp_shootWaitPhaseTimer->Update())
-	{
-		m_vlp_shootWaitPhaseTimer->Stop();
 		StartReturnCenterPhase();
 	}
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::StartReturnCenterPhase()
+void ButiEngine::GunAction_Shotgun::StartReturnCenterPhase()
 {
-	m_phase = GunAction_GrenadeLauncherPhase::ReturnCenter;
+	m_phase = GunAction_ShotgunPhase::ReturnCenter;
 
 	m_vwp_drawObject.lock()->transform->SetLocalRotation(m_vwp_startTransform->GetLocalRotation());
-
+	
 	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
 	Vector3 initPos = m_vwp_startTransform->GetLocalPosition();
 	initPos.z += 20.0f;
@@ -200,7 +157,7 @@ void ButiEngine::GunAction_GrenadeLauncher::StartReturnCenterPhase()
 	m_vlp_returnCenterPhaseTimer->Start();
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::UpdateReturnCenterPhase()
+void ButiEngine::GunAction_Shotgun::UpdateReturnCenterPhase()
 {
 	if (m_vlp_returnCenterPhaseTimer->Update())
 	{

@@ -39,6 +39,7 @@ namespace ButiEngine {
 		//武器変更
 		void EquipAssaultRifle();
 		void EquipGrenadeLauncher();
+		void EquipShotgun();
 	private:
 		void Control();
 		void Move();
@@ -51,7 +52,7 @@ namespace ButiEngine {
 		void SetLookAtParameter();
 
 		//物理挙動関連
-		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
+		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBodyComponent;
 
 		//描画用オブジェクト関連
 		Value_weak_ptr<GameObject> m_vwp_drawObject;
@@ -61,7 +62,7 @@ namespace ButiEngine {
 		Value_weak_ptr<EquipGun> m_vwp_equipGunComponent;
 
 		//プレイヤーの向く方向設定関連
-		Value_weak_ptr<LookAtComponent> m_vwp_lookAt;
+		Value_weak_ptr<LookAtComponent> m_vwp_lookAtComponent;
 
 		//体力管理
 		std::int32_t m_hitPoint = 10;

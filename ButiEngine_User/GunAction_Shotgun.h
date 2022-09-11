@@ -5,20 +5,18 @@ namespace ButiEngine {
 	class Player;
 	class Gun;
 
-	enum class GunAction_GrenadeLauncherPhase
+	enum class GunAction_ShotgunPhase
 	{
 		MoveOffScreen,
-		MoveOffScreenWait,
 		Shoot,
-		ShootWait,
 		ReturnCenter,
 	};
 
-	class GunAction_GrenadeLauncher :public GameComponent
+	class GunAction_Shotgun :public GameComponent
 	{
 	public:
 		std::string GetGameComponentName()const override {
-			return "GunAction_GrenadeLauncher";
+			return "GunAction_Shotgun";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -34,24 +32,16 @@ namespace ButiEngine {
 	private:
 		void StartMoveOffScreenPhase();
 		void UpdateMoveOffScreenPhase();
-		void StartMoveOffScreenWaitPhase();
-		void UpdateMoveOffScreenWaitPhase();
 		void StartShootPhase();
 		void UpdateShootPhase();
-		void StartShootWaitPhase();
-		void UpdateShootWaitPhase();
 		void StartReturnCenterPhase();
 		void UpdateReturnCenterPhase();
 
-		GunAction_GrenadeLauncherPhase m_phase;
+		GunAction_ShotgunPhase m_phase;
 
 		Value_ptr<RelativeTimer> m_vlp_moveOffScreenPhaseTimer;
 
-		Value_ptr<RelativeTimer> m_vlp_moveOffScreenWaitPhaseTimer;
-
 		Value_ptr<RelativeTimer> m_vlp_shootPhaseTimer;
-
-		Value_ptr<RelativeTimer> m_vlp_shootWaitPhaseTimer;
 
 		Value_ptr<RelativeTimer> m_vlp_returnCenterPhaseTimer;
 		Value_ptr<Transform> m_vwp_startTransform;
@@ -64,4 +54,4 @@ namespace ButiEngine {
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(GunAction_GrenadeLauncher, true);
+BUTI_REGIST_GAMECOMPONENT(GunAction_Shotgun, true);

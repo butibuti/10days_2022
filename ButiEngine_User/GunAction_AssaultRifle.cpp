@@ -37,12 +37,6 @@ void ButiEngine::GunAction_AssaultRifle::OnUpdate()
 
 void ButiEngine::GunAction_AssaultRifle::OnSet()
 {
-	m_phase = 0;
-
-	std::int32_t rotateFrame = 15;
-	m_vlp_rotateTimer = ObjectFactory::Create<RelativeTimer>(rotateFrame);
-	m_vlp_shootTimer = ObjectFactory::Create<RelativeTimer>(shootFrames[m_phase]);
-
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();
 	m_vwp_lookTarget = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->GetLookTarget();
 
@@ -52,6 +46,13 @@ void ButiEngine::GunAction_AssaultRifle::OnSet()
 	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->SetVelocity(Vector3Const::Zero);
 
 	m_vwp_gunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_AssaultRifle");
+
+
+	m_phase = 0;
+
+	std::int32_t rotateFrame = 15;
+	m_vlp_rotateTimer = ObjectFactory::Create<RelativeTimer>(rotateFrame);
+	m_vlp_shootTimer = ObjectFactory::Create<RelativeTimer>(shootFrames[m_phase]);
 
 	RotateStart();
 }

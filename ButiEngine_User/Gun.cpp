@@ -147,15 +147,16 @@ void ButiEngine::Gun::Shoot()
 	for (std::int32_t i = 0; i < m_bulletCount; i++)
 	{
 		auto bullet = GetManager().lock()->AddObjectFromCereal(m_bulletName);
-
-		//¶¬ˆÊ’uİ’è
-		bullet.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
-		bullet.lock()->transform->Translate(m_offset * gameObject.lock()->transform->GetWorldRotation());
 		
 		//”ò‚ñ‚Å‚¢‚­•ûŒüİ’è
 		bullet.lock()->transform->SetLocalRotation(gameObject.lock()->transform->GetWorldRotation());
 		float rotationAngleY = ButiRandom::GetRandom(-m_diffusion, m_diffusion, 10.0f);
 		bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
+
+		//¶¬ˆÊ’uİ’è
+		bullet.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+		bullet.lock()->transform->Translate(m_offset * gameObject.lock()->transform->GetWorldRotation());
+		bullet.lock()->transform->Translate(bullet.lock()->transform->GetFront() * bullet.lock()->transform->GetLocalScale().z * 0.5f);
 
 		//’e‚Ìî•ñİ’è
 		SetNormalBulletParameter(bullet);

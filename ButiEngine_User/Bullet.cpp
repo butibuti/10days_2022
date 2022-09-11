@@ -21,7 +21,6 @@ void ButiEngine::Bullet::OnUpdate()
 
 void ButiEngine::Bullet::OnSet()
 {
-	//他のオブジェクトと当たったら死ぬ
 	gameObject.lock()->AddCollisionEnterReaction(
 		[this](ButiBullet::ContactData& arg_other)
 		{
@@ -30,7 +29,13 @@ void ButiEngine::Bullet::OnSet()
 				if (arg_other.vwp_gameObject.lock() != m_vwp_owner.lock() && !m_isHitInCurrentFrame)
 				{
 					m_isHitInCurrentFrame = true;
-					Dead();
+					AddHitObject(arg_other.vwp_gameObject);
+
+					//当たったオブジェクトが貫通可能回数より多かったら死ぬ
+					if (m_vec_hitObjects.size() > m_penetratingCount)
+					{
+						Dead();
+					}
 				}
 			}
 		}
@@ -41,6 +46,8 @@ void ButiEngine::Bullet::Start()
 {
 	m_startPos = gameObject.lock()->transform->GetLocalPosition();
 	m_isHitInCurrentFrame = false;
+
+	m_vec_hitObjects.clear();
 }
 
 void ButiEngine::Bullet::OnRemove()
@@ -49,15 +56,31 @@ void ButiEngine::Bullet::OnRemove()
 
 void ButiEngine::Bullet::OnShowUI()
 {
+	GUI::BulletText(u8"貫通できるオブジェクトの数");
+	GUI::DragInt("##penetratingCount", &m_penetratingCount, 1.0f, 0, 100);
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Bullet::Clone()
 {
-	return ObjectFactory::Create<Bullet>();
+	auto output = ObjectFactory::Create<Bullet>();
+	output->m_penetratingCount = m_penetratingCount;
+	return output;
 }
 
 void ButiEngine::Bullet::Dead()
 {
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
 	gameObject.lock()->SetIsRemove(true);
+}
+
+void ButiEngine::Bullet::AddHitObject(Value_weak_ptr<GameObject> arg_vwp_hitObject)
+{
+	//既にに追加されていたらreturn
+	auto find = std::find(m_vec_hitObjects.begin(), m_vec_hitObjects.end(), arg_vwp_hitObject);
+	if (find != m_vec_hitObjects.end())
+	{
+		return;
+	}
+
+	m_vec_hitObjects.push_back(arg_vwp_hitObject);
 }

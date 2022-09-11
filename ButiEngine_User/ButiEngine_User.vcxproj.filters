@@ -23,6 +23,7 @@
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="DamageArea.cpp" />
     <ClCompile Include="ItemEmitParameter.cpp" />
+    <ClCompile Include="GunAction_Shotgun.cpp" />
     <ClCompile Include="EnemySpawner.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +47,7 @@
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="DamageArea.h" />
     <ClInclude Include="ItemEmitParameter.h" />
+    <ClInclude Include="GunAction_Shotgun.h" />
     <ClInclude Include="EnemySpawner.h" />
   </ItemGroup>
   <ItemGroup>

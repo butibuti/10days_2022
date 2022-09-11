@@ -18,7 +18,7 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-
+			archive(m_penetratingCount);
 		}
 
 		const std::int32_t GetPower()const { return static_cast<std::int32_t>(m_power); }
@@ -31,6 +31,8 @@ namespace ButiEngine {
 
 		void Dead();
 	private:
+		void AddHitObject(Value_weak_ptr<GameObject> arg_vwp_hitObject);
+
 		Value_weak_ptr<GameObject> m_vwp_owner;
 
 		float m_power;
@@ -40,6 +42,9 @@ namespace ButiEngine {
 		Vector3 m_startPos;
 
 		bool m_isHitInCurrentFrame;
+
+		std::int32_t m_penetratingCount;
+		std::vector<Value_weak_ptr<GameObject>> m_vec_hitObjects;
 	};
 
 }

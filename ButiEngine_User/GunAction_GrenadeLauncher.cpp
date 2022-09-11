@@ -1,19 +1,30 @@
 #include "stdafx_u.h"
 #include "GunAction_GrenadeLauncher.h"
+#include "EquipGun.h"
+#include "Gun.h"
 #include "SeparateDrawObject.h"
 #include "Player.h"
-#include "Gun.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
+#include "Header/GameObjects/DefaultGameComponent/PositionAnimationComponent.h"
 
 void ButiEngine::GunAction_GrenadeLauncher::OnUpdate()
 {
 	switch (m_phase)
 	{
+	case ButiEngine::GunAction_GrenadeLauncherPhase::MoveOffScreen:
+		UpdateMoveOffScreenPhase();
+		break;
+	case ButiEngine::GunAction_GrenadeLauncherPhase::MoveOffScreenWait:
+		UpdateMoveOffScreenWaitPhase();
+		break;
 	case ButiEngine::GunAction_GrenadeLauncherPhase::Shoot:
 		UpdateShootPhase();
 		break;
-	case ButiEngine::GunAction_GrenadeLauncherPhase::Wait:
-		UpdateWaitPhase();
+	case ButiEngine::GunAction_GrenadeLauncherPhase::ShootWait:
+		UpdateShootWaitPhase();
+		break;
+	case ButiEngine::GunAction_GrenadeLauncherPhase::ReturnCenter:
+		UpdateReturnCenterPhase();
 		break;
 	default:
 		break;
@@ -22,25 +33,41 @@ void ButiEngine::GunAction_GrenadeLauncher::OnUpdate()
 
 void ButiEngine::GunAction_GrenadeLauncher::OnSet()
 {
-	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->SetVelocity(Vector3Const::Zero);
+	GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(nullptr);
+
+	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();
+	m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetIsActive(false);
 
 	m_vwp_playerComponent = gameObject.lock()->GetGameComponent<Player>();
 	m_vwp_playerComponent.lock()->StartGunAction();
 
-	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();
-	m_vwp_lookTarget = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->GetLookTarget();
+	auto rigidBodyComponent = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
+	rigidBodyComponent->GetRigidBody()->SetVelocity(Vector3Const::Zero);
+	rigidBodyComponent->UnRegist();
 
-	m_vwp_gunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_GrenadeLauncher");
+	m_vwp_rightGunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_GrenadeLauncher_Right");
+	m_vwp_leftGunComponent = gameObject.lock()->GetGameComponent<EquipGun>()->AddGun("Gun_Player_GrenadeLauncher_Left").lock()->GetGameComponent<Gun>();
 
 
-	std::int32_t shootPhaseFrame = 18;
-	m_vlp_shootTimer = ObjectFactory::Create<RelativeTimer>(shootPhaseFrame);
-	m_rotationAngle = 360.0f / shootPhaseFrame;
+	std::int32_t moveOffScreenPhaseFrame = 20;
+	m_vlp_moveOffScreenPhaseTimer = ObjectFactory::Create<RelativeTimer>(moveOffScreenPhaseFrame);
 
-	std::int32_t waitPhaseFrame = 60;
-	m_vlp_waitTimer = ObjectFactory::Create<RelativeTimer>(waitPhaseFrame);
+	std::int32_t moveOffScreenWaitPhaseFrame = 30;
+	m_vlp_moveOffScreenWaitPhaseTimer = ObjectFactory::Create<RelativeTimer>(moveOffScreenWaitPhaseFrame);
 
-	StartShootPhase();
+	std::int32_t shootPhaseFrame = 60;
+	m_vlp_shootPhaseTimer = ObjectFactory::Create<RelativeTimer>(shootPhaseFrame);
+
+	std::int32_t shootWaitPhaseFrame = 90;
+	m_vlp_shootWaitPhaseTimer = ObjectFactory::Create<RelativeTimer>(shootWaitPhaseFrame);
+
+	std::int32_t returnCenterPhaseFrame = 20;
+	m_vlp_returnCenterPhaseTimer = ObjectFactory::Create<RelativeTimer>(returnCenterPhaseFrame);
+
+	m_vwp_startTransform = gameObject.lock()->transform->Clone();
+	m_vwp_startTransform->SetLocalRotation(m_vwp_drawObject.lock()->transform->GetLocalRotation());
+
+	StartMoveOffScreenPhase();
 }
 
 void ButiEngine::GunAction_GrenadeLauncher::Start()
@@ -60,40 +87,127 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::GunAction_GrenadeLa
 	return ObjectFactory::Create<GunAction_GrenadeLauncher>();
 }
 
+void ButiEngine::GunAction_GrenadeLauncher::StartMoveOffScreenPhase()
+{
+	m_phase = GunAction_GrenadeLauncherPhase::MoveOffScreen;
+
+	m_vwp_drawObject.lock()->transform->SetLocalRotationY_Degrees(-90.0f);
+
+	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
+
+	anim->SetInitPosition(m_vwp_startTransform->GetLocalPosition());
+	Vector3 targetPos = gameObject.lock()->transform->GetLocalPosition();
+	targetPos.x -= 25.0f;
+	anim->SetTargetPosition(targetPos);
+	anim->SetSpeed(1.0f / m_vlp_moveOffScreenPhaseTimer->GetMaxCountFrame());
+	anim->SetEaseType(Easing::EasingType::EaseOutCirc);
+
+	m_vlp_moveOffScreenPhaseTimer->Start();
+}
+
+void ButiEngine::GunAction_GrenadeLauncher::UpdateMoveOffScreenPhase()
+{
+	if (m_vlp_moveOffScreenPhaseTimer->Update())
+	{
+		m_vlp_moveOffScreenPhaseTimer->Stop();
+		StartMoveOffScreenWaitPhase();
+	}
+}
+
+void ButiEngine::GunAction_GrenadeLauncher::StartMoveOffScreenWaitPhase()
+{
+	m_phase = GunAction_GrenadeLauncherPhase::MoveOffScreenWait;
+	m_vlp_moveOffScreenWaitPhaseTimer->Start();
+}
+
+void ButiEngine::GunAction_GrenadeLauncher::UpdateMoveOffScreenWaitPhase()
+{
+	if (m_vlp_moveOffScreenWaitPhaseTimer->Update())
+	{
+		m_vlp_moveOffScreenWaitPhaseTimer->Stop();
+		StartShootPhase();
+	}
+}
+
 void ButiEngine::GunAction_GrenadeLauncher::StartShootPhase()
 {
 	m_phase = GunAction_GrenadeLauncherPhase::Shoot;
-	m_vlp_shootTimer->Start();
-	m_vwp_gunComponent.lock()->ShootStart();
+
+	m_vwp_drawObject.lock()->transform->SetLocalRotationY_Degrees(90.0f);
+
+	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
+
+	anim->SetInitPosition(gameObject.lock()->transform->GetLocalPosition());
+	Vector3 targetPos = gameObject.lock()->transform->GetLocalPosition();
+	targetPos.x += 50.0f;
+	anim->SetTargetPosition(targetPos);
+	anim->SetSpeed(1.0f / m_vlp_shootPhaseTimer->GetMaxCountFrame());
+	anim->SetEaseType(Easing::EasingType::Liner);
+
+	m_vwp_rightGunComponent.lock()->ShootStart();
+
+	m_vlp_shootPhaseTimer->Start();
 }
 
 void ButiEngine::GunAction_GrenadeLauncher::UpdateShootPhase()
 {
-	if (m_vlp_shootTimer->Update())
+	if (m_vlp_shootPhaseTimer->GetMaxCountFrame() - m_vlp_shootPhaseTimer->GetRemainFrame() == 3)
 	{
-		m_vlp_shootTimer->Stop();
-		m_vwp_gunComponent.lock()->ShootStop();
-
-		StartWaitPhase();
+		m_vwp_leftGunComponent.lock()->ShootStart();
 	}
+	if (m_vlp_shootPhaseTimer->Update())
+	{
+		m_vlp_shootPhaseTimer->Stop();
+		m_vwp_rightGunComponent.lock()->ShootStop();
+		m_vwp_leftGunComponent.lock()->ShootStop();
 
-	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
-	drawObjectTransform->RollWorldRotationY_Degrees(m_rotationAngle);
-	m_vwp_lookTarget.lock()->SetLocalPosition(drawObjectTransform->GetWorldPosition() + drawObjectTransform->GetFront());
+		StartShootWaitPhase();
+	}
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::StartWaitPhase()
+void ButiEngine::GunAction_GrenadeLauncher::StartShootWaitPhase()
 {
-	m_phase = GunAction_GrenadeLauncherPhase::Wait;
-	m_vlp_waitTimer->Start();
+	m_phase = GunAction_GrenadeLauncherPhase::ShootWait;
+	m_vlp_shootWaitPhaseTimer->Start();
 }
 
-void ButiEngine::GunAction_GrenadeLauncher::UpdateWaitPhase()
+void ButiEngine::GunAction_GrenadeLauncher::UpdateShootWaitPhase()
 {
-	if (m_vlp_waitTimer->Update())
+	if (m_vlp_shootWaitPhaseTimer->Update())
+	{
+		m_vlp_shootWaitPhaseTimer->Stop();
+		StartReturnCenterPhase();
+	}
+}
+
+void ButiEngine::GunAction_GrenadeLauncher::StartReturnCenterPhase()
+{
+	m_phase = GunAction_GrenadeLauncherPhase::ReturnCenter;
+
+	m_vwp_drawObject.lock()->transform->SetLocalRotation(m_vwp_startTransform->GetLocalRotation());
+
+	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
+	Vector3 initPos = m_vwp_startTransform->GetLocalPosition();
+	initPos.z += 20.0f;
+	anim->SetInitPosition(initPos);
+	anim->SetTargetPosition(m_vwp_startTransform->GetLocalPosition());
+	anim->SetSpeed(1.0f / m_vlp_returnCenterPhaseTimer->GetMaxCountFrame());
+	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
+
+	m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+	gameObject.lock()->GetGameComponent<EquipGun>()->RemoveGun(1);
+
+	m_vlp_returnCenterPhaseTimer->Start();
+}
+
+void ButiEngine::GunAction_GrenadeLauncher::UpdateReturnCenterPhase()
+{
+	if (m_vlp_returnCenterPhaseTimer->Update())
 	{
 		m_vwp_playerComponent.lock()->FinishGunAction();
-		m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+		GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(gameObject.lock()->transform);
+		m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetIsActive(true);
+		gameObject.lock()->GetGameComponent<RigidBodyComponent>()->Regist();
 		SetIsRemove(true);
 		return;
 	}

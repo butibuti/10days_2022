@@ -39,7 +39,8 @@ void ButiEngine::GunAction_Shotgun::OnSet()
 	rigidBodyComponent->GetRigidBody()->SetVelocity(Vector3Const::Zero);
 	rigidBodyComponent->UnRegist();
 
-	m_vwp_gunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Shotgun");
+	m_vwp_rightGunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_GrenadeLauncher_Right");
+	m_vwp_leftGunComponent = gameObject.lock()->GetGameComponent<EquipGun>()->AddGun("Gun_Player_GrenadeLauncher_Left").lock()->GetGameComponent<Gun>();
 
 
 	std::int32_t moveOffScreenPhaseFrame = 20;
@@ -116,17 +117,22 @@ void ButiEngine::GunAction_Shotgun::StartShootPhase()
 	anim->SetSpeed(1.0f / m_vlp_shootPhaseTimer->GetMaxCountFrame());
 	anim->SetEaseType(Easing::EasingType::Liner);
 
-	m_vwp_gunComponent.lock()->ShootStart();
+	m_vwp_rightGunComponent.lock()->ShootStart();
 
 	m_vlp_shootPhaseTimer->Start();
 }
 
 void ButiEngine::GunAction_Shotgun::UpdateShootPhase()
 {
+	if (m_vlp_shootPhaseTimer->GetMaxCountFrame() - m_vlp_shootPhaseTimer->GetRemainFrame() == 3)
+	{
+		m_vwp_leftGunComponent.lock()->ShootStart();
+	}
 	if (m_vlp_shootPhaseTimer->Update())
 	{
 		m_vlp_shootPhaseTimer->Stop();
-		m_vwp_gunComponent.lock()->ShootStop();
+		m_vwp_rightGunComponent.lock()->ShootStop();
+		m_vwp_leftGunComponent.lock()->ShootStop();
 		StartReturnCenterPhase();
 	}
 }
@@ -146,6 +152,7 @@ void ButiEngine::GunAction_Shotgun::StartReturnCenterPhase()
 	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
 
 	m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+	gameObject.lock()->GetGameComponent<EquipGun>()->RemoveGun(1);
 
 	m_vlp_returnCenterPhaseTimer->Start();
 }

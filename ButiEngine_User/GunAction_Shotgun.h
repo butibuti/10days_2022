@@ -47,7 +47,8 @@ namespace ButiEngine {
 		Value_ptr<Transform> m_vwp_startTransform;
 
 		Value_weak_ptr<Player> m_vwp_playerComponent;
-		Value_weak_ptr<Gun> m_vwp_gunComponent;
+		Value_weak_ptr<Gun> m_vwp_rightGunComponent;
+		Value_weak_ptr<Gun> m_vwp_leftGunComponent;
 		Value_weak_ptr<GameObject> m_vwp_drawObject;
 	};
 

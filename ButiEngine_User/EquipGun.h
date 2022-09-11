@@ -17,19 +17,23 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-			archive(m_equipGunName);
+			archive(m_vec_equipGunNames);
 		}
 
-		Value_weak_ptr<GameObject> GetGun() { return m_vwp_gun; }
+		Value_weak_ptr<GameObject> GetGun(const std::int32_t arg_index = 0) { return m_vec_vwp_guns[arg_index]; }
 
 		void Dead();
-		Value_weak_ptr<GameObject> ChangeGun(const std::string& arg_gunName);
+		Value_weak_ptr<GameObject> ChangeGun(const std::string& arg_gunName, const std::int32_t arg_index = 0);
+		Value_weak_ptr<GameObject> AddGun(const std::string& arg_gunName);
+		void RemoveGun(const std::int32_t arg_index);
 	private:
-		void CreateGun();
+		Value_weak_ptr<GameObject> CreateGun(const std::int32_t arg_index = 0);
 
-		Value_weak_ptr<GameObject> m_vwp_gun;
+		std::vector<Value_weak_ptr<GameObject>> m_vec_vwp_guns;
 
-		std::string m_equipGunName = "Gun_Player_Normal";
+		std::vector<std::string> m_vec_equipGunNames;
+
+		bool m_isStart = false;
 	};
 
 }

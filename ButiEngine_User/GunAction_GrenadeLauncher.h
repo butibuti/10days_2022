@@ -7,8 +7,11 @@ namespace ButiEngine {
 
 	enum class GunAction_GrenadeLauncherPhase
 	{
+		MoveOffScreen,
+		MoveOffScreenWait,
 		Shoot,
-		Wait,
+		ShootWait,
+		ReturnCenter,
 	};
 
 	class GunAction_GrenadeLauncher :public GameComponent
@@ -29,23 +32,34 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 	private:
+		void StartMoveOffScreenPhase();
+		void UpdateMoveOffScreenPhase();
+		void StartMoveOffScreenWaitPhase();
+		void UpdateMoveOffScreenWaitPhase();
 		void StartShootPhase();
 		void UpdateShootPhase();
+		void StartShootWaitPhase();
+		void UpdateShootWaitPhase();
+		void StartReturnCenterPhase();
+		void UpdateReturnCenterPhase();
 
-		void StartWaitPhase();
-		void UpdateWaitPhase();
-		
 		GunAction_GrenadeLauncherPhase m_phase;
 
-		Value_ptr<RelativeTimer> m_vlp_shootTimer;
-		float m_rotationAngle;
+		Value_ptr<RelativeTimer> m_vlp_moveOffScreenPhaseTimer;
 
-		Value_ptr<RelativeTimer> m_vlp_waitTimer;
+		Value_ptr<RelativeTimer> m_vlp_moveOffScreenWaitPhaseTimer;
+
+		Value_ptr<RelativeTimer> m_vlp_shootPhaseTimer;
+
+		Value_ptr<RelativeTimer> m_vlp_shootWaitPhaseTimer;
+
+		Value_ptr<RelativeTimer> m_vlp_returnCenterPhaseTimer;
+		Value_ptr<Transform> m_vwp_startTransform;
 
 		Value_weak_ptr<Player> m_vwp_playerComponent;
-		Value_weak_ptr<Gun> m_vwp_gunComponent;
+		Value_weak_ptr<Gun> m_vwp_rightGunComponent;
+		Value_weak_ptr<Gun> m_vwp_leftGunComponent;
 		Value_weak_ptr<GameObject> m_vwp_drawObject;
-		Value_weak_ptr<Transform> m_vwp_lookTarget;
 	};
 
 }

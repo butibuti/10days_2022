@@ -14,6 +14,11 @@ void ButiEngine::TitleSceneManager::OnUpdate()
 	if (m_vlp_endTimer->Update())
 	{
 		m_vlp_endTimer->Stop();
+		auto sceneManager = gameObject.lock()->GetApplication().lock()->GetSceneManager();
+		std::string sceneName = "Stage_1";
+		sceneManager->RemoveScene(sceneName);
+		sceneManager->LoadScene(sceneName);
+		sceneManager->ChangeScene(sceneName);
 	}
 }
 

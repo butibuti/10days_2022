@@ -368,6 +368,7 @@ cd ..\</Command>
     <ClCompile Include="ItemEmitParameter.cpp" />
     <ClCompile Include="LargeGunItem.cpp" />
     <ClCompile Include="LesserEnemy.cpp" />
+    <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">/wd4996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -405,6 +406,7 @@ cd ..\</Command>
     <ClInclude Include="ItemEmitParameter.h" />
     <ClInclude Include="LargeGunItem.h" />
     <ClInclude Include="LesserEnemy.h" />
+    <ClInclude Include="Hexagon.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeparateDrawObject.h" />
     <ClInclude Include="ShotGunItem.h" />

@@ -30,6 +30,7 @@
     <ClCompile Include="TitleLine.cpp" />
     <ClCompile Include="TitleLineManager.cpp" />
     <ClCompile Include="TitleSceneManager.cpp" />
+    <ClCompile Include="Hexagon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="TitleLine.h" />
     <ClInclude Include="TitleLineManager.h" />
     <ClInclude Include="TitleSceneManager.h" />
+    <ClInclude Include="Hexagon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

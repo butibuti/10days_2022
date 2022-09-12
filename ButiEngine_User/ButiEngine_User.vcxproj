@@ -370,10 +370,12 @@ cd ..\</Command>
     <ClCompile Include="ItemEmitParameter.cpp" />
     <ClCompile Include="LargeGunItem.cpp" />
     <ClCompile Include="LesserEnemy.cpp" />
+    <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">/wd4996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PreAction.cpp" />
     <ClCompile Include="SeparateDrawObject.cpp" />
     <ClCompile Include="ShotGunItem.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -383,6 +385,9 @@ cd ..\</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestBehavior.cpp" />
+    <ClCompile Include="TitleLine.cpp" />
+    <ClCompile Include="TitleObjectManager.cpp" />
+    <ClCompile Include="TitleSceneManager.cpp" />
     <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -406,11 +411,16 @@ cd ..\</Command>
     <ClInclude Include="ItemEmitParameter.h" />
     <ClInclude Include="LargeGunItem.h" />
     <ClInclude Include="LesserEnemy.h" />
+    <ClInclude Include="Hexagon.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PreAction.h" />
     <ClInclude Include="SeparateDrawObject.h" />
     <ClInclude Include="ShotGunItem.h" />
     <ClInclude Include="stdafx_u.h" />
     <ClInclude Include="TestBehavior.h" />
+    <ClInclude Include="TitleLine.h" />
+    <ClInclude Include="TitleObjectManager.h" />
+    <ClInclude Include="TitleSceneManager.h" />
     <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>
   <ItemGroup>

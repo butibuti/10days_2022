@@ -29,6 +29,11 @@
     <ClCompile Include="GrenadeLauncherItem.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="GunAction_BossSpin.cpp" />
+    <ClCompile Include="TitleLine.cpp" />
+    <ClCompile Include="TitleObjectManager.cpp" />
+    <ClCompile Include="TitleSceneManager.cpp" />
+    <ClCompile Include="Hexagon.cpp" />
+    <ClCompile Include="PreAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -57,6 +62,11 @@
     <ClInclude Include="GrenadeLauncherItem.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="GunAction_BossSpin.h" />
+    <ClInclude Include="TitleLine.h" />
+    <ClInclude Include="TitleObjectManager.h" />
+    <ClInclude Include="TitleSceneManager.h" />
+    <ClInclude Include="Hexagon.h" />
+    <ClInclude Include="PreAction.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

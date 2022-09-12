@@ -101,7 +101,7 @@ bool ButiEngine::InputManager::IsTriggerDownKey()
 
 bool ButiEngine::InputManager::IsTriggerDecideKey()
 {
-	return (GameDevice::GetInput()->TriggerKey(Keys::Space) ||
+	return (//GameDevice::GetInput()->TriggerKey(Keys::Space) ||
 		GameDevice::GetInput()->GetPadButtonTrigger(PadButtons::XBOX_A));
 }
 

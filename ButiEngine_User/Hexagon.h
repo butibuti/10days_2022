@@ -18,12 +18,16 @@ namespace ButiEngine {
 		{
 			archive(isActive);
 		}
+
+		void Appear();
+		void Disappear();
 	private:
 		void AddPositionAnimation();
+		void AddScaleAnimation();
 
 		float m_moveSpeed;
 		float m_rotationAngle;
-		bool m_isDisappear;
+		Vector3 m_startScale;
 	};
 
 }

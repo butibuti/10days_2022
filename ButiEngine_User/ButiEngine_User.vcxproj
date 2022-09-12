@@ -383,7 +383,7 @@ cd ..\</Command>
     </ClCompile>
     <ClCompile Include="TestBehavior.cpp" />
     <ClCompile Include="TitleLine.cpp" />
-    <ClCompile Include="TitleLineManager.cpp" />
+    <ClCompile Include="TitleObjectManager.cpp" />
     <ClCompile Include="TitleSceneManager.cpp" />
     <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
@@ -413,7 +413,7 @@ cd ..\</Command>
     <ClInclude Include="stdafx_u.h" />
     <ClInclude Include="TestBehavior.h" />
     <ClInclude Include="TitleLine.h" />
-    <ClInclude Include="TitleLineManager.h" />
+    <ClInclude Include="TitleObjectManager.h" />
     <ClInclude Include="TitleSceneManager.h" />
     <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>

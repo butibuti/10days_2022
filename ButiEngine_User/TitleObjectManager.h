@@ -3,12 +3,13 @@
 namespace ButiEngine {
 
 	class TitleLine;
+	class Hexagon;
 
-	class TitleLineManager :public GameComponent
+	class TitleObjectManager :public GameComponent
 	{
 	public:
 		std::string GetGameComponentName()const override {
-			return "TitleLineManager";
+			return "TitleObjectManager";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -22,11 +23,13 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 
-		void Appear();
+		void AppearLine();
+		void AppearHexagon();
 		void Disappear();
 	private:
 		std::vector<Value_weak_ptr<TitleLine>> m_vec_rightTitleLineComponents;
 		std::vector<Value_weak_ptr<TitleLine>> m_vec_leftTitleLineComponents;
+		std::vector<Value_weak_ptr<Hexagon>> m_vec_hexagonComponents;
 		Value_ptr<RelativeTimer> m_vlp_timer;
 
 		std::int32_t m_titleLineNum;
@@ -36,4 +39,4 @@ namespace ButiEngine {
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(TitleLineManager, true);
+BUTI_REGIST_GAMECOMPONENT(TitleObjectManager, true);

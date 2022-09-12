@@ -28,7 +28,7 @@
     <ClCompile Include="ShotGunItem.cpp" />
     <ClCompile Include="GrenadeLauncherItem.cpp" />
     <ClCompile Include="TitleLine.cpp" />
-    <ClCompile Include="TitleLineManager.cpp" />
+    <ClCompile Include="TitleObjectManager.cpp" />
     <ClCompile Include="TitleSceneManager.cpp" />
     <ClCompile Include="Hexagon.cpp" />
   </ItemGroup>
@@ -58,7 +58,7 @@
     <ClInclude Include="ShotGunItem.h" />
     <ClInclude Include="GrenadeLauncherItem.h" />
     <ClInclude Include="TitleLine.h" />
-    <ClInclude Include="TitleLineManager.h" />
+    <ClInclude Include="TitleObjectManager.h" />
     <ClInclude Include="TitleSceneManager.h" />
     <ClInclude Include="Hexagon.h" />
   </ItemGroup>

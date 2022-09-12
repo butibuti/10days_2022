@@ -1,13 +1,28 @@
 #include "stdafx_u.h"
 #include "TitleSceneManager.h"
-#include "TitleLineManager.h"
+#include "TitleObjectManager.h"
 #include "InputManager.h"
 
 void ButiEngine::TitleSceneManager::OnUpdate()
 {
+	if (m_vlp_waitTimer->Update())
+	{
+		m_vlp_waitTimer->Stop();
+		GetManager().lock()->GetGameObject("TitleObjectManager").lock()->GetGameComponent<TitleObjectManager>()->AppearLine();
+	}
+
+	if (m_vlp_startTimer->Update())
+	{
+		m_vlp_startTimer->Stop();
+	}
+	if (m_vlp_startTimer->IsOn())
+	{
+		return;
+	}
+
 	if (!m_vlp_endTimer->IsOn() && InputManager::IsTriggerDecideKey())
 	{
-		GetManager().lock()->GetGameObject("TitleLineManager").lock()->GetGameComponent<TitleLineManager>()->Disappear();
+		GetManager().lock()->GetGameObject("TitleObjectManager").lock()->GetGameComponent<TitleObjectManager>()->Disappear();
 		m_vlp_endTimer->Start();
 	}
 
@@ -28,7 +43,13 @@ void ButiEngine::TitleSceneManager::OnSet()
 
 void ButiEngine::TitleSceneManager::Start()
 {
-	GetManager().lock()->GetGameObject("TitleLineManager").lock()->GetGameComponent<TitleLineManager>()->Appear();
+	GetManager().lock()->GetGameObject("TitleObjectManager").lock()->GetGameComponent<TitleObjectManager>()->AppearHexagon();
+
+	m_vlp_waitTimer = ObjectFactory::Create<RelativeTimer>(50);
+	m_vlp_waitTimer->Start();
+
+	m_vlp_startTimer = ObjectFactory::Create<RelativeTimer>(90);
+	m_vlp_startTimer->Start();
 
 	m_vlp_endTimer = ObjectFactory::Create<RelativeTimer>(120);
 }

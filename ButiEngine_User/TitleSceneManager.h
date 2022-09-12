@@ -19,6 +19,8 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 	private:
+		Value_ptr<RelativeTimer> m_vlp_waitTimer;
+		Value_ptr<RelativeTimer> m_vlp_startTimer;
 		Value_ptr<RelativeTimer> m_vlp_endTimer;
 	};
 

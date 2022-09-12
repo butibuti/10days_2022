@@ -63,6 +63,8 @@ void ButiEngine::BaseEnemy::Start()
 	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
 	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
 	m_vwp_player = GetManager().lock()->GetGameObject("Player");
+	m_speed = m_defaultSpeed;
+	m_directionDicisionInterval = m_defaultDirectionDicisionInterval;
 	m_vlp_directionDicisionTime = ObjectFactory::Create<RelativeTimer>(m_directionDicisionInterval);
 	m_vlp_directionDicisionTime->Start();
 	m_hitPoint = m_maxHitPoint;
@@ -85,11 +87,15 @@ void ButiEngine::BaseEnemy::OnRemove()
 void ButiEngine::BaseEnemy::OnShowUI()
 {
 	GUI::BulletText(u8"ˆÚ“®‘¬“x");
-	GUI::DragFloat("##speed", &m_speed, 1.0f, 0.0f, 10.0f);
+	if (GUI::DragFloat("##defaultSpeed", &m_defaultSpeed, 1.0f, 0.0f, 20.0f))
+	{
+		m_speed = m_defaultSpeed;
+	}
 	
 	GUI::BulletText(u8"ˆÚ“®•ûŒüŒˆ’èŠÔŠu");
-	if (GUI::DragInt("##moveRate", &m_directionDicisionInterval, 1.0f, 1.0f, 60.0f))
+	if (GUI::DragInt("##defaultDirectionDicisionInterval", &m_defaultDirectionDicisionInterval, 1.0f, 1.0f, 60.0f))
 	{
+		m_directionDicisionInterval = m_defaultDirectionDicisionInterval;
 		if (m_vlp_directionDicisionTime)
 		{
 			m_vlp_directionDicisionTime->ChangeCountFrame(m_directionDicisionInterval);
@@ -129,7 +135,9 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseEnemy::Clone()
 {
 	auto output = ObjectFactory::Create<BaseEnemy>();
 	output->m_speed = m_speed;
+	output->m_defaultSpeed = m_defaultSpeed;
 	output->m_directionDicisionInterval = m_directionDicisionInterval;
+	output->m_defaultDirectionDicisionInterval = m_defaultDirectionDicisionInterval;
 	output->m_minimumDistance = m_minimumDistance;
 	output->m_hitPoint = m_hitPoint;
 	output->m_maxHitPoint = m_maxHitPoint;
@@ -215,7 +223,7 @@ void ButiEngine::BaseEnemy::DecideDirection()
 	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
 	float distance = playerPosition.Distance(position);
 
-	if (distance <= m_minimumDistance)
+	/*if (distance <= m_minimumDistance)
 	{
 		float sin, cos;
 		MathHelper::SinCos(sin, cos, MathHelper::ToRadian(ButiRandom::GetInt(0, 360)));
@@ -226,7 +234,9 @@ void ButiEngine::BaseEnemy::DecideDirection()
 	{
 		m_direction = Vector3(playerPosition.x - position.x, 0, playerPosition.z - position.z);
 		m_direction.Normalize();
-	}
+	}*/
+	m_direction = Vector3(playerPosition.x - position.x, 0, playerPosition.z - position.z);
+	m_direction.Normalize();
 }
 
 void ButiEngine::BaseEnemy::Attack()
@@ -237,7 +247,7 @@ void ButiEngine::BaseEnemy::Attack()
 	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
 	float distance = playerPosition.Distance(position);
 
-	if (distance <= m_minimumDistance)
+	if (distance <= m_minimumDistance * 1.5f)
 	{
 		m_vwp_gunComponent.lock()->ShootStart();
 	}

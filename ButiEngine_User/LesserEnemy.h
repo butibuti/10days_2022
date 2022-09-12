@@ -21,8 +21,8 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-			archive(m_speed);
-			archive(m_directionDicisionInterval);
+			archive(m_defaultSpeed);
+			archive(m_defaultDirectionDicisionInterval);
 			archive(m_minimumDistance);
 			archive(m_maxHitPoint);
 			archive(m_invincibleInterval);

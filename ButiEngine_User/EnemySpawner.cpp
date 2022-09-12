@@ -21,9 +21,19 @@ void ButiEngine::EnemySpawner::OnUpdate()
 		Vector3 spawnDirection = Vector3(cos, 0, sin);
 		spawnDirection.Normalize();
 
-		auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
-		Vector3 spawnPosition = playerPosition + spawnDirection * length;
-		enemy.lock()->transform->SetLocalPosition(spawnPosition);
+		std::int32_t rnd = ButiRandom::GetInt(0, 1);
+		if (rnd % 2 == 0)
+		{
+			auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
+			Vector3 spawnPosition = playerPosition + spawnDirection * length;
+			enemy.lock()->transform->SetLocalPosition(spawnPosition);
+		}
+		else if (rnd % 2 == 1)
+		{
+			auto enemy = GetManager().lock()->AddObjectFromCereal("LesserEnemy");
+			Vector3 spawnPosition = playerPosition + spawnDirection * length;
+			enemy.lock()->transform->SetLocalPosition(spawnPosition);
+		}
 	}
 }
 

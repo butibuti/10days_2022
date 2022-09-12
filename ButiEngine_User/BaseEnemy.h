@@ -23,8 +23,8 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-			archive(m_speed);
-			archive(m_directionDicisionInterval);
+			archive(m_defaultSpeed);
+			archive(m_defaultDirectionDicisionInterval);
 			archive(m_minimumDistance);
 			archive(m_maxHitPoint);
 			archive(m_invincibleInterval);
@@ -68,9 +68,9 @@ namespace ButiEngine {
 		//ˆÚ“®
 		Value_ptr<RelativeTimer> m_vlp_directionDicisionTime;
 		std::int32_t m_directionDicisionInterval = 10;
-		std::int32_t m_baseDirectionDicisionInterval = 30;
+		std::int32_t m_defaultDirectionDicisionInterval = 30;
 		float m_speed = 1.0f;
-		float m_baseSpeed = 1.0f;
+		float m_defaultSpeed = 1.0f;
 		float m_minimumDistance = 3.0f;
 		Vector3 m_direction;
 

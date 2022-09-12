@@ -351,6 +351,7 @@ cd ..\</Command>
   <ItemGroup>
     <ClCompile Include="BaseEnemy.cpp" />
     <ClCompile Include="BaseItem.cpp" />
+    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Bullet_GrenadeLauncher.cpp" />
     <ClCompile Include="DamageArea.cpp" />
@@ -386,6 +387,7 @@ cd ..\</Command>
   <ItemGroup>
     <ClInclude Include="BaseEnemy.h" />
     <ClInclude Include="BaseItem.h" />
+    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="Bullet_GrenadeLauncher.h" />
     <ClInclude Include="ChangeSceneArea.h" />
     <ClInclude Include="DamageArea.h" />

@@ -11,6 +11,7 @@
 #include "GunAction_Shotgun.h"
 #include "BaseEnemy.h"
 #include "LesserEnemy.h"
+#include "BossEnemy.h"
 #include "EnemySpawner.h"
 
 void ButiEngine::Player::OnUpdate()
@@ -114,6 +115,10 @@ void ButiEngine::Player::StartGunAction()
 		{
 			enemy->GetGameComponent<LesserEnemy>()->StartPause();
 		}
+		else if (enemy->HasGameObjectTag("BossEnemy"))
+		{
+			enemy->GetGameComponent<BossEnemy>()->StartPause();
+		}
 	}
 	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner").lock()->GetGameComponent<EnemySpawner>();
 	enemySpawner->StartPause();
@@ -141,6 +146,10 @@ void ButiEngine::Player::FinishGunAction()
 		else if (enemy->HasGameObjectTag("LesserEnemy"))
 		{
 			enemy->GetGameComponent<LesserEnemy>()->FinishPause();
+		}
+		else if (enemy->HasGameObjectTag("BossEnemy"))
+		{
+			enemy->GetGameComponent<BossEnemy>()->FinishPause();
 		}
 	}
 	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner").lock()->GetGameComponent<EnemySpawner>();

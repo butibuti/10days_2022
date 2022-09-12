@@ -22,7 +22,8 @@ void ButiEngine::EnemySpawner::OnUpdate()
 		spawnDirection.Normalize();
 
 		auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
-		enemy.lock()->transform->SetLocalRotation(playerPosition + spawnDirection * length);
+		Vector3 spawnPosition = playerPosition + spawnDirection * length;
+		enemy.lock()->transform->SetLocalPosition(spawnPosition);
 	}
 }
 

@@ -6,13 +6,12 @@
 #include "Gun.h"
 #include "EquipGun.h"
 #include "Bullet.h"
-#include "GunAction_AssaultRifle.h"
-#include "GunAction_GrenadeLauncher.h"
-#include "GunAction_Shotgun.h"
 #include "BaseEnemy.h"
 #include "LesserEnemy.h"
 #include "BossEnemy.h"
 #include "EnemySpawner.h"
+#include "PreAction.h"
+#include "Camera.h"
 
 void ButiEngine::Player::OnUpdate()
 {
@@ -98,6 +97,12 @@ void ButiEngine::Player::StartGunAction()
 	m_isInvincible = true;
 	m_canPickUpItem = false;
 
+	GetManager().lock()->GetGameObject("CameraMan").lock()->GetGameComponent<Camera>()->StopChasePlayer();
+
+	auto rigidBodyComponent = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
+	rigidBodyComponent->GetRigidBody()->SetVelocity(Vector3Const::Zero);
+	rigidBodyComponent->UnRegist();
+
 	//Œ»Ýo‚Ä‚¢‚é’e‚ð’âŽ~
 	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet"));
 	for (auto bullet : bullets)
@@ -129,6 +134,11 @@ void ButiEngine::Player::FinishGunAction()
 	m_canAcceptInput = true;
 	m_isInvincible = false;
 	m_canPickUpItem = true;
+
+	GetManager().lock()->GetGameObject("CameraMan").lock()->GetGameComponent<Camera>()->StartChasePlayer();
+
+	auto rigidBodyComponent = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
+	rigidBodyComponent->Regist();
 
 	//’e‚ÌPause‚ð‰ðœ
 	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet"));
@@ -169,26 +179,29 @@ void ButiEngine::Player::Dead()
 	gameObject.lock()->SetIsRemove(true);
 }
 
-ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::Player::ChangeGun(const std::string& arg_gunName)
+ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun(const std::string& arg_gunName)
 {
 	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
 	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
-	return m_vwp_gunComponent;
+	return newGun;
 }
 
 void ButiEngine::Player::EquipAssaultRifle()
 {
-	gameObject.lock()->AddGameComponent<GunAction_AssaultRifle>();
+	StartGunAction();
+	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::AssaultRifle);
 }
 
 void ButiEngine::Player::EquipGrenadeLauncher()
 {
-	gameObject.lock()->AddGameComponent<GunAction_GrenadeLauncher>();
+	StartGunAction();
+	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::GrenadeLauncher);
 }
 
 void ButiEngine::Player::EquipShotgun()
 {
-	gameObject.lock()->AddGameComponent<GunAction_Shotgun>();
+	StartGunAction();
+	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::Shotgun);
 }
 
 void ButiEngine::Player::Control()
@@ -304,5 +317,5 @@ void ButiEngine::Player::SetLookAtParameter()
 	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
 	m_vwp_lookAtComponent.lock()->SetLookTarget(ObjectFactory::Create<Transform>(drawObjectTransform->GetWorldPosition()));
 	m_vwp_lookAtComponent.lock()->GetLookTarget()->Translate(drawObjectTransform->GetFront() * 100.0f);
-	m_vwp_lookAtComponent.lock()->SetSpeed(0.3f);
+	m_vwp_lookAtComponent.lock()->SetSpeed(0.1f);
 }

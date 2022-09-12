@@ -4,7 +4,6 @@
 #include "Gun.h"
 #include "SeparateDrawObject.h"
 #include "Player.h"
-#include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "Header/GameObjects/DefaultGameComponent/PositionAnimationComponent.h"
 #include "Header/GameObjects/DefaultGameComponent/RotationAnimationComponent.h"
 
@@ -31,18 +30,12 @@ void ButiEngine::GunAction_Shotgun::OnUpdate()
 
 void ButiEngine::GunAction_Shotgun::OnSet()
 {
-	GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(nullptr);
-
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();
+	m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetIsActive(true);
 
 	m_vwp_playerComponent = gameObject.lock()->GetGameComponent<Player>();
-	m_vwp_playerComponent.lock()->StartGunAction();
 
-	auto rigidBodyComponent = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
-	rigidBodyComponent->GetRigidBody()->SetVelocity(Vector3Const::Zero);
-	rigidBodyComponent->UnRegist();
-
-	m_vwp_gunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Shotgun");
+	m_vwp_gunComponent = gameObject.lock()->GetGameComponent<EquipGun>()->GetGun(0).lock()->GetGameComponent<Gun>();
 
 	std::int32_t movePhaseFrame = 20;
 	m_vlp_movePhaseTimer = ObjectFactory::Create<RelativeTimer>(movePhaseFrame);
@@ -199,10 +192,8 @@ void ButiEngine::GunAction_Shotgun::UpdateReturnPhase()
 	{
 		m_vlp_returnTimer->Stop();
 		m_vwp_playerComponent.lock()->FinishGunAction();
-		m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetSpeed(0.3f);
-		GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(gameObject.lock()->transform);
-		gameObject.lock()->GetGameComponent<RigidBodyComponent>()->Regist();
 		m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+		m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetSpeed(0.1f);
 		SetIsRemove(true);
 	}
 }

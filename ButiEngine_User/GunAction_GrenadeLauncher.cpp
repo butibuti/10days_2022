@@ -4,8 +4,8 @@
 #include "Gun.h"
 #include "SeparateDrawObject.h"
 #include "Player.h"
-#include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
 #include "Header/GameObjects/DefaultGameComponent/PositionAnimationComponent.h"
+#include "Header/GameObjects/DefaultGameComponent/RotationAnimationComponent.h"
 
 void ButiEngine::GunAction_GrenadeLauncher::OnUpdate()
 {
@@ -33,20 +33,13 @@ void ButiEngine::GunAction_GrenadeLauncher::OnUpdate()
 
 void ButiEngine::GunAction_GrenadeLauncher::OnSet()
 {
-	GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(nullptr);
-
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();
-	m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetIsActive(false);
 
 	m_vwp_playerComponent = gameObject.lock()->GetGameComponent<Player>();
-	m_vwp_playerComponent.lock()->StartGunAction();
 
-	auto rigidBodyComponent = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
-	rigidBodyComponent->GetRigidBody()->SetVelocity(Vector3Const::Zero);
-	rigidBodyComponent->UnRegist();
-
-	m_vwp_rightGunComponent = m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_GrenadeLauncher_Right");
-	m_vwp_leftGunComponent = gameObject.lock()->GetGameComponent<EquipGun>()->AddGun("Gun_Player_GrenadeLauncher_Left").lock()->GetGameComponent<Gun>();
+	auto equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
+	m_vwp_rightGunComponent = equipGunComponent->GetGun(0).lock()->GetGameComponent<Gun>();
+	m_vwp_leftGunComponent = equipGunComponent->GetGun(1).lock()->GetGameComponent<Gun>();
 
 
 	std::int32_t moveOffScreenPhaseFrame = 20;
@@ -91,16 +84,21 @@ void ButiEngine::GunAction_GrenadeLauncher::StartMoveOffScreenPhase()
 {
 	m_phase = GunAction_GrenadeLauncherPhase::MoveOffScreen;
 
-	m_vwp_drawObject.lock()->transform->SetLocalRotationY_Degrees(-90.0f);
+	auto target = m_vwp_startTransform->Clone();
+	target->TranslateX(-25.0f);
+	target->SetLocalRotationY_Degrees(-90.0f);
 
-	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
+	auto rotAnim = m_vwp_drawObject.lock()->AddGameComponent<RotationAnimation>();
+	rotAnim->SetInitRotate(m_vwp_startTransform->GetLocalRotation());
+	rotAnim->SetTargetRotate(target->GetLocalRotation());
+	rotAnim->SetSpeed((1.0f / m_vlp_moveOffScreenPhaseTimer->GetMaxCountFrame()) * 2.0f);
+	rotAnim->SetEaseType(Easing::EasingType::EaseOutCirc);
 
-	anim->SetInitPosition(m_vwp_startTransform->GetLocalPosition());
-	Vector3 targetPos = gameObject.lock()->transform->GetLocalPosition();
-	targetPos.x -= 25.0f;
-	anim->SetTargetPosition(targetPos);
-	anim->SetSpeed(1.0f / m_vlp_moveOffScreenPhaseTimer->GetMaxCountFrame());
-	anim->SetEaseType(Easing::EasingType::EaseOutCirc);
+	auto posAnim = gameObject.lock()->AddGameComponent<PositionAnimation>();
+	posAnim->SetInitPosition(m_vwp_startTransform->GetLocalPosition());
+	posAnim->SetTargetPosition(target->GetLocalPosition());
+	posAnim->SetSpeed(1.0f / m_vlp_moveOffScreenPhaseTimer->GetMaxCountFrame());
+	posAnim->SetEaseType(Easing::EasingType::EaseOutCirc);
 
 	m_vlp_moveOffScreenPhaseTimer->Start();
 }
@@ -184,7 +182,9 @@ void ButiEngine::GunAction_GrenadeLauncher::StartReturnCenterPhase()
 {
 	m_phase = GunAction_GrenadeLauncherPhase::ReturnCenter;
 
-	m_vwp_drawObject.lock()->transform->SetLocalRotation(m_vwp_startTransform->GetLocalRotation());
+	m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+
+	m_vwp_drawObject.lock()->transform->SetLocalRotationY_Degrees(180.0f);
 
 	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
 	Vector3 initPos = m_vwp_startTransform->GetLocalPosition();
@@ -194,7 +194,7 @@ void ButiEngine::GunAction_GrenadeLauncher::StartReturnCenterPhase()
 	anim->SetSpeed(1.0f / m_vlp_returnCenterPhaseTimer->GetMaxCountFrame());
 	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
 
-	m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+	auto equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
 	gameObject.lock()->GetGameComponent<EquipGun>()->RemoveGun(1);
 
 	m_vlp_returnCenterPhaseTimer->Start();
@@ -206,9 +206,12 @@ void ButiEngine::GunAction_GrenadeLauncher::UpdateReturnCenterPhase()
 	{
 		m_vlp_returnCenterPhaseTimer->Stop();
 		m_vwp_playerComponent.lock()->FinishGunAction();
-		GetManager().lock()->GetGameObject("CameraMan").lock()->transform->SetBaseTransform(gameObject.lock()->transform);
-		m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetIsActive(true);
-		gameObject.lock()->GetGameComponent<RigidBodyComponent>()->Regist();
+
+		Vector3 lookPos = m_vwp_drawObject.lock()->transform->GetLocalPosition() + m_vwp_drawObject.lock()->transform->GetFront() * 100.0f;
+		auto lookAt = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>();
+		lookAt->SetIsActive(true);
+		lookAt->GetLookTarget()->SetLocalPosition(lookPos);
+
 		SetIsRemove(true);
 		return;
 	}

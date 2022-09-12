@@ -381,6 +381,9 @@ cd ..\</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestBehavior.cpp" />
+    <ClCompile Include="TitleLine.cpp" />
+    <ClCompile Include="TitleLineManager.cpp" />
+    <ClCompile Include="TitleSceneManager.cpp" />
     <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +410,9 @@ cd ..\</Command>
     <ClInclude Include="ShotGunItem.h" />
     <ClInclude Include="stdafx_u.h" />
     <ClInclude Include="TestBehavior.h" />
+    <ClInclude Include="TitleLine.h" />
+    <ClInclude Include="TitleLineManager.h" />
+    <ClInclude Include="TitleSceneManager.h" />
     <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>
   <ItemGroup>

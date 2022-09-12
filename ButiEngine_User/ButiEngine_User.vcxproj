@@ -373,6 +373,7 @@ cd ..\</Command>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_imguiEditor|x64'">/wd4996 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PreAction.cpp" />
     <ClCompile Include="SeparateDrawObject.cpp" />
     <ClCompile Include="ShotGunItem.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -408,6 +409,7 @@ cd ..\</Command>
     <ClInclude Include="LesserEnemy.h" />
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PreAction.h" />
     <ClInclude Include="SeparateDrawObject.h" />
     <ClInclude Include="ShotGunItem.h" />
     <ClInclude Include="stdafx_u.h" />

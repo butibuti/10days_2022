@@ -220,6 +220,7 @@ void ButiEngine::Player::Rotate()
 	Vector2 rightStick = InputManager::GetRightStick();
 	if (rightStick != 0.0f)
 	{
+		lookTarget->SetLocalPosition(drawObjectTransform->GetWorldPosition());
 		lookTarget->Translate(Vector3(rightStick.x, 0.0f, rightStick.y).Normalize() * 100.0f);
 	}
 }

@@ -19,9 +19,13 @@ void ButiEngine::BaseItem::OnSet()
 			{
 				if (!m_isHitInCurrentFrame)
 				{
-					PowerUpPlayer(vwp_obj.lock()->GetGameComponent<Player>());
-					Dead();
-					m_isHitInCurrentFrame = true;
+					auto playerComponent = vwp_obj.lock()->GetGameComponent<Player>();
+					if (playerComponent->CanPickUpItem())
+					{
+						PowerUpPlayer(playerComponent);
+						Dead();
+						m_isHitInCurrentFrame = true;
+					}
 				}
 			}
 		}

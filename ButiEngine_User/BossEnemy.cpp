@@ -6,6 +6,7 @@
 #include "Gun.h"
 #include "EquipGun.h"
 #include "Player.h"
+#include "GunAction_BossSpin.h"
 
 void ButiEngine::BossEnemy::OnUpdate()
 {
@@ -18,8 +19,19 @@ void ButiEngine::BossEnemy::OnUpdate()
 	{
 		return;
 	}
+	if (!m_canMove)
+	{
+		return;
+	}
 
 	Control();
+}
+
+void ButiEngine::BossEnemy::Start()
+{
+	BaseEnemy::Start();
+
+	m_canMove = true;
 }
 
 void ButiEngine::BossEnemy::OnShowUI()
@@ -49,13 +61,26 @@ void ButiEngine::BossEnemy::Dead()
 	gameObject.lock()->SetIsRemove(true);
 }
 
+void ButiEngine::BossEnemy::StartGunAction()
+{
+	m_canMove = false;
+	m_vwp_gunComponent.lock()->ShootStop();
+	m_vlp_attackTime->Stop();
+}
+
+void ButiEngine::BossEnemy::FinishGunAction()
+{
+	m_canMove = true;
+	m_vlp_attackTime->Start();
+}
+
 void ButiEngine::BossEnemy::Control()
 {
 	//直前フレームにダメージがあったかを判定
 	CheckHasDamageInPreviousFrame();
 
 	Move();
-	Rotate();
+	//Rotate();
 	Attack();
 }
 
@@ -119,6 +144,15 @@ void ButiEngine::BossEnemy::Attack()
 	if (distance <= m_minimumDistance * 1.5f)
 	{
 		m_vwp_gunComponent.lock()->ShootStart();
+
+		if (m_vlp_attackTime->Update())
+		{
+			int32_t rnd = ButiRandom::GetInt(0, 10);
+			if (rnd == 0)
+			{
+				gameObject.lock()->AddGameComponent<GunAction_BossSpin>();
+			}
+		}
 	}
 	else
 	{

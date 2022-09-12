@@ -15,6 +15,7 @@ namespace ButiEngine {
 			return "BossEnemy";
 		}
 		void OnUpdate()override;
+		void Start()override;
 		void OnShowUI()override;
 		Value_ptr<GameComponent> Clone()override;
 		template<class Archive>
@@ -30,6 +31,9 @@ namespace ButiEngine {
 		}
 
 		void Dead()override;
+
+		void StartGunAction();
+		void FinishGunAction();
 	private:
 		void Control()override;
 		void Move()override;
@@ -37,6 +41,8 @@ namespace ButiEngine {
 		void DecideDirection()override;
 		void Attack()override;
 		void Damage(const int32_t arg_power)override;
+
+		bool m_canMove;
 	};
 
 }

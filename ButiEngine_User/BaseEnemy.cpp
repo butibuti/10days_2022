@@ -168,6 +168,7 @@ void ButiEngine::BaseEnemy::StartPause()
 	m_vlp_directionDicisionTime->Stop();
 	m_vwp_gunComponent.lock()->ShootStop();
 	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(Vector3());
+	m_vwp_lookAt.lock()->SetIsActive(false);
 }
 
 void ButiEngine::BaseEnemy::FinishPause()
@@ -180,6 +181,7 @@ void ButiEngine::BaseEnemy::FinishPause()
 	m_isPause = false;
 	m_vlp_attackTime->Start();
 	m_vlp_directionDicisionTime->Start();
+	m_vwp_lookAt.lock()->SetIsActive(true);
 }
 
 void ButiEngine::BaseEnemy::Control()
@@ -188,7 +190,7 @@ void ButiEngine::BaseEnemy::Control()
 	CheckHasDamageInPreviousFrame();
 
 	Move();
-	Rotate();
+	//Rotate();
 	Attack();
 }
 
@@ -336,7 +338,7 @@ void ButiEngine::BaseEnemy::SetLookAtParameter()
 {
 	m_vwp_lookAt = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>();
 	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
-	m_vwp_lookAt.lock()->SetLookTarget(drawObjectTransform->Clone());
-	m_vwp_lookAt.lock()->GetLookTarget()->Translate(drawObjectTransform->GetFront() * 100.0f);
+	m_vwp_lookAt.lock()->SetLookTarget(GetManager().lock()->GetGameObject("Player").lock()->transform);
+	//m_vwp_lookAt.lock()->GetLookTarget()->Translate(drawObjectTransform->GetFront() * 100.0f);
 	m_vwp_lookAt.lock()->SetSpeed(0.3f);
 }

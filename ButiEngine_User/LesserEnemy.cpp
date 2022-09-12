@@ -57,7 +57,7 @@ void ButiEngine::LesserEnemy::Control()
 	CheckHasDamageInPreviousFrame();
 
 	Move();
-	Rotate();
+	//Rotate();
 	Attack();
 }
 

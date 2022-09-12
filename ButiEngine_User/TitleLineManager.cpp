@@ -8,15 +8,18 @@ void ButiEngine::TitleLineManager::OnUpdate()
 	{
 		if (m_isAppear)
 		{
-			m_vec_titleLineComponents[m_titleLineNum].lock()->Appear();
+			if (m_titleLineNum < m_vec_rightTitleLineComponents.size())
+			{
+				m_vec_rightTitleLineComponents[m_titleLineNum].lock()->Appear();
+			}
+			if (m_titleLineNum < m_vec_leftTitleLineComponents.size())
+			{
+				m_vec_leftTitleLineComponents[m_titleLineNum].lock()->Appear();
+			}
 		}
-		//else if (m_isDisappear)
-		//{
-		//	m_vec_titleLineComponents[m_titleLineNum].lock()->Disappear();
-		//}
 
 		m_titleLineNum++;
-		if (m_titleLineNum >= m_vec_titleLineComponents.size())
+		if (m_titleLineNum >= m_vec_rightTitleLineComponents.size() && m_titleLineNum >= m_vec_leftTitleLineComponents.size())
 		{
 			m_vlp_timer->Stop();
 			m_isAppear = false;
@@ -35,7 +38,14 @@ void ButiEngine::TitleLineManager::Start()
 	auto end = titleLines.end();
 	for (auto itr = titleLines.begin(); itr != end; ++itr)
 	{
-		m_vec_titleLineComponents.push_back((*itr)->GetGameComponent<TitleLine>());
+		if((*itr)->transform->GetLocalPosition().x < 0.0f)
+		{
+			m_vec_leftTitleLineComponents.push_back((*itr)->GetGameComponent<TitleLine>());
+		}
+		else
+		{
+			m_vec_rightTitleLineComponents.push_back((*itr)->GetGameComponent<TitleLine>());
+		}
 	}
 
 	m_vlp_timer = ObjectFactory::Create<RelativeTimer>(1);
@@ -71,9 +81,19 @@ void ButiEngine::TitleLineManager::Disappear()
 	//m_titleLineNum = 0;
 	//m_vlp_timer->Start();
 
-	auto end = m_vec_titleLineComponents.end();
-	for (auto itr = m_vec_titleLineComponents.begin(); itr != end; ++itr)
 	{
-		(*itr).lock()->Disappear();
+		auto end = m_vec_rightTitleLineComponents.end();
+		for (auto itr = m_vec_rightTitleLineComponents.begin(); itr != end; ++itr)
+		{
+			(*itr).lock()->Disappear();
+		}
 	}
+	{
+		auto end = m_vec_leftTitleLineComponents.end();
+		for (auto itr = m_vec_leftTitleLineComponents.begin(); itr != end; ++itr)
+		{
+			(*itr).lock()->Disappear();
+		}
+	}
+
 }

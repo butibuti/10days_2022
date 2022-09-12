@@ -22,7 +22,7 @@ namespace ButiEngine {
 		void Appear();
 		void Disappear();
 	private:
-		void AddPositionAnimation(const Vector3& arg_targetPos);
+		void AddPositionAnimation(const Vector3& arg_targetPos, const Easing::EasingType arg_easeType);
 
 		Vector3 m_startPos;
 		Vector3 m_targetPos;

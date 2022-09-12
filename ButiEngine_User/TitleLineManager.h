@@ -25,7 +25,8 @@ namespace ButiEngine {
 		void Appear();
 		void Disappear();
 	private:
-		std::vector<Value_weak_ptr<TitleLine>> m_vec_titleLineComponents;
+		std::vector<Value_weak_ptr<TitleLine>> m_vec_rightTitleLineComponents;
+		std::vector<Value_weak_ptr<TitleLine>> m_vec_leftTitleLineComponents;
 		Value_ptr<RelativeTimer> m_vlp_timer;
 
 		std::int32_t m_titleLineNum;

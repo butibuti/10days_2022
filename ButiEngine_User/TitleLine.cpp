@@ -31,20 +31,20 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::TitleLine::Clone()
 
 void ButiEngine::TitleLine::Appear()
 {
-	AddPositionAnimation(m_targetPos);
+	AddPositionAnimation(m_targetPos, Easing::EasingType::EaseOutExpo);
 }
 
 void ButiEngine::TitleLine::Disappear()
 {
-	AddPositionAnimation(m_startPos);
+	AddPositionAnimation(m_startPos, Easing::EasingType::EaseInBack);
 }
 
-void ButiEngine::TitleLine::AddPositionAnimation(const Vector3& arg_targetPos)
+void ButiEngine::TitleLine::AddPositionAnimation(const Vector3& arg_targetPos, const Easing::EasingType arg_easeType)
 {
 	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
 
 	anim->SetInitPosition(gameObject.lock()->transform->GetLocalPosition());
 	anim->SetTargetPosition(arg_targetPos);
-	anim->SetSpeed(1.0f / 20);
-	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
+	anim->SetSpeed(1.0f / 15);
+	anim->SetEaseType(arg_easeType);
 }

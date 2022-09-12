@@ -19,8 +19,11 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 	private:
+		void AddPositionAnimation();
+
 		float m_moveSpeed;
 		float m_rotationAngle;
+		bool m_isDisappear;
 	};
 
 }

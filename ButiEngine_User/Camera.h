@@ -23,6 +23,7 @@ namespace ButiEngine {
 		void StopChasePlayer();
 		void Approach(const std::int32_t arg_frame);
 		void ReturnDefault(const std::int32_t arg_frame);
+		void StartShake(const std::int32_t arg_shakeFrame, const Vector3& arg_amplitude, const std::int32_t arg_shakeIntervalFrame);
 	private:
 		Value_weak_ptr<GameObject> m_vwp_parent;
 		Value_ptr<Transform> m_vlp_defaultTransform;

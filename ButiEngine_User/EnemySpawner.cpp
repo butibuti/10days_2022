@@ -24,17 +24,17 @@ void ButiEngine::EnemySpawner::OnUpdate()
 		std::int32_t rnd = ButiRandom::GetInt(0, 1);
 		if (rnd % 2 == 0)
 		{
-			auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
 			Vector3 spawnPosition = playerPosition + spawnDirection * length;
-			enemy.lock()->transform->SetLocalPosition(spawnPosition);
+			RegistSpawnEnemy("BaseEnemy", spawnPosition);
 		}
 		else if (rnd % 2 == 1)
 		{
-			auto enemy = GetManager().lock()->AddObjectFromCereal("LesserEnemy");
 			Vector3 spawnPosition = playerPosition + spawnDirection * length;
-			enemy.lock()->transform->SetLocalPosition(spawnPosition);
+			RegistSpawnEnemy("LesserEnemy", spawnPosition);
 		}
 	}
+
+	AdvanceTimeSpawnEnemy();
 }
 
 void ButiEngine::EnemySpawner::OnSet()
@@ -44,12 +44,13 @@ void ButiEngine::EnemySpawner::OnSet()
 void ButiEngine::EnemySpawner::Start()
 {
 	m_waveCount = 0;
+	m_vec_spawnEnemy.clear();
 
 	if (!m_vec_vec_emitObjectParameter.empty())
 	{
 		for (int i = 0; i < m_vec_vec_emitObjectParameter[0].size(); i++)
 		{
-			std::string name = m_vec_vec_emitObjectParameter[0][i].first;
+			/*std::string name = m_vec_vec_emitObjectParameter[0][i].first;
 			if (name == "BaseEnemy")
 			{
 				auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
@@ -59,7 +60,9 @@ void ButiEngine::EnemySpawner::Start()
 			{
 				auto enemy = GetManager().lock()->AddObjectFromCereal("LesserEnemy");
 				enemy.lock()->transform->SetLocalPosition(m_vec_vec_emitObjectParameter[0][i].second);
-			}
+			}*/
+
+			RegistSpawnEnemy(m_vec_vec_emitObjectParameter[0][i].first, m_vec_vec_emitObjectParameter[0][i].second);
 		}
 	}
 
@@ -77,6 +80,21 @@ void ButiEngine::EnemySpawner::OnRemove()
 
 void ButiEngine::EnemySpawner::OnShowUI()
 {
+	static char buff[128];
+	GUI::BulletText(u8"EnemyÇÃê∂ê¨óPó\éûä‘");
+	GUI::InputTextWithHint("##beforeSpawnEnemyTime", m_nameHint, buff, sizeof(buff));
+	if (GUI::Button("Add beforeSpawnEnemyTime"))
+	{
+		m_nameHint = buff;
+		m_map_beforeSpawnEnemyTime.emplace(m_nameHint, 60);
+	}
+	for (auto element : m_map_beforeSpawnEnemyTime)
+	{
+		GUI::BulletText(u8"" + element.first);
+		GUI::DragInt("##time_" + element.first, &m_map_beforeSpawnEnemyTime[element.first], 1.0f, 0, 1000);
+	}
+	GUI::Text("------------");
+
 	//WaveÇÃí«â¡
 	if (GUI::Button("Add Wave"))
 	{
@@ -84,7 +102,6 @@ void ButiEngine::EnemySpawner::OnShowUI()
 		m_vec_vec_emitObjectParameter.push_back(temp);
 	}
 
-	static char buff[128];
 	for (int i = 0; i < m_vec_vec_emitObjectParameter.size(); i++)
 	{
 		GUI::Text("------------");
@@ -144,4 +161,55 @@ void ButiEngine::EnemySpawner::FinishPause()
 {
 	m_isPause = false;
 	m_vlp_spawnTimer->Start();
+}
+
+void ButiEngine::EnemySpawner::RegistSpawnEnemy(const std::string& arg_enemyName, const Vector3& arg_position)
+{
+	auto itr = m_map_beforeSpawnEnemyTime.find(arg_enemyName);
+	if (itr != m_map_beforeSpawnEnemyTime.end())
+	{
+		m_vec_spawnEnemy.push_back(std::make_tuple(arg_enemyName, arg_position, itr->second));
+	}
+	else
+	{
+		m_vec_spawnEnemy.push_back(std::make_tuple(arg_enemyName, arg_position, 60));
+	}
+}
+
+void ButiEngine::EnemySpawner::AdvanceTimeSpawnEnemy()
+{
+	for (auto itr = m_vec_spawnEnemy.begin(); itr != m_vec_spawnEnemy.end();)
+	{
+		std::int32_t& time = std::get<2>(*itr);
+		time--;
+
+		//ê∂ê¨
+		if (time <= 0)
+		{
+			std::string& name = std::get<0>(*itr);
+			Vector3& position = std::get<1>(*itr);
+
+			if (name == "BaseEnemy")
+			{
+				auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
+				enemy.lock()->transform->SetLocalPosition(position);
+			}
+			else if (name == "LesserEnemy")
+			{
+				auto enemy = GetManager().lock()->AddObjectFromCereal("LesserEnemy");
+				enemy.lock()->transform->SetLocalPosition(position);
+			}
+			else if (name == "BossEnemy")
+			{
+				auto enemy = GetManager().lock()->AddObjectFromCereal("BossEnemy");
+				enemy.lock()->transform->SetLocalPosition(position);
+			}
+
+			itr = m_vec_spawnEnemy.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
 }

@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Header/GameObjects/DefaultGameComponent/PositionAnimationComponent.h"
 #include "Header/GameObjects/DefaultGameComponent/RotationAnimationComponent.h"
+#include "Shake.h"
 
 void ButiEngine::Camera::OnUpdate()
 {
@@ -76,4 +77,14 @@ void ButiEngine::Camera::ReturnDefault(const std::int32_t arg_frame)
 	parentAnim->SetTargetRotate(m_vlp_parentDefaultTransform->GetLocalRotation());
 	parentAnim->SetSpeed(1.0f / arg_frame);
 	parentAnim->SetEaseType(Easing::EasingType::EaseOutCirc);
+}
+
+void ButiEngine::Camera::StartShake(const std::int32_t arg_shakeFrame, const Vector3& arg_amplitude, const std::int32_t arg_shakeIntervalFrame)
+{
+	if (gameObject.lock()->GetGameComponent<Shake>())
+	{
+		return;
+	}
+
+	gameObject.lock()->AddGameComponent<Shake>(arg_shakeFrame, arg_amplitude, arg_shakeIntervalFrame);
 }

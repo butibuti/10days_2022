@@ -379,6 +379,7 @@ cd ..\</Command>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PreAction.cpp" />
     <ClCompile Include="SeparateDrawObject.cpp" />
+    <ClCompile Include="Shake.cpp" />
     <ClCompile Include="ShotGunItem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -418,6 +419,7 @@ cd ..\</Command>
     <ClInclude Include="Player.h" />
     <ClInclude Include="PreAction.h" />
     <ClInclude Include="SeparateDrawObject.h" />
+    <ClInclude Include="Shake.h" />
     <ClInclude Include="ShotGunItem.h" />
     <ClInclude Include="stdafx_u.h" />
     <ClInclude Include="TestBehavior.h" />

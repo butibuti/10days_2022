@@ -28,17 +28,8 @@ void ButiEngine::EnemySpawner::OnUpdate()
 		Vector3 spawnDirection = Vector3(cos, 0, sin);
 		spawnDirection.Normalize();
 
-		std::int32_t rnd = ButiRandom::GetInt(0, 1);
-		if (rnd % 2 == 0)
-		{
-			Vector3 spawnPosition = playerPosition + spawnDirection * length;
-			RegistSpawnEnemy("BaseEnemy", spawnPosition);
-		}
-		else if (rnd % 2 == 1)
-		{
-			Vector3 spawnPosition = playerPosition + spawnDirection * length;
-			RegistSpawnEnemy("LesserEnemy", spawnPosition);
-		}
+		Vector3 spawnPosition = playerPosition + spawnDirection * length;
+		RegistSpawnEnemy("LesserEnemy", spawnPosition);
 	}
 }
 

@@ -295,7 +295,7 @@ void ButiEngine::Player::Shoot()
 	{
 		//EquipAssaultRifle();
 		//EquipGrenadeLauncher();
-		EquipShotgun();
+		//EquipShotgun();
 	}
 }
 

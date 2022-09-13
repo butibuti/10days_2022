@@ -52,7 +52,7 @@ void ButiEngine::GunAction_Shotgun::OnSet()
 	m_radius = 5.0f;
 
 	std::int32_t shootWaitPhaseFrame = 30;
-	m_vlp_returnTimer = ObjectFactory::Create<RelativeTimer>(shootWaitPhaseFrame);
+	m_vlp_returnPhaseTimer = ObjectFactory::Create<RelativeTimer>(shootWaitPhaseFrame);
 
 	StartMovePhase();
 }
@@ -180,17 +180,17 @@ void ButiEngine::GunAction_Shotgun::StartReturnPhase()
 	anim->SetInitPosition(pos);
 	Vector3 targetPos = m_vlp_moveShootCenterTransform->GetLocalPosition();
 	anim->SetTargetPosition(targetPos);
-	anim->SetSpeed(1.0f / m_vlp_returnTimer->GetMaxCountFrame());
+	anim->SetSpeed(1.0f / m_vlp_returnPhaseTimer->GetMaxCountFrame());
 	anim->SetEaseType(Easing::EasingType::EaseOutCirc);
 
-	m_vlp_returnTimer->Start();
+	m_vlp_returnPhaseTimer->Start();
 }
 
 void ButiEngine::GunAction_Shotgun::UpdateReturnPhase()
 {
-	if (m_vlp_returnTimer->Update())
+	if (m_vlp_returnPhaseTimer->Update())
 	{
-		m_vlp_returnTimer->Stop();
+		m_vlp_returnPhaseTimer->Stop();
 		m_vwp_playerComponent.lock()->FinishGunAction();
 		m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal", true);
 		m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetSpeed(0.1f);

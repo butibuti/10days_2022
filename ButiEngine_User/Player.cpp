@@ -190,19 +190,25 @@ ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun
 void ButiEngine::Player::EquipAssaultRifle()
 {
 	StartGunAction();
-	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::AssaultRifle);
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::AssaultRifle);
 }
 
 void ButiEngine::Player::EquipGrenadeLauncher()
 {
 	StartGunAction();
-	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::GrenadeLauncher);
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::GrenadeLauncher);
 }
 
 void ButiEngine::Player::EquipShotgun()
 {
 	StartGunAction();
-	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::Shotgun);
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::Shotgun);
+}
+
+void ButiEngine::Player::EquipLastAttackGun()
+{
+	StartGunAction();
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::LastAttack);
 }
 
 void ButiEngine::Player::Control()
@@ -263,7 +269,8 @@ void ButiEngine::Player::Shoot()
 	{
 		//EquipAssaultRifle();
 		//EquipGrenadeLauncher();
-		EquipShotgun();
+		//EquipShotgun();
+		EquipLastAttackGun();
 	}
 }
 

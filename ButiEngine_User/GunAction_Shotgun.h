@@ -54,7 +54,7 @@ namespace ButiEngine {
 		std::int32_t m_shootCount;
 		float m_radius;
 
-		Value_ptr<RelativeTimer> m_vlp_returnTimer;
+		Value_ptr<RelativeTimer> m_vlp_returnPhaseTimer;
 
 		Value_weak_ptr<Player> m_vwp_playerComponent;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;

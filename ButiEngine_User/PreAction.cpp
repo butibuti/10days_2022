@@ -6,6 +6,7 @@
 #include "GunAction_AssaultRifle.h"
 #include "GunAction_GrenadeLauncher.h"
 #include "GunAction_Shotgun.h"
+#include "GunAction_LastAttack.h"
 #include "Camera.h"
 #include "Header/GameObjects/DefaultGameComponent/RotationAnimationComponent.h"
 
@@ -138,6 +139,10 @@ void ButiEngine::PreAction::ChangeGun()
 	case ButiEngine::GunActionType::Shotgun:
 		m_vwp_rightGun = playerComponent->ChangeGun("Gun_Player_Shotgun");
 		break;
+	case ButiEngine::GunActionType::LastAttack:
+		m_vwp_rightGun = playerComponent->ChangeGun("Gun_Player_AssaultRifle_Right");
+		m_vwp_leftGun = equipGunComponent->AddGun("Gun_Player_AssaultRifle_Left");
+		break;
 	default:
 		break;
 	}
@@ -155,6 +160,9 @@ void ButiEngine::PreAction::AddGunAction()
 		break;
 	case ButiEngine::GunActionType::Shotgun:
 		gameObject.lock()->AddGameComponent<GunAction_Shotgun>();
+		break;
+	case ButiEngine::GunActionType::LastAttack:
+		gameObject.lock()->AddGameComponent<GunAction_LastAttack>();
 		break;
 	default:
 		break;
@@ -189,12 +197,31 @@ void ButiEngine::PreAction::AddStartTransformAnimation_RightGun()
 
 void ButiEngine::PreAction::AddFinishTransformAnimation_RightGun()
 {
+	auto anim = m_vwp_rightGun.lock()->AddGameComponent<TransformAnimation>();
+	anim->SetInitTransform(m_vwp_rightGun.lock()->transform);
+	anim->SetTargetTransform(m_vlp_startRightGunTransform);
+	anim->SetSpeed(1.0f / m_vlp_returnTimer->GetMaxCountFrame());
+	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
 }
 
 void ButiEngine::PreAction::AddStartTransformAnimation_LeftGun()
 {
+	if (!m_vwp_leftGun.lock())
+	{
+		return;
+	}
 }
 
 void ButiEngine::PreAction::AddFinishTransformAnimation_LeftGun()
 {
+	if (!m_vwp_leftGun.lock())
+	{
+		return;
+	}
+
+	auto anim = m_vwp_leftGun.lock()->AddGameComponent<TransformAnimation>();
+	anim->SetInitTransform(m_vwp_leftGun.lock()->transform);
+	anim->SetTargetTransform(m_vlp_startLeftGunTransform);
+	anim->SetSpeed(1.0f / m_vlp_returnTimer->GetMaxCountFrame());
+	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
 }

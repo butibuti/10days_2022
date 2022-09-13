@@ -36,6 +36,7 @@
     <ClCompile Include="PreAction.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Shake.cpp" />
+    <ClCompile Include="GunAction_LastAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="PreAction.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Shake.h" />
+    <ClInclude Include="GunAction_LastAttack.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

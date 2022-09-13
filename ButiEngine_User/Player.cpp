@@ -180,9 +180,9 @@ void ButiEngine::Player::Dead()
 	gameObject.lock()->SetIsRemove(true);
 }
 
-ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun(const std::string& arg_gunName)
+ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun(const std::string& arg_gunName, const bool arg_isThrow)
 {
-	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
+	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName, 0, arg_isThrow);
 	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
 	return newGun;
 }

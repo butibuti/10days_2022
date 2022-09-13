@@ -36,12 +36,15 @@ namespace ButiEngine {
 
 		void ShootStart();
 		void ShootStop();
+		void Dead();
 	private:
 		void Shoot();
 		void SetNormalBulletParameter(Value_weak_ptr<GameObject> arg_bullet);
 		void SetGrenadeLauncherBulletParameter(Value_weak_ptr<GameObject> arg_bullet);
 		void Recoil();
 
+		Value_ptr<RelativeTimer> m_vlp_deadTimer;
+		Vector3 m_velocity;
 
 		Value_weak_ptr<GameObject> m_vwp_owner;
 

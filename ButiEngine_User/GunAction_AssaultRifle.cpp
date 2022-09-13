@@ -25,7 +25,7 @@ void ButiEngine::GunAction_AssaultRifle::OnUpdate()
 		if (m_phase > maxPhaseNum)
 		{
 			m_vwp_playerComponent.lock()->FinishGunAction();
-			m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+			m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal", true);
 			SetIsRemove(true);
 			return;
 		}

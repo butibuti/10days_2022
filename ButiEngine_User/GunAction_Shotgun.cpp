@@ -192,7 +192,7 @@ void ButiEngine::GunAction_Shotgun::UpdateReturnPhase()
 	{
 		m_vlp_returnTimer->Stop();
 		m_vwp_playerComponent.lock()->FinishGunAction();
-		m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal");
+		m_vwp_playerComponent.lock()->ChangeGun("Gun_Player_Normal", true);
 		m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetSpeed(0.1f);
 		SetIsRemove(true);
 	}

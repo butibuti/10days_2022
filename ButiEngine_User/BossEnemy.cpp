@@ -9,6 +9,15 @@
 #include "GunAction_BossSpin.h"
 #include "GunAction_BossSnake.h"
 #include "ItemEmitParameter.h"
+#include "Bullet.h"
+#include "Bullet_GrenadeLauncher.h"
+#include "LesserEnemy.h"
+#include "EnemySpawner.h"
+#include "BaseItem.h"
+#include "LargeGunItem.h"
+#include "ShotGunItem.h"
+#include "GrenadeLauncherItem.h"
+#include "LastAttackItem.h"
 
 void ButiEngine::BossEnemy::OnUpdate()
 {
@@ -75,7 +84,6 @@ void ButiEngine::BossEnemy::Dead()
 	m_vwp_equipGunComponent.lock()->Dead();
 	gameObject.lock()->SetIsRemove(true);*/
 
-	EmitItem();
 	StartPause();
 	m_isPause = false;
 	m_canMove = true;
@@ -92,6 +100,10 @@ void ButiEngine::BossEnemy::Dead()
 	{
 		bossSnakeComponent->SetIsRemove(true);
 	}
+
+	DeleteEnemySideObject();
+	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner");
+	enemySpawner.lock()->GetGameComponent<EnemySpawner>()->StartPause();
 }
 
 void ButiEngine::BossEnemy::StartGunAction()
@@ -267,6 +279,7 @@ void ButiEngine::BossEnemy::Damage(const int32_t arg_power)
 
 	if (m_hitPoint <= 0)
 	{
+		EmitItem();
 		Dead();
 	}
 }
@@ -284,5 +297,68 @@ void ButiEngine::BossEnemy::EmitItem()
 	{
 		auto item = GetManager().lock()->AddObjectFromCereal("LastAttackItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition() + Vector3(0, 0, -3));
+	}
+}
+
+void ButiEngine::BossEnemy::DeleteEnemySideObject()
+{
+	//敵オブジェクトの消去
+	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
+	for (auto enemy : enemies)
+	{
+		if (enemy->HasGameObjectTag("BaseEnemy"))
+		{
+			enemy->GetGameComponent<BaseEnemy>()->Dead();
+		}
+		else if (enemy->HasGameObjectTag("LesserEnemy"))
+		{
+			enemy->GetGameComponent<LesserEnemy>()->Dead();
+		}
+	}
+
+	//敵の弾の消去
+	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet_Enemy"));
+	for (auto bullet : bullets)
+	{
+		auto bulletComponent = bullet->GetGameComponent<Bullet>();
+		if (bulletComponent)
+		{
+			bulletComponent->Dead();
+		}
+		auto bulletGLComponent = bullet->GetGameComponent<Bullet_GrenadeLauncher>();
+		if (bulletGLComponent)
+		{
+			bulletGLComponent->Dead();
+		}
+	}
+
+	//アイテムの消去
+	auto items = GetManager().lock()->GetGameObjects(GameObjectTag("Item"));
+	for (auto item : items)
+	{
+		auto BaseItemComponent = item->GetGameComponent<BaseItem>();
+		if (BaseItemComponent)
+		{
+			BaseItemComponent->Dead();
+		
+		}
+		auto LargeGunItemComponent = item->GetGameComponent<LargeGunItem>();
+		if (LargeGunItemComponent)
+		{
+			LargeGunItemComponent->Dead();
+
+		}
+		auto ShotGunItemComponent = item->GetGameComponent<ShotGunItem>();
+		if (ShotGunItemComponent)
+		{
+			ShotGunItemComponent->Dead();
+
+		}
+		auto grenadeLauncherItemComponent = item->GetGameComponent<GrenadeLauncherItem>();
+		if (grenadeLauncherItemComponent)
+		{
+			grenadeLauncherItemComponent->Dead();
+
+		}
 	}
 }

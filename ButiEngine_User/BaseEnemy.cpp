@@ -148,7 +148,6 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BaseEnemy::Clone()
 
 void ButiEngine::BaseEnemy::Dead()
 {
-	EmitItem();
 	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
 	m_vwp_equipGunComponent.lock()->Dead();
 	gameObject.lock()->SetIsRemove(true);
@@ -274,6 +273,7 @@ void ButiEngine::BaseEnemy::Damage(const int32_t arg_power)
 
 	if (m_hitPoint <= 0)
 	{
+		EmitItem();
 		Dead();
 	}
 }

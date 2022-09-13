@@ -6,6 +6,7 @@
 #include "Gun.h"
 #include "EquipGun.h"
 #include "Bullet.h"
+#include "Bullet_GrenadeLauncher.h"
 #include "BaseEnemy.h"
 #include "LesserEnemy.h"
 #include "BossEnemy.h"
@@ -109,7 +110,16 @@ void ButiEngine::Player::StartGunAction()
 	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet"));
 	for (auto bullet : bullets)
 	{
-		bullet->GetGameComponent<Bullet>()->StartPause();
+		auto bulletComponent = bullet->GetGameComponent<Bullet>();
+		if (bulletComponent)
+		{
+			bulletComponent->StartPause();
+		}
+		auto bulletGLComponent = bullet->GetGameComponent<Bullet_GrenadeLauncher>();
+		if (bulletGLComponent)
+		{
+			//bulletGLComponent->StartPause();
+		}
 	}
 	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
 	for (auto enemy : enemies)
@@ -146,7 +156,16 @@ void ButiEngine::Player::FinishGunAction()
 	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet"));
 	for (auto bullet : bullets)
 	{
-		bullet->GetGameComponent<Bullet>()->FinishPause();
+		auto bulletComponent = bullet->GetGameComponent<Bullet>();
+		if (bulletComponent)
+		{
+			bulletComponent->FinishPause();
+		}
+		auto bulletGLComponent = bullet->GetGameComponent<Bullet_GrenadeLauncher>();
+		if (bulletGLComponent)
+		{
+			//bulletGLComponent->FinishPause();
+		}
 	}
 	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
 	for (auto enemy : enemies)

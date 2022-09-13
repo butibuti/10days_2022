@@ -5,18 +5,18 @@ namespace ButiEngine {
 	class BossEnemy;
 	class Gun;
 
-	enum class GunAction_BossSpinPhase
+	enum class GunAction_BossSnakePhase
 	{
 		BeforeShoot,
 		Shoot,
 		AfterShoot
 	};
 
-	class GunAction_BossSpin :public GameComponent
+	class GunAction_BossSnake :public GameComponent
 	{
 	public:
 		std::string GetGameComponentName()const override {
-			return "GunAction_BossSpin";
+			return "GunAction_BossSnake";
 		}
 		void OnUpdate()override;
 		void OnSet()override;
@@ -41,21 +41,23 @@ namespace ButiEngine {
 		void UpdateAfterShootPhase();
 		void Rotate();
 
-		GunAction_BossSpinPhase m_phase;
+		GunAction_BossSnakePhase m_phase;
 
 		Value_ptr<RelativeTimer> m_vlp_waitTimer;
-		std::int32_t m_waitTime;
+		std::int32_t m_lockOnTime;
+		std::int32_t m_restTime;
 		Value_ptr<RelativeTimer> m_vlp_actionTimer;
 		std::int32_t m_actionTime;
 		Value_ptr<Transform> m_vwp_startTransform;
-		std::int32_t m_spinCount;
+		std::int32_t m_turnCount;
+		std::int32_t m_turnCountMax;
+		std::int32_t m_spreadDegree;
 
 		Value_weak_ptr<BossEnemy> m_vwp_bossEnemyComponent;
-		Value_weak_ptr<Gun> m_vwp_rightGunComponent;
-		Value_weak_ptr<Gun> m_vwp_leftGunComponent;
+		Value_weak_ptr<Gun> m_vwp_gunComponent;
 		Value_weak_ptr<GameObject> m_vwp_drawObject;
 	};
 
 }
 
-BUTI_REGIST_GAMECOMPONENT(GunAction_BossSpin, true);
+BUTI_REGIST_GAMECOMPONENT(GunAction_BossSnake, true);

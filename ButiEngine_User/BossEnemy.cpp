@@ -7,6 +7,7 @@
 #include "EquipGun.h"
 #include "Player.h"
 #include "GunAction_BossSpin.h"
+#include "GunAction_BossSnake.h"
 #include "ItemEmitParameter.h"
 
 void ButiEngine::BossEnemy::OnUpdate()
@@ -45,6 +46,12 @@ void ButiEngine::BossEnemy::Start()
 void ButiEngine::BossEnemy::OnShowUI()
 {
 	BaseEnemy::OnShowUI();
+
+	GUI::Text("------------");
+	GUI::BulletText(u8"attackTime");
+	GUI::Text(m_vlp_attackTime->GetCurrentCountFrame());
+	GUI::BulletText(u8"directionDicisionTime");
+	GUI::Text(m_vlp_directionDicisionTime->GetCurrentCountFrame());
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BossEnemy::Clone()
@@ -73,6 +80,18 @@ void ButiEngine::BossEnemy::Dead()
 	m_isPause = false;
 	m_canMove = true;
 	m_isPassedOut = true;
+
+	//特殊攻撃中ならコンポーネント削除
+	auto bossSpinComponent = gameObject.lock()->GetGameComponent<GunAction_BossSpin>();
+	if (bossSpinComponent)
+	{
+		bossSpinComponent->SetIsRemove(true);
+	}
+	auto bossSnakeComponent = gameObject.lock()->GetGameComponent<GunAction_BossSnake>();
+	if (bossSnakeComponent)
+	{
+		bossSnakeComponent->SetIsRemove(true);
+	}
 }
 
 void ButiEngine::BossEnemy::StartGunAction()
@@ -88,6 +107,7 @@ void ButiEngine::BossEnemy::FinishGunAction()
 	m_canMove = true;
 	m_vlp_attackTime->Start();
 	m_vlp_directionDicisionTime->Start();
+	m_vwp_lookAt.lock()->SetIsActive(true);
 }
 
 void ButiEngine::BossEnemy::StartPause()
@@ -104,6 +124,11 @@ void ButiEngine::BossEnemy::StartPause()
 	if (bossSpinComponent)
 	{
 		bossSpinComponent->StartPause();
+	}
+	auto bossSnakeComponent = gameObject.lock()->GetGameComponent<GunAction_BossSnake>();
+	if (bossSnakeComponent)
+	{
+		bossSnakeComponent->StartPause();
 	}
 }
 
@@ -125,6 +150,13 @@ void ButiEngine::BossEnemy::FinishPause()
 	{
 		bossSpinComponent->FinishPause();
 		m_vwp_lookAt.lock()->SetIsActive(false);
+		m_vlp_attackTime->Stop();
+		m_vlp_directionDicisionTime->Stop();
+	}
+	auto bossSnakeComponent = gameObject.lock()->GetGameComponent<GunAction_BossSnake>();
+	if (bossSnakeComponent)
+	{
+		bossSnakeComponent->FinishPause();
 		m_vlp_attackTime->Stop();
 		m_vlp_directionDicisionTime->Stop();
 	}
@@ -203,10 +235,14 @@ void ButiEngine::BossEnemy::Attack()
 
 		if (m_vlp_attackTime->Update())
 		{
-			int32_t rnd = ButiRandom::GetInt(0, 10);
+			int32_t rnd = ButiRandom::GetInt(0, 1);
 			if (rnd == 0)
 			{
 				gameObject.lock()->AddGameComponent<GunAction_BossSpin>();
+			}
+			else if (rnd == 1)
+			{
+				gameObject.lock()->AddGameComponent<GunAction_BossSnake>();
 			}
 		}
 	}

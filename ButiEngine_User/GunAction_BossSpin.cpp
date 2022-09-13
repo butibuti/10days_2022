@@ -42,8 +42,11 @@ void ButiEngine::GunAction_BossSpin::OnSet()
 	m_vwp_rightGunComponent = m_vwp_bossEnemyComponent.lock()->ChangeGun("Gun_Boss_Spin_Right");
 	m_vwp_leftGunComponent = gameObject.lock()->GetGameComponent<EquipGun>()->AddGun("Gun_Boss_Spin_Left").lock()->GetGameComponent<Gun>();
 
+	m_waitTime = 20;
+	m_actionTime = 300;
 	m_vlp_waitTimer = ObjectFactory::Create<RelativeTimer>(m_waitTime);
 	m_vlp_actionTimer = ObjectFactory::Create<RelativeTimer>(m_actionTime);
+	m_spinCount = 5;
 
 	StartBeforeShootPhase();
 }
@@ -58,10 +61,10 @@ void ButiEngine::GunAction_BossSpin::OnRemove()
 
 void ButiEngine::GunAction_BossSpin::OnShowUI()
 {
-	if (GUI::DragInt("##actionTime", &m_actionTime, 1.0f, 1, 1000))
-	{
-		m_vlp_actionTimer->ChangeCountFrame(m_actionTime);
-	}
+	GUI::BulletText(u8"waitTimer");
+	GUI::Text(m_vlp_waitTimer->GetCurrentCountFrame());
+	GUI::BulletText(u8"actionTimer");
+	GUI::Text(m_vlp_actionTimer->GetCurrentCountFrame());
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::GunAction_BossSpin::Clone()
@@ -81,8 +84,11 @@ void ButiEngine::GunAction_BossSpin::FinishPause()
 {
 	m_vlp_waitTimer->Start();
 	m_vlp_actionTimer->Start();
-	m_vwp_rightGunComponent.lock()->ShootStart();
-	m_vwp_leftGunComponent.lock()->ShootStart();
+	if (m_phase == GunAction_BossSpinPhase::Shoot)
+	{
+		m_vwp_rightGunComponent.lock()->ShootStart();
+		m_vwp_leftGunComponent.lock()->ShootStart();
+	}
 }
 
 void ButiEngine::GunAction_BossSpin::StartBeforeShootPhase()
@@ -146,6 +152,6 @@ void ButiEngine::GunAction_BossSpin::UpdateAfterShootPhase()
 
 void ButiEngine::GunAction_BossSpin::Rotate()
 {
-	float rollUnit = MathHelper::ToRadian(360.0f / (m_actionTime / 2.0f));
+	float rollUnit = MathHelper::ToRadian(360.0f / (m_actionTime / static_cast<float>(m_spinCount)));
 	m_vwp_drawObject.lock()->transform->RollLocalRotationY_Radian(rollUnit);
 }

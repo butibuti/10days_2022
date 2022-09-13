@@ -43,6 +43,7 @@ namespace ButiEngine {
 		Value_ptr<RelativeTimer> m_vlp_spawnTimer;
 		std::int32_t m_spawnInterVal;
 		bool m_isPause;
+		bool m_isFinishTutorial;
 
 		Value_weak_ptr<RigidBodyComponent> m_vwp_playerRigidBody;
 	};

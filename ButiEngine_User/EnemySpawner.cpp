@@ -4,9 +4,14 @@
 
 void ButiEngine::EnemySpawner::OnUpdate()
 {
+	if (m_isPause)
+	{
+		return;
+	}
+
 	AdvanceTimeSpawnEnemy();
 
-	if (m_isPause)
+	if (!m_isFinishTutorial)
 	{
 		return;
 	}
@@ -57,7 +62,8 @@ void ButiEngine::EnemySpawner::Start()
 
 	m_spawnInterVal = 300;
 	m_vlp_spawnTimer = ObjectFactory::Create<RelativeTimer>(m_spawnInterVal);
-	m_isPause = true;
+	m_isPause = false;
+	m_isFinishTutorial = false;
 
 	m_vwp_playerRigidBody = GetManager().lock()->GetGameObject("Player").lock()->GetGameComponent<RigidBodyComponent>();
 }
@@ -150,7 +156,7 @@ void ButiEngine::EnemySpawner::FinishTutorial()
 	}
 
 	m_vlp_spawnTimer->Start();
-	m_isPause = false;
+	m_isFinishTutorial = true;
 }
 
 void ButiEngine::EnemySpawner::StartPause()

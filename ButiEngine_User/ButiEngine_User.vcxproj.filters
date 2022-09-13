@@ -37,6 +37,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="LastAttackItem.cpp" />
     <ClCompile Include="TutorialEnemy.cpp" />
+    <ClCompile Include="GunAction_BossSnake.cpp" />
+    <ClCompile Include="GunAction_BossLauncher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -73,6 +75,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="LastAttackItem.h" />
     <ClInclude Include="TutorialEnemy.h" />
+    <ClInclude Include="GunAction_BossSnake.h" />
+    <ClInclude Include="GunAction_BossLauncher.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />

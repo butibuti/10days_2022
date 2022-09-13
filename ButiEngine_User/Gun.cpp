@@ -35,8 +35,10 @@ void ButiEngine::Gun::OnRemove()
 
 void ButiEngine::Gun::OnShowUI()
 {
+	GUI::Checkbox("isRandomShoot", m_isRandomShoot);
+
 	GUI::BulletText(u8"ŠgŽU");
-	GUI::DragFloat("##diffusion", &m_diffusion, 1.0f, 0.0f, 180.0f);
+	GUI::DragFloat("##diffusion", &m_diffusion, 1.0f, 0.0f, 360.0f);
 
 	GUI::BulletText(u8"ŽË’ö");
 	GUI::DragFloat("##range", &m_range, 1.0f, 0.0f, 100.0f);
@@ -109,6 +111,7 @@ void ButiEngine::Gun::OnShowUI()
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Gun::Clone()
 {
 	auto output = ObjectFactory::Create<Gun>();
+	output->m_isRandomShoot = m_isRandomShoot;
 	output->m_diffusion = m_diffusion;
 	output->m_range = m_range;
 	output->m_power = m_power;
@@ -149,9 +152,26 @@ void ButiEngine::Gun::Shoot()
 		auto bullet = GetManager().lock()->AddObjectFromCereal(m_bulletName);
 		
 		//”ò‚ñ‚Å‚¢‚­•ûŒüÝ’è
-		bullet.lock()->transform->SetLocalRotation(gameObject.lock()->transform->GetWorldRotation());
-		float rotationAngleY = ButiRandom::GetRandom(-m_diffusion, m_diffusion, 10.0f);
-		bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
+		if (m_isRandomShoot)
+		{
+			bullet.lock()->transform->SetLocalRotation(gameObject.lock()->transform->GetWorldRotation());
+			float rotationAngleY = ButiRandom::GetRandom(-m_diffusion * 0.5f, m_diffusion * 0.5f, 10.0f);
+			bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
+		}
+		else
+		{
+			bullet.lock()->transform->SetLocalRotation(gameObject.lock()->transform->GetWorldRotation());
+			float rotationAngleY = m_diffusion * 0.5f;
+			if (m_bulletCount == 1)
+			{
+				rotationAngleY -= m_diffusion / 2.0f;
+			}
+			else
+			{
+				rotationAngleY -= m_diffusion / (m_bulletCount - 1) * i;
+			}
+			bullet.lock()->transform->RollLocalRotationY_Degrees(rotationAngleY);
+		}
 
 		//¶¬ˆÊ’uÝ’è
 		bullet.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());

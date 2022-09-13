@@ -25,6 +25,7 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 
+		void Dead();
 		void Move();
 	private:
 		Value_ptr<RelativeTimer> m_vlp_shakeTimer;

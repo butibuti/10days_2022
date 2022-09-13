@@ -81,9 +81,10 @@ void ButiEngine::Camera::ReturnDefault(const std::int32_t arg_frame)
 
 void ButiEngine::Camera::StartShake(const std::int32_t arg_shakeFrame, const Vector3& arg_amplitude, const std::int32_t arg_shakeIntervalFrame)
 {
-	if (gameObject.lock()->GetGameComponent<Shake>())
+	auto shakeComponent = gameObject.lock()->GetGameComponent<Shake>();
+	if (shakeComponent)
 	{
-		return;
+		shakeComponent->Dead();
 	}
 
 	gameObject.lock()->AddGameComponent<Shake>(arg_shakeFrame, arg_amplitude, arg_shakeIntervalFrame);

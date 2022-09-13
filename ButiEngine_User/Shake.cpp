@@ -10,8 +10,7 @@ void ButiEngine::Shake::OnUpdate()
 
 	if (m_vlp_shakeTimer->Update())
 	{
-		gameObject.lock()->transform->SetLocalPosition(m_startPos);
-		SetIsRemove(true);
+		Dead();
 	}
 }
 
@@ -39,6 +38,12 @@ void ButiEngine::Shake::OnShowUI()
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Shake::Clone()
 {
 	return ObjectFactory::Create<Shake>();
+}
+
+void ButiEngine::Shake::Dead()
+{
+	gameObject.lock()->transform->SetLocalPosition(m_startPos);
+	SetIsRemove(true);
 }
 
 void ButiEngine::Shake::Move()

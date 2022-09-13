@@ -391,6 +391,7 @@ cd ..\</Command>
     <ClCompile Include="TitleLine.cpp" />
     <ClCompile Include="TitleObjectManager.cpp" />
     <ClCompile Include="TitleSceneManager.cpp" />
+    <ClCompile Include="TutorialEnemy.cpp" />
     <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -426,6 +427,7 @@ cd ..\</Command>
     <ClInclude Include="TitleLine.h" />
     <ClInclude Include="TitleObjectManager.h" />
     <ClInclude Include="TitleSceneManager.h" />
+    <ClInclude Include="TutorialEnemy.h" />
     <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>
   <ItemGroup>

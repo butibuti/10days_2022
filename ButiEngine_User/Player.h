@@ -76,6 +76,8 @@ namespace ButiEngine {
 		bool m_canAcceptInput;
 
 		bool m_canPickUpItem;
+
+		bool m_isFinishTutorial;
 	};
 
 }

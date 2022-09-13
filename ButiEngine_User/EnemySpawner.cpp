@@ -4,6 +4,8 @@
 
 void ButiEngine::EnemySpawner::OnUpdate()
 {
+	AdvanceTimeSpawnEnemy();
+
 	if (m_isPause)
 	{
 		return;
@@ -33,8 +35,6 @@ void ButiEngine::EnemySpawner::OnUpdate()
 			RegistSpawnEnemy("LesserEnemy", spawnPosition);
 		}
 	}
-
-	AdvanceTimeSpawnEnemy();
 }
 
 void ButiEngine::EnemySpawner::OnSet()
@@ -46,30 +46,18 @@ void ButiEngine::EnemySpawner::Start()
 	m_waveCount = 0;
 	m_vec_spawnEnemy.clear();
 
-	if (!m_vec_vec_emitObjectParameter.empty())
+	/*if (!m_vec_vec_emitObjectParameter.empty())
 	{
 		for (int i = 0; i < m_vec_vec_emitObjectParameter[0].size(); i++)
 		{
-			/*std::string name = m_vec_vec_emitObjectParameter[0][i].first;
-			if (name == "BaseEnemy")
-			{
-				auto enemy = GetManager().lock()->AddObjectFromCereal("BaseEnemy");
-				enemy.lock()->transform->SetLocalPosition(m_vec_vec_emitObjectParameter[0][i].second);
-			}
-			else if (name == "LesserEnemy")
-			{
-				auto enemy = GetManager().lock()->AddObjectFromCereal("LesserEnemy");
-				enemy.lock()->transform->SetLocalPosition(m_vec_vec_emitObjectParameter[0][i].second);
-			}*/
-
 			RegistSpawnEnemy(m_vec_vec_emitObjectParameter[0][i].first, m_vec_vec_emitObjectParameter[0][i].second);
 		}
-	}
+	}*/
+	RegistSpawnEnemy("TutorialEnemy", Vector3(0, 0, 7));
 
 	m_spawnInterVal = 300;
 	m_vlp_spawnTimer = ObjectFactory::Create<RelativeTimer>(m_spawnInterVal);
-	m_vlp_spawnTimer->Start();
-	m_isPause = false;
+	m_isPause = true;
 
 	m_vwp_playerRigidBody = GetManager().lock()->GetGameObject("Player").lock()->GetGameComponent<RigidBodyComponent>();
 }
@@ -151,6 +139,20 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::EnemySpawner::Clone
 	return output;
 }
 
+void ButiEngine::EnemySpawner::FinishTutorial()
+{
+	if (!m_vec_vec_emitObjectParameter.empty())
+	{
+		for (int i = 0; i < m_vec_vec_emitObjectParameter[0].size(); i++)
+		{
+			RegistSpawnEnemy(m_vec_vec_emitObjectParameter[0][i].first, m_vec_vec_emitObjectParameter[0][i].second);
+		}
+	}
+
+	m_vlp_spawnTimer->Start();
+	m_isPause = false;
+}
+
 void ButiEngine::EnemySpawner::StartPause()
 {
 	m_isPause = true;
@@ -202,6 +204,11 @@ void ButiEngine::EnemySpawner::AdvanceTimeSpawnEnemy()
 			else if (name == "BossEnemy")
 			{
 				auto enemy = GetManager().lock()->AddObjectFromCereal("BossEnemy");
+				enemy.lock()->transform->SetLocalPosition(position);
+			}
+			else if (name == "TutorialEnemy")
+			{
+				auto enemy = GetManager().lock()->AddObjectFromCereal("TutorialEnemy");
 				enemy.lock()->transform->SetLocalPosition(position);
 			}
 

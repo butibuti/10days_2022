@@ -62,6 +62,7 @@ void ButiEngine::Player::Start()
 
 	m_canAcceptInput = true;
 	m_canPickUpItem = true;
+	m_isFinishTutorial = false;
 }
 
 void ButiEngine::Player::OnRemove()
@@ -165,6 +166,13 @@ void ButiEngine::Player::FinishGunAction()
 	}
 	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner").lock()->GetGameComponent<EnemySpawner>();
 	enemySpawner->FinishPause();
+
+	//チュートリアル終了
+	if (!m_isFinishTutorial)
+	{
+		m_isFinishTutorial = true;
+		enemySpawner->FinishTutorial();
+	}
 }
 
 void ButiEngine::Player::PowerUp(const std::string& arg_gunName)

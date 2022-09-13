@@ -25,6 +25,8 @@ namespace ButiEngine {
 			archive(m_map_beforeSpawnEnemyTime);
 		}
 
+		void FinishTutorial();
+
 		void StartPause();
 		void FinishPause();
 

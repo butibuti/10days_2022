@@ -7,6 +7,7 @@
 #include "EquipGun.h"
 #include "Player.h"
 #include "GunAction_BossSpin.h"
+#include "ItemEmitParameter.h"
 
 void ButiEngine::BossEnemy::OnUpdate()
 {
@@ -23,6 +24,12 @@ void ButiEngine::BossEnemy::OnUpdate()
 	{
 		return;
 	}
+	if (m_isPassedOut)
+	{
+		int a = 5;
+		a++;
+		return;
+	}
 
 	Control();
 }
@@ -32,6 +39,7 @@ void ButiEngine::BossEnemy::Start()
 	BaseEnemy::Start();
 
 	m_canMove = true;
+	m_isPassedOut = false;
 }
 
 void ButiEngine::BossEnemy::OnShowUI()
@@ -56,9 +64,15 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BossEnemy::Clone()
 
 void ButiEngine::BossEnemy::Dead()
 {
-	gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
+	/*gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
 	m_vwp_equipGunComponent.lock()->Dead();
-	gameObject.lock()->SetIsRemove(true);
+	gameObject.lock()->SetIsRemove(true);*/
+
+	EmitItem();
+	StartPause();
+	m_isPause = false;
+	m_canMove = true;
+	m_isPassedOut = true;
 }
 
 void ButiEngine::BossEnemy::StartGunAction()
@@ -218,5 +232,21 @@ void ButiEngine::BossEnemy::Damage(const int32_t arg_power)
 	if (m_hitPoint <= 0)
 	{
 		Dead();
+	}
+}
+
+void ButiEngine::BossEnemy::EmitItem()
+{
+	Value_weak_ptr<ItemEmitParameter> vwp_itemEmitParameterComponent = gameObject.lock()->GetGameComponent<ItemEmitParameter>();
+	if (!vwp_itemEmitParameterComponent.lock())
+	{
+		return;
+	}
+	std::string emitType = vwp_itemEmitParameterComponent.lock()->CalculateItemEmitType();
+
+	if (emitType == "LastAttackItem")
+	{
+		auto item = GetManager().lock()->AddObjectFromCereal("LastAttackItem");
+		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition() + Vector3(0, 0, -3));
 	}
 }

@@ -44,8 +44,11 @@ namespace ButiEngine {
 		void DecideDirection()override;
 		void Attack()override;
 		void Damage(const int32_t arg_power)override;
+		void EmitItem()override;
 
 		bool m_canMove;
+		//‹Câ‚µ‚Ä‚¢‚é
+		bool m_isPassedOut;
 	};
 
 }

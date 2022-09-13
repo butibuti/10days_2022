@@ -40,6 +40,7 @@ namespace ButiEngine {
 		void EquipAssaultRifle();
 		void EquipGrenadeLauncher();
 		void EquipShotgun();
+		void EquipAllGun();
 	private:
 		void Control();
 		void Move();

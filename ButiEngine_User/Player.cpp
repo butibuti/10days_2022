@@ -205,6 +205,11 @@ void ButiEngine::Player::EquipShotgun()
 	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::Shotgun);
 }
 
+void ButiEngine::Player::EquipAllGun()
+{
+	//クリア演出用
+}
+
 void ButiEngine::Player::Control()
 {
 	if (!m_canAcceptInput)

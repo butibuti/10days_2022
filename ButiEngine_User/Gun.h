@@ -18,6 +18,7 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
+			archive(m_isRandomShoot);
 			archive(m_diffusion);
 			archive(m_range);
 			archive(m_power);
@@ -47,6 +48,8 @@ namespace ButiEngine {
 		Value_ptr<RelativeTimer> m_vlp_shootIntervalTimer;
 		bool m_isShoot;
 
+		//’e‚ª“™ŠÔŠu‚Å”­ŽË‚³‚ê‚é‚©
+		bool m_isRandomShoot = true;
 		//ŠgŽU
 		float m_diffusion = 10.0f;
 		//ŽË’ö

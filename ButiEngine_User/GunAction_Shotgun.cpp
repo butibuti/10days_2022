@@ -138,6 +138,7 @@ void ButiEngine::GunAction_Shotgun::UpdateShootPhase()
 	if (m_vlp_shootPhaseTimer->Update())
 	{
 		m_vlp_shootPhaseTimer->Stop();
+		m_vlp_moveShootTimer->Stop();
 		m_vwp_gunComponent.lock()->ShootStop();
 		StartReturnPhase();
 		return;

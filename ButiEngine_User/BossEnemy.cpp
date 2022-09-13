@@ -122,7 +122,7 @@ void ButiEngine::BossEnemy::Control()
 	CheckHasDamageInPreviousFrame();
 
 	Move();
-	//Rotate();
+	Rotate();
 	Attack();
 }
 
@@ -139,12 +139,8 @@ void ButiEngine::BossEnemy::Move()
 void ButiEngine::BossEnemy::Rotate()
 {
 	auto lookTarget = m_vwp_lookAt.lock()->GetLookTarget();
-	auto drawObjectTransform = m_vwp_drawObject.lock()->transform;
-	lookTarget->SetLocalPosition(drawObjectTransform->GetLocalPosition() + drawObjectTransform->GetFront() * 100.0f);
-
-	Vector3 playerPosition = m_vwp_player.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->GetPosition();
-	Vector3 position = m_vwp_rigidBody.lock()->GetRigidBody()->GetPosition();
-	lookTarget->Translate(Vector3(playerPosition.x - position.x, 0.0f, playerPosition.z - position.z).Normalize() * 100.0f);
+	Vector3 playerPos = m_vwp_player.lock()->transform->GetLocalPosition();
+	lookTarget->SetLocalPosition(Vector3(playerPos.x, m_vwp_drawObject.lock()->transform->GetWorldPosition().y, playerPos.z));
 }
 
 void ButiEngine::BossEnemy::DecideDirection()

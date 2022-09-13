@@ -35,12 +35,13 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Camera::Clone()
 
 void ButiEngine::Camera::StartChasePlayer()
 {
-	m_vwp_parent.lock()->GetGameComponent<ChaseComponent>()->SetIsActive(true);
+	m_vwp_parent.lock()->transform->SetBaseTransform(GetManager().lock()->GetGameObject("Player").lock()->transform);
+	m_vwp_parent.lock()->transform->SetLocalPosition(0.0f);
 }
 
 void ButiEngine::Camera::StopChasePlayer()
 {
-	m_vwp_parent.lock()->GetGameComponent<ChaseComponent>()->SetIsActive(false);
+	m_vwp_parent.lock()->transform->SetBaseTransform(nullptr);
 }
 
 void ButiEngine::Camera::Approach(const std::int32_t arg_frame)

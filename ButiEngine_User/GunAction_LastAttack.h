@@ -7,6 +7,7 @@ namespace ButiEngine {
 
 	enum class GunAction_LastAttackPhase
 	{
+		MoveToBoss,
 		AR_FirstMove,
 		AR_FirstShoot,
 		AR_SecondMove,
@@ -42,6 +43,9 @@ namespace ButiEngine {
 			archive(isActive);
 		}
 	private:
+		void StartMoveToBossPhase();
+		void UpdateMoveToBossPhase();
+
 		void StartAR_FirstShootPhase();
 		void UpdateAR_FirstShootPhase();
 
@@ -88,8 +92,11 @@ namespace ButiEngine {
 		void UpdateGL_ReturnCenterPhase();
 
 		void AddPositionAnimation(const Vector3& arg_targetPos, const float arg_speed, const Easing::EasingType arg_easeType);
+		void SG_AddShootAnimation();
 
 		GunAction_LastAttackPhase m_phase;
+
+		Value_ptr<RelativeTimer> m_vlp_moveToBossPhaseTimer;
 
 		Value_ptr<RelativeTimer> m_vlp_AR_firstMovePhaseTimer;
 
@@ -107,6 +114,7 @@ namespace ButiEngine {
 
 		Value_ptr<RelativeTimer> m_vlp_SG_shootPhaseTimer;
 		Value_ptr<RelativeTimer> m_vlp_moveShootTimer;
+		Value_ptr<Transform> m_vlp_moveShootCenterTransform;
 		std::int32_t m_maxShootCount;
 		std::int32_t m_shootCount;
 		float m_radius;

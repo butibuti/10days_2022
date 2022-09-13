@@ -10,6 +10,11 @@
 
 void ButiEngine::GunAction_BossSpin::OnUpdate()
 {
+	if (m_vwp_bossEnemyComponent.lock()->IsPause())
+	{
+		return;
+	}
+
 	switch (m_phase)
 	{
 	case ButiEngine::GunAction_BossSpinPhase::BeforeShoot:
@@ -62,6 +67,22 @@ void ButiEngine::GunAction_BossSpin::OnShowUI()
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::GunAction_BossSpin::Clone()
 {
 	return ObjectFactory::Create<GunAction_BossSpin>();
+}
+
+void ButiEngine::GunAction_BossSpin::StartPause()
+{
+	m_vlp_waitTimer->Stop();
+	m_vlp_actionTimer->Stop();
+	m_vwp_rightGunComponent.lock()->ShootStop();
+	m_vwp_leftGunComponent.lock()->ShootStop();
+}
+
+void ButiEngine::GunAction_BossSpin::FinishPause()
+{
+	m_vlp_waitTimer->Start();
+	m_vlp_actionTimer->Start();
+	m_vwp_rightGunComponent.lock()->ShootStart();
+	m_vwp_leftGunComponent.lock()->ShootStart();
 }
 
 void ButiEngine::GunAction_BossSpin::StartBeforeShootPhase()

@@ -66,12 +66,54 @@ void ButiEngine::BossEnemy::StartGunAction()
 	m_canMove = false;
 	m_vwp_gunComponent.lock()->ShootStop();
 	m_vlp_attackTime->Stop();
+	m_vlp_directionDicisionTime->Stop();
 }
 
 void ButiEngine::BossEnemy::FinishGunAction()
 {
 	m_canMove = true;
 	m_vlp_attackTime->Start();
+	m_vlp_directionDicisionTime->Start();
+}
+
+void ButiEngine::BossEnemy::StartPause()
+{
+	m_isPause = true;
+	m_vlp_attackTime->Stop();
+	m_vlp_directionDicisionTime->Stop();
+	m_vwp_gunComponent.lock()->ShootStop();
+	m_vwp_rigidBody.lock()->GetRigidBody()->SetVelocity(Vector3());
+	m_vwp_lookAt.lock()->SetIsActive(false);
+
+	//“ÁŽêUŒ‚‚Ì’†’f
+	auto bossSpinComponent = gameObject.lock()->GetGameComponent<GunAction_BossSpin>();
+	if (bossSpinComponent)
+	{
+		bossSpinComponent->StartPause();
+	}
+}
+
+void ButiEngine::BossEnemy::FinishPause()
+{
+	if (!m_isPause)
+	{
+		return;
+	}
+
+	m_isPause = false;
+	m_vlp_attackTime->Start();
+	m_vlp_directionDicisionTime->Start();
+	m_vwp_lookAt.lock()->SetIsActive(true);
+
+	//“ÁŽêUŒ‚‚ÌÄŠJ
+	auto bossSpinComponent = gameObject.lock()->GetGameComponent<GunAction_BossSpin>();
+	if (bossSpinComponent)
+	{
+		bossSpinComponent->FinishPause();
+		m_vwp_lookAt.lock()->SetIsActive(false);
+		m_vlp_attackTime->Stop();
+		m_vlp_directionDicisionTime->Stop();
+	}
 }
 
 void ButiEngine::BossEnemy::Control()

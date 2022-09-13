@@ -36,6 +36,9 @@ namespace ButiEngine {
 
 		virtual void StartPause();
 		virtual void FinishPause();
+
+		const bool IsPause()const { return m_isPause; }
+
 	protected:
 		virtual void Control();
 		virtual void Move();

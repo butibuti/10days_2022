@@ -29,6 +29,9 @@ namespace ButiEngine {
 		{
 			archive(isActive);
 		}
+
+		void StartPause();
+		void FinishPause();
 	private:
 		void StartBeforeShootPhase();
 		void UpdateBeforeShootPhase();

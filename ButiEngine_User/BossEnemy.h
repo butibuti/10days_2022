@@ -34,6 +34,9 @@ namespace ButiEngine {
 
 		void StartGunAction();
 		void FinishGunAction();
+
+		void StartPause()override;
+		void FinishPause()override;
 	private:
 		void Control()override;
 		void Move()override;

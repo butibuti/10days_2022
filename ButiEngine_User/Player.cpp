@@ -12,6 +12,7 @@
 #include "BaseEnemy.h"
 #include "LesserEnemy.h"
 #include "BossEnemy.h"
+#include "GunAction_BossSpin.h"
 #include "EnemySpawner.h"
 
 void ButiEngine::Player::OnUpdate()

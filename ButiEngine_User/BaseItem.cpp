@@ -2,6 +2,7 @@
 #include "BaseItem.h"
 #include "ButiBulletWrap/ButiBulletWrap/Common.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
+#include "Header//GameObjects//DefaultGameComponent//TriggerComponent.h"
 #include "Player.h"
 
 void ButiEngine::BaseItem::OnUpdate()
@@ -34,7 +35,7 @@ void ButiEngine::BaseItem::OnSet()
 
 void ButiEngine::BaseItem::Start()
 {
-	m_vwp_rigidBody = gameObject.lock()->GetGameComponent<RigidBodyComponent>();
+	m_vwp_trigger = gameObject.lock()->GetGameComponent<TriggerComponent>();
 	m_isHitInCurrentFrame = false;
 }
 

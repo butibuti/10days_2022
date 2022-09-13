@@ -1,8 +1,7 @@
 #pragma once
 #include"Header/GameComponentHeader.h"
 namespace ButiEngine {
-
-	class RigidBodyComponent;
+	class TriggerComponent;
 	class Player;
 
 	class BaseItem :public GameComponent
@@ -27,7 +26,7 @@ namespace ButiEngine {
 		virtual void PowerUpPlayer(Value_weak_ptr<Player> arg_vwp_player);
 		virtual void Dead();
 	protected:
-		Value_weak_ptr<RigidBodyComponent> m_vwp_rigidBody;
+		Value_weak_ptr<TriggerComponent> m_vwp_trigger;
 
 		bool m_isHitInCurrentFrame;
 	};

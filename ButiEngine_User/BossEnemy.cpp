@@ -51,6 +51,7 @@ void ButiEngine::BossEnemy::Start()
 
 	m_canMove = true;
 	m_isPassedOut = false;
+	m_phaseCount = 1;
 }
 
 void ButiEngine::BossEnemy::OnShowUI()
@@ -67,6 +68,12 @@ void ButiEngine::BossEnemy::OnShowUI()
 	if (m_vlp_directionDicisionTime)
 	{
 		GUI::Text(m_vlp_directionDicisionTime->GetCurrentCountFrame());
+	}
+
+	GUI::BulletText(u8"phaseCountMax");
+	if (GUI::DragInt("##phaseCountMax", &m_phaseCountMax, 1.0f, 1, 4) && m_phaseCount > m_phaseCountMax)
+	{
+		m_phaseCount = m_phaseCountMax;
 	}
 }
 
@@ -271,7 +278,7 @@ void ButiEngine::BossEnemy::Attack()
 
 		if (m_vlp_attackTime->Update())
 		{
-			int32_t rnd = ButiRandom::GetInt(0, 2);
+			int32_t rnd = ButiRandom::GetInt(0, 10);
 			if (rnd == 0)
 			{
 				gameObject.lock()->AddGameComponent<GunAction_BossSpin>();
@@ -304,6 +311,7 @@ void ButiEngine::BossEnemy::Damage(const int32_t arg_power)
 	}
 
 	m_hitPoint -= arg_power;
+	CorrectDamageOnPhase();
 
 	if (m_hitPoint <= 0)
 	{
@@ -388,5 +396,20 @@ void ButiEngine::BossEnemy::DeleteEnemySideObject()
 			grenadeLauncherItemComponent->Dead();
 
 		}
+	}
+}
+
+void ButiEngine::BossEnemy::CorrectDamageOnPhase()
+{
+	if (m_phaseCount >= m_phaseCountMax)
+	{
+		return;
+	}
+
+	std::int32_t hitPointStopper = (m_maxHitPoint / m_phaseCountMax) * m_phaseCount;
+	if (m_hitPoint <= m_maxHitPoint - hitPointStopper)
+	{
+		m_hitPoint = m_maxHitPoint - hitPointStopper;
+		m_phaseCount++;
 	}
 }

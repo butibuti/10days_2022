@@ -47,10 +47,14 @@ namespace ButiEngine {
 		void EmitItem()override;
 
 		void DeleteEnemySideObject();
+		void CorrectDamageOnPhase();
 
 		bool m_canMove;
 		//気絶している
 		bool m_isPassedOut;
+		//行動フェーズ用
+		std::int32_t m_phaseCount;
+		std::int32_t m_phaseCountMax = 4;
 	};
 
 }

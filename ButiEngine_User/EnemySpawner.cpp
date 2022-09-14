@@ -18,6 +18,14 @@ void ButiEngine::EnemySpawner::OnUpdate()
 
 	if (m_vlp_spawnTimer->Update())
 	{
+		auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("LesserEnemy"));
+		if (enemies.size() + m_vec_spawnEnemy.size() >= 10)
+		{
+			int a = 5;
+			a++;
+			return;
+		}
+
 		//Spawn
 		//‹——£ŒvŽZ
 		Vector3 playerPosition = GetManager().lock()->GetGameObject("Player").lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->GetPosition();
@@ -73,6 +81,7 @@ void ButiEngine::EnemySpawner::Start()
 	m_vlp_spawnTimer = ObjectFactory::Create<RelativeTimer>(m_spawnInterVal);
 	m_isPause = false;
 	m_isFinishTutorial = false;
+	m_maxSpawnCount = 10;
 
 	m_vwp_playerRigidBody = GetManager().lock()->GetGameObject("Player").lock()->GetGameComponent<RigidBodyComponent>();
 

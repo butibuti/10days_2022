@@ -2,6 +2,7 @@
 #include "BossEnemy.h"
 #include "InputManager.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
+#include "Header/GameObjects/DefaultGameComponent/ButiScriptBehavior.h"
 #include "SeparateDrawObject.h"
 #include "Gun.h"
 #include "EquipGun.h"
@@ -19,6 +20,7 @@
 #include "ShotGunItem.h"
 #include "GrenadeLauncherItem.h"
 #include "LastAttackItem.h"
+#include "BossKnockOut.h"
 
 void ButiEngine::BossEnemy::OnUpdate()
 {
@@ -52,6 +54,8 @@ void ButiEngine::BossEnemy::Start()
 	m_canMove = true;
 	m_isPassedOut = false;
 	m_phaseCount = 1;
+	auto gage = GetManager().lock()->AddObjectFromCereal("LifeGage_Enemy");
+	gage.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
 }
 
 void ButiEngine::BossEnemy::OnShowUI()
@@ -94,9 +98,6 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BossEnemy::Clone()
 
 void ButiEngine::BossEnemy::Dead()
 {
-	/*gameObject.lock()->GetGameComponent<SeparateDrawObject>()->Dead();
-	m_vwp_equipGunComponent.lock()->Dead();
-	gameObject.lock()->SetIsRemove(true);*/
 
 	StartPause();
 	m_isPause = false;
@@ -120,9 +121,10 @@ void ButiEngine::BossEnemy::Dead()
 		bossLauncherComponent->SetIsRemove(true);
 	}
 
-	DeleteEnemySideObject();
 	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner");
 	enemySpawner.lock()->GetGameComponent<EnemySpawner>()->StartPause();
+
+	gameObject.lock()->AddGameComponent<BossKnockOut>();
 }
 
 void ButiEngine::BossEnemy::StartGunAction()
@@ -308,6 +310,8 @@ void ButiEngine::BossEnemy::Damage(const int32_t arg_power)
 	m_hitPoint -= arg_power;
 	CorrectDamageOnPhase();
 
+	GetManager().lock()->GetGameObject("LifeGage_Enemy").lock()->GetGameComponent<ButiScriptBehavior>()->Execute_void("SetHP", static_cast<float> (m_hitPoint));
+
 	if (m_hitPoint <= 0)
 	{
 		EmitItem();
@@ -329,69 +333,6 @@ void ButiEngine::BossEnemy::EmitItem()
 		auto item = GetManager().lock()->AddObjectFromCereal("LastAttackItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition() + Vector3(0, 0, -3));
 		AddObjectFromCereal("SphereEffect", ObjectFactory::Create<Transform>(gameObject.lock()->transform->GetWorldPosition()));
-	}
-}
-
-void ButiEngine::BossEnemy::DeleteEnemySideObject()
-{
-	//敵オブジェクトの消去
-	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
-	for (auto enemy : enemies)
-	{
-		if (enemy->HasGameObjectTag("BaseEnemy"))
-		{
-			enemy->GetGameComponent<BaseEnemy>()->Dead();
-		}
-		else if (enemy->HasGameObjectTag("LesserEnemy"))
-		{
-			enemy->GetGameComponent<LesserEnemy>()->Dead();
-		}
-	}
-
-	//敵の弾の消去
-	auto bullets = GetManager().lock()->GetGameObjects(GameObjectTag("Bullet_Enemy"));
-	for (auto bullet : bullets)
-	{
-		auto bulletComponent = bullet->GetGameComponent<Bullet>();
-		if (bulletComponent)
-		{
-			bulletComponent->Dead();
-		}
-		auto bulletGLComponent = bullet->GetGameComponent<Bullet_GrenadeLauncher>();
-		if (bulletGLComponent)
-		{
-			bulletGLComponent->Dead();
-		}
-	}
-
-	//アイテムの消去
-	auto items = GetManager().lock()->GetGameObjects(GameObjectTag("Item"));
-	for (auto item : items)
-	{
-		auto BaseItemComponent = item->GetGameComponent<BaseItem>();
-		if (BaseItemComponent)
-		{
-			BaseItemComponent->Dead();
-		
-		}
-		auto LargeGunItemComponent = item->GetGameComponent<LargeGunItem>();
-		if (LargeGunItemComponent)
-		{
-			LargeGunItemComponent->Dead();
-
-		}
-		auto ShotGunItemComponent = item->GetGameComponent<ShotGunItem>();
-		if (ShotGunItemComponent)
-		{
-			ShotGunItemComponent->Dead();
-
-		}
-		auto grenadeLauncherItemComponent = item->GetGameComponent<GrenadeLauncherItem>();
-		if (grenadeLauncherItemComponent)
-		{
-			grenadeLauncherItemComponent->Dead();
-
-		}
 	}
 }
 

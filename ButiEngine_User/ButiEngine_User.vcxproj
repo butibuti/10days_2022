@@ -353,6 +353,8 @@ cd ..\</Command>
     <ClCompile Include="BaseEnemy.cpp" />
     <ClCompile Include="BaseItem.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
+    <ClCompile Include="BossExplode.cpp" />
+    <ClCompile Include="BossKnockOut.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Bullet_GrenadeLauncher.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -362,6 +364,9 @@ cd ..\</Command>
     <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="EquipGun.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="FadeBlack.cpp" />
+    <ClCompile Include="GameClearManager.cpp" />
+    <ClCompile Include="GameOverManager.cpp" />
     <ClCompile Include="GrenadeLauncherItem.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="GunAction_AssaultRifle.cpp" />
@@ -396,12 +401,15 @@ cd ..\</Command>
     <ClCompile Include="TitleObjectManager.cpp" />
     <ClCompile Include="TitleSceneManager.cpp" />
     <ClCompile Include="TutorialEnemy.cpp" />
+    <ClCompile Include="WhiteOut.cpp" />
     <ClCompile Include="WorldSpeedManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseEnemy.h" />
     <ClInclude Include="BaseItem.h" />
     <ClInclude Include="BossEnemy.h" />
+    <ClInclude Include="BossExplode.h" />
+    <ClInclude Include="BossKnockOut.h" />
     <ClInclude Include="Bullet_GrenadeLauncher.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChangeSceneArea.h" />
@@ -409,6 +417,9 @@ cd ..\</Command>
     <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="EquipGun.h" />
     <ClInclude Include="Explosion.h" />
+    <ClInclude Include="FadeBlack.h" />
+    <ClInclude Include="GameClearManager.h" />
+    <ClInclude Include="GameOverManager.h" />
     <ClInclude Include="GrenadeLauncherItem.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Bullet.h" />
@@ -436,6 +447,7 @@ cd ..\</Command>
     <ClInclude Include="TitleObjectManager.h" />
     <ClInclude Include="TitleSceneManager.h" />
     <ClInclude Include="TutorialEnemy.h" />
+    <ClInclude Include="WhiteOut.h" />
     <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Header/GameObjects/DefaultGameComponent/PositionAnimationComponent.h"
 #include "Header/GameObjects/DefaultGameComponent/RotationAnimationComponent.h"
+#include "BossExplode.h"
 
 void ButiEngine::GunAction_LastAttack::OnUpdate()
 {
@@ -529,6 +530,9 @@ void ButiEngine::GunAction_LastAttack::UpdateGL_WaitPhase()
 	if (m_vlp_GL_waitPhaseTimer->Update())
 	{
 		m_vlp_GL_waitPhaseTimer->Stop();
+
+		m_vwp_boss.lock()->AddGameComponent<BossExplode>();
+
 		SetIsRemove(true);
 	}
 }

@@ -41,6 +41,12 @@
     <ClCompile Include="GunAction_BossLauncher.cpp" />
     <ClCompile Include="Shake.cpp" />
     <ClCompile Include="GunAction_LastAttack.cpp" />
+    <ClCompile Include="BossKnockOut.cpp" />
+    <ClCompile Include="BossExplode.cpp" />
+    <ClCompile Include="WhiteOut.cpp" />
+    <ClCompile Include="GameClearManager.cpp" />
+    <ClCompile Include="GameOverManager.cpp" />
+    <ClCompile Include="FadeBlack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChangeSceneArea.h" />
@@ -81,5 +87,11 @@
     <ClInclude Include="GunAction_BossLauncher.h" />
     <ClInclude Include="Shake.h" />
     <ClInclude Include="GunAction_LastAttack.h" />
+    <ClInclude Include="BossKnockOut.h" />
+    <ClInclude Include="BossExplode.h" />
+    <ClInclude Include="WhiteOut.h" />
+    <ClInclude Include="GameClearManager.h" />
+    <ClInclude Include="GameOverManager.h" />
+    <ClInclude Include="FadeBlack.h" />
   </ItemGroup>
 </Project>

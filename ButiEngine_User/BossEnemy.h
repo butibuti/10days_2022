@@ -48,7 +48,6 @@ namespace ButiEngine {
 		void Damage(const int32_t arg_power)override;
 		void EmitItem()override;
 
-		void DeleteEnemySideObject();
 		void CorrectDamageOnPhase();
 
 		bool m_canMove;

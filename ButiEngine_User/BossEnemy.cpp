@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "GunAction_BossSpin.h"
 #include "GunAction_BossSnake.h"
+#include "GunAction_BossLauncher.h"
 #include "ItemEmitParameter.h"
 #include "Bullet.h"
 #include "Bullet_GrenadeLauncher.h"
@@ -106,6 +107,11 @@ void ButiEngine::BossEnemy::Dead()
 	{
 		bossSnakeComponent->SetIsRemove(true);
 	}
+	auto bossLauncherComponent = gameObject.lock()->GetGameComponent<GunAction_BossLauncher>();
+	if (bossLauncherComponent)
+	{
+		bossLauncherComponent->SetIsRemove(true);
+	}
 
 	DeleteEnemySideObject();
 	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner");
@@ -148,6 +154,11 @@ void ButiEngine::BossEnemy::StartPause()
 	{
 		bossSnakeComponent->StartPause();
 	}
+	auto bossLauncherComponent = gameObject.lock()->GetGameComponent<GunAction_BossLauncher>();
+	if (bossLauncherComponent)
+	{
+		bossLauncherComponent->StartPause();
+	}
 }
 
 void ButiEngine::BossEnemy::FinishPause()
@@ -175,6 +186,13 @@ void ButiEngine::BossEnemy::FinishPause()
 	if (bossSnakeComponent)
 	{
 		bossSnakeComponent->FinishPause();
+		m_vlp_attackTime->Stop();
+		m_vlp_directionDicisionTime->Stop();
+	}
+	auto bossLauncherComponent = gameObject.lock()->GetGameComponent<GunAction_BossLauncher>();
+	if (bossLauncherComponent)
+	{
+		bossLauncherComponent->FinishPause();
 		m_vlp_attackTime->Stop();
 		m_vlp_directionDicisionTime->Stop();
 	}
@@ -253,7 +271,7 @@ void ButiEngine::BossEnemy::Attack()
 
 		if (m_vlp_attackTime->Update())
 		{
-			int32_t rnd = ButiRandom::GetInt(0, 1);
+			int32_t rnd = ButiRandom::GetInt(0, 2);
 			if (rnd == 0)
 			{
 				gameObject.lock()->AddGameComponent<GunAction_BossSpin>();
@@ -261,6 +279,10 @@ void ButiEngine::BossEnemy::Attack()
 			else if (rnd == 1)
 			{
 				gameObject.lock()->AddGameComponent<GunAction_BossSnake>();
+			}
+			else if (rnd == 2)
+			{
+				gameObject.lock()->AddGameComponent<GunAction_BossLauncher>();
 			}
 		}
 	}

@@ -7,6 +7,7 @@
 #include "EquipGun.h"
 #include "Bullet.h"
 #include "Bullet_GrenadeLauncher.h"
+#include "DamageArea.h"
 #include "BaseEnemy.h"
 #include "LesserEnemy.h"
 #include "BossEnemy.h"
@@ -37,6 +38,16 @@ void ButiEngine::Player::OnSet()
 					{
 						m_vec_vwp_hitComponent.push_back(bulletComponent);
 						Damage(bulletComponent->GetPower());
+					}
+				}
+				else if (arg_other.vwp_gameObject.lock()->HasGameObjectTag("DamageArea_Enemy") && !m_isInvincible)
+				{
+					auto damageAreaComponent = arg_other.vwp_gameObject.lock()->GetGameComponent<DamageArea>();
+
+					if (damageAreaComponent && !ExistInHitComponent(damageAreaComponent))
+					{
+						m_vec_vwp_hitComponent.push_back(damageAreaComponent);
+						Damage(damageAreaComponent->GetPower());
 					}
 				}
 			}

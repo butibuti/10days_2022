@@ -46,7 +46,7 @@ void ButiEngine::Bullet_GrenadeLauncher::Dead()
 	else if (gameObject.lock()->HasGameObjectTag("Bullet_Enemy"))
 	{
 		//“G‚ª”š”­o‚µ‚½‚¢‚Æ‚«‚±‚±‚ç•Ó‚¢‚¶‚é
-		//explosionName = "Explosion_Enemy_Normal";
+		explosionName = "Explosion_Enemy_Normal";
 	}
 	auto explosion = GetManager().lock()->AddObjectFromCereal(explosionName);
 	explosion.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetLocalPosition());

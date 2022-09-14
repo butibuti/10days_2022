@@ -9,7 +9,6 @@ namespace ButiEngine {
 	{
 		LockOn,
 		Shoot,
-		Rest,
 		AfterShoot
 	};
 
@@ -38,8 +37,6 @@ namespace ButiEngine {
 		void UpdateLockOnPhase();
 		void StartShootPhase();
 		void UpdateShootPhase();
-		void StartRestPhase();
-		void UpdateRestPhase();
 		void StartAfterShootPhase();
 		void UpdateAfterShootPhase();
 		void Rotate();
@@ -48,13 +45,10 @@ namespace ButiEngine {
 
 		Value_ptr<RelativeTimer> m_vlp_waitTimer;
 		std::int32_t m_lockOnTime;
-		std::int32_t m_restTime;
 		std::int32_t m_afterTime;
 		Value_ptr<RelativeTimer> m_vlp_actionTimer;
 		std::int32_t m_actionTime;
 		Value_ptr<Transform> m_vwp_startTransform;
-		std::int32_t m_shootCount;
-		std::int32_t m_shootCountMax;
 
 		Value_weak_ptr<BossEnemy> m_vwp_bossEnemyComponent;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;

@@ -19,7 +19,7 @@ void ButiEngine::Explosion::Start()
 	else if (gameObject.lock()->HasGameObjectTag("Explosion_Enemy"))
 	{
 		//“G‚ª”š”­o‚µ‚½‚¢‚Æ‚«‚±‚±‚ç•Ó‚¢‚¶‚é
-		//damageAreaName = "DamageArea_Enemy_Explosion";
+		damageAreaName = "DamageArea_Enemy_Explosion";
 	}
 
 	auto damageArea = GetManager().lock()->AddObjectFromCereal(damageAreaName);

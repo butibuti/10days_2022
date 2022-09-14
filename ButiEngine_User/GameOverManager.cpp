@@ -43,6 +43,7 @@ void ButiEngine::GameOverManager::Start()
 	m_vlp_timer = ObjectFactory::Create<RelativeTimer>(120);
 
 	m_vlp_waitTimer->Start();
+	PlayBGM("Sound/GameOverBGM.wav", 0.1f);
 }
 
 void ButiEngine::GameOverManager::OnRemove()

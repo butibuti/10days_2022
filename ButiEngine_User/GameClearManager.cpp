@@ -43,6 +43,7 @@ void ButiEngine::GameClearManager::Start()
 	m_vlp_timer = ObjectFactory::Create<RelativeTimer>(120);
 	
 	m_vlp_waitTimer->Start();
+	PlayBGM("Sound/GameClearBGM.wav", 0.1f);
 }
 
 void ButiEngine::GameClearManager::OnRemove()

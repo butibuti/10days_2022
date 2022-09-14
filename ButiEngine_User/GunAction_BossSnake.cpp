@@ -2,6 +2,7 @@
 #include "GunAction_BossSnake.h"
 #include "EquipGun.h"
 #include "Gun.h"
+#include "Player.h"
 #include "SeparateDrawObject.h"
 #include "BossEnemy.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
@@ -35,6 +36,8 @@ void ButiEngine::GunAction_BossSnake::OnSet()
 {
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject();
 	//m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>()->SetIsActive(false);
+	m_vwp_player = GetManager().lock()->GetGameObject("Player");
+	m_vwp_lookAt = m_vwp_drawObject.lock()->GetGameComponent<LookAtComponent>();
 
 	m_vwp_bossEnemyComponent = gameObject.lock()->GetGameComponent<BossEnemy>();
 	m_vwp_bossEnemyComponent.lock()->StartGunAction();
@@ -112,6 +115,10 @@ void ButiEngine::GunAction_BossSnake::StartBeforeShootPhase()
 
 void ButiEngine::GunAction_BossSnake::UpdateBeforeShootPhase()
 {
+	auto lookTarget = m_vwp_lookAt.lock()->GetLookTarget();
+	Vector3 playerPos = m_vwp_player.lock()->transform->GetLocalPosition();
+	lookTarget->SetLocalPosition(Vector3(playerPos.x, m_vwp_drawObject.lock()->transform->GetWorldPosition().y, playerPos.z));
+
 	if (m_vlp_waitTimer->Update())
 	{
 		StartShootPhase();

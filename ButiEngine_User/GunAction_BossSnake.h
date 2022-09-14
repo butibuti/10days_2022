@@ -4,6 +4,7 @@ namespace ButiEngine {
 
 	class BossEnemy;
 	class Gun;
+	class Player;
 
 	enum class GunAction_BossSnakePhase
 	{
@@ -56,6 +57,8 @@ namespace ButiEngine {
 		Value_weak_ptr<BossEnemy> m_vwp_bossEnemyComponent;
 		Value_weak_ptr<Gun> m_vwp_gunComponent;
 		Value_weak_ptr<GameObject> m_vwp_drawObject;
+		Value_weak_ptr<GameObject> m_vwp_player;
+		Value_weak_ptr<LookAtComponent> m_vwp_lookAt;
 	};
 
 }

@@ -136,6 +136,7 @@ void ButiEngine::BossEnemy::StartGunAction()
 void ButiEngine::BossEnemy::FinishGunAction()
 {
 	m_canMove = true;
+	m_vlp_attackTime->Reset();
 	m_vlp_attackTime->Start();
 	m_vlp_directionDicisionTime->Start();
 	m_vwp_lookAt.lock()->SetIsActive(true);

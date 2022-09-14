@@ -24,6 +24,7 @@ void ButiEngine::TitleSceneManager::OnUpdate()
 	{
 		GetManager().lock()->GetGameObject("TitleObjectManager").lock()->GetGameComponent<TitleObjectManager>()->Disappear();
 		m_vlp_endTimer->Start();
+		PlaySE("Sound/Decide.wav", 0.025f);
 	}
 
 	if (m_vlp_endTimer->Update())
@@ -52,6 +53,7 @@ void ButiEngine::TitleSceneManager::Start()
 	m_vlp_startTimer->Start();
 
 	m_vlp_endTimer = ObjectFactory::Create<RelativeTimer>(120);
+	PlayBGM("Sound/TitleBGM.wav", 0.1f);
 }
 
 void ButiEngine::TitleSceneManager::OnRemove()

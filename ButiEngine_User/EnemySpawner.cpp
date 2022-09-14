@@ -75,6 +75,8 @@ void ButiEngine::EnemySpawner::Start()
 	m_isFinishTutorial = false;
 
 	m_vwp_playerRigidBody = GetManager().lock()->GetGameObject("Player").lock()->GetGameComponent<RigidBodyComponent>();
+
+	PlayBGM("Sound/PlayBGM.wav", 0.025f);
 }
 
 void ButiEngine::EnemySpawner::OnRemove()

@@ -328,6 +328,7 @@ void ButiEngine::BossEnemy::EmitItem()
 	{
 		auto item = GetManager().lock()->AddObjectFromCereal("LastAttackItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition() + Vector3(0, 0, -3));
+		AddObjectFromCereal("SphereEffect", ObjectFactory::Create<Transform>(gameObject.lock()->transform->GetWorldPosition()));
 	}
 }
 

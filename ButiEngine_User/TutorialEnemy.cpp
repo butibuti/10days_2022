@@ -153,5 +153,6 @@ void ButiEngine::TutorialEnemy::EmitItem()
 	{
 		auto item = GetManager().lock()->AddObjectFromCereal("LargeGunItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+		AddObjectFromCereal("SphereEffect", ObjectFactory::Create<Transform>(gameObject.lock()->transform->GetWorldPosition()));
 	}
 }

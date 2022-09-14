@@ -58,6 +58,38 @@ void ButiEngine::Bullet::Start()
 
 	m_isPause = false;
 	m_beforePauseVelocity = Vector3();
+	if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Player_SpecialGrenadeLauncher"))
+	{
+		PlaySE("Sound/ShootLauncher.wav", 0.1f);
+	}
+	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Player_Shotgun"))
+	{
+		PlaySE("Sound/ShotGun.wav", 0.02f);
+	}
+	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Player_Normal"))
+	{
+		PlaySE("Sound/Pistol.wav", 0.1f);
+	}
+	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Player_Large"))
+	{
+		PlaySE("Sound/AssaultRifle.wav", 0.1f);
+	}
+	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Player_GrenadeLauncher"))
+	{
+		PlaySE("Sound/ShootLauncher.wav", 0.1f);
+	}
+	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Enemy_Normal"))
+	{
+		PlaySE("Sound/Pistol.wav", 0.1f);
+	}
+	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Boss_Normal"))
+	{
+		PlaySE("Sound/ShotGun.wav", 0.02f);
+	}
+	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Boss_GrenadeLauncher"))
+	{
+		PlaySE("Sound/ShootLauncher.wav", 0.1f);
+	}
 }
 
 void ButiEngine::Bullet::OnRemove()

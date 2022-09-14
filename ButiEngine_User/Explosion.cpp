@@ -32,6 +32,8 @@ void ButiEngine::Explosion::Start()
 	gameObject.lock()->SetIsRemove(true);
 
 	GetManager().lock()->GetGameObject("CameraMan").lock()->GetGameComponent<Camera>()->StartShake(5, Vector3(1.0f, 1.0f, 0.0f), 3);
+
+	PlaySE("Sound/Bomb.wav", 0.1f);
 }
 
 void ButiEngine::Explosion::OnRemove()

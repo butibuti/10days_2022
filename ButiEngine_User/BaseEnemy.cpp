@@ -289,21 +289,25 @@ void ButiEngine::BaseEnemy::EmitItem()
 	{
 		auto item = GetManager().lock()->AddObjectFromCereal("BaseItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+		AddObjectFromCereal("SphereEffect", ObjectFactory::Create<Transform>(gameObject.lock()->transform->GetWorldPosition()));
 	}
 	else if (emitType == "LargeGunItem")
 	{
 		auto item = GetManager().lock()->AddObjectFromCereal("LargeGunItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+		AddObjectFromCereal("SphereEffect", ObjectFactory::Create<Transform>(gameObject.lock()->transform->GetWorldPosition()));
 	}
 	else if (emitType == "ShotGunItem")
 	{
 		auto item = GetManager().lock()->AddObjectFromCereal("ShotGunItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+		AddObjectFromCereal("SphereEffect", ObjectFactory::Create<Transform>(gameObject.lock()->transform->GetWorldPosition()));
 	}
 	else if (emitType == "GrenadeLauncherItem")
 	{
 		auto item = GetManager().lock()->AddObjectFromCereal("GrenadeLauncherItem");
 		item.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetWorldPosition());
+		AddObjectFromCereal("SphereEffect", ObjectFactory::Create<Transform>(gameObject.lock()->transform->GetWorldPosition()));
 	}
 }
 

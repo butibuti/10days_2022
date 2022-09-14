@@ -220,6 +220,7 @@ void ButiEngine::Player::PowerUp(const std::string& arg_gunName)
 {
 	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
 	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
+
 }
 
 void ButiEngine::Player::Dead()
@@ -242,6 +243,9 @@ ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun
 	{
 		m_vwp_laserSight.lock()->GetGameComponent<MeshDrawComponent>()->UnRegist();
 	}
+	if (arg_isThrow) {
+		PlaySE("Sound/ChangeGun.wav", 0.1f);
+	}
 	return newGun;
 }
 
@@ -249,24 +253,28 @@ void ButiEngine::Player::EquipAssaultRifle()
 {
 	StartGunAction();
 	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::AssaultRifle);
+	PlaySE("Sound/EquipGun.wav", 0.1f);
 }
 
 void ButiEngine::Player::EquipGrenadeLauncher()
 {
 	StartGunAction();
 	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::GrenadeLauncher);
+	PlaySE("Sound/EquipGun.wav", 0.1f);
 }
 
 void ButiEngine::Player::EquipShotgun()
 {
 	StartGunAction();
 	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::Shotgun);
+	PlaySE("Sound/EquipGun.wav", 0.1f);
 }
 
 void ButiEngine::Player::EquipLastAttackGun()
 {
 	StartGunAction();
 	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::LastAttack);
+	PlaySE("Sound/EquipGun.wav", 0.1f);
 }
 
 void ButiEngine::Player::Control()
@@ -347,6 +355,7 @@ void ButiEngine::Player::Damage(const int32_t arg_power)
 
 	GetManager().lock()->GetGameObject("LifeGage").lock()->GetGameComponent<ButiScriptBehavior>()->Execute_void("SetHP",static_cast<float> (m_hitPoint));
 
+	PlaySE("Sound/Damage.wav", 0.1f);
 	if (m_hitPoint <= 0)
 	{
 		//Dead();

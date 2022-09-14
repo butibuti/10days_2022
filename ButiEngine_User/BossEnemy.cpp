@@ -58,9 +58,15 @@ void ButiEngine::BossEnemy::OnShowUI()
 
 	GUI::Text("------------");
 	GUI::BulletText(u8"attackTime");
-	GUI::Text(m_vlp_attackTime->GetCurrentCountFrame());
+	if (m_vlp_attackTime)
+	{
+		GUI::Text(m_vlp_attackTime->GetCurrentCountFrame());
+	}
 	GUI::BulletText(u8"directionDicisionTime");
-	GUI::Text(m_vlp_directionDicisionTime->GetCurrentCountFrame());
+	if (m_vlp_directionDicisionTime)
+	{
+		GUI::Text(m_vlp_directionDicisionTime->GetCurrentCountFrame());
+	}
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::BossEnemy::Clone()

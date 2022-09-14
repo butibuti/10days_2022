@@ -125,7 +125,7 @@ void ButiEngine::GunAction_LastAttack::OnSet()
 	m_maxShootCount = 10;
 	m_shootCount = 0;
 	m_vlp_moveShootTimer = ObjectFactory::Create<RelativeTimer>(m_vlp_SG_shootPhaseTimer->GetMaxCountFrame() / m_maxShootCount);
-	m_radius = 7.5f;
+	m_radius = 5.0f;
 
 	m_vlp_SG_GL_waitPhaseTimer = ObjectFactory::Create<RelativeTimer>(60);
 

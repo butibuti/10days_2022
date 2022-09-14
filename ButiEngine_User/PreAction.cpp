@@ -193,6 +193,13 @@ void ButiEngine::PreAction::AddFinishTransformAnimation_Player()
 
 void ButiEngine::PreAction::AddStartTransformAnimation_RightGun()
 {
+	auto target = m_vwp_rightGun.lock()->transform->Clone();
+	target->RollLocalRotationY_Degrees(45.0f);
+	auto anim = m_vwp_rightGun.lock()->AddGameComponent<TransformAnimation>();
+	anim->SetInitTransform(m_vwp_rightGun.lock()->transform);
+	anim->SetTargetTransform(target);
+	anim->SetSpeed(1.0f / m_vlp_returnTimer->GetMaxCountFrame());
+	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
 }
 
 void ButiEngine::PreAction::AddFinishTransformAnimation_RightGun()
@@ -210,6 +217,14 @@ void ButiEngine::PreAction::AddStartTransformAnimation_LeftGun()
 	{
 		return;
 	}
+
+	auto target = m_vwp_leftGun.lock()->transform->Clone();
+	target->RollLocalRotationY_Degrees(-45.0f);
+	auto anim = m_vwp_leftGun.lock()->AddGameComponent<TransformAnimation>();
+	anim->SetInitTransform(m_vwp_leftGun.lock()->transform);
+	anim->SetTargetTransform(target);
+	anim->SetSpeed(1.0f / m_vlp_returnTimer->GetMaxCountFrame());
+	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
 }
 
 void ButiEngine::PreAction::AddFinishTransformAnimation_LeftGun()

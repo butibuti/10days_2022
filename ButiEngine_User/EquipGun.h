@@ -30,9 +30,9 @@ namespace ButiEngine {
 		}
 
 		void Dead();
-		Value_weak_ptr<GameObject> ChangeGun(const std::string& arg_gunName, const std::int32_t arg_index = 0);
+		Value_weak_ptr<GameObject> ChangeGun(const std::string& arg_gunName, const std::int32_t arg_index = 0, const bool arg_isThrow = false);
 		Value_weak_ptr<GameObject> AddGun(const std::string& arg_gunName);
-		void RemoveGun(const std::int32_t arg_index);
+		void RemoveGun(const std::int32_t arg_index, const bool arg_isThrow = false);
 	private:
 		Value_weak_ptr<GameObject> CreateGun(const std::int32_t arg_index = 0);
 

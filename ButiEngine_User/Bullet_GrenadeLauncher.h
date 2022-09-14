@@ -18,7 +18,7 @@ namespace ButiEngine {
 		void serialize(Archive& archive)
 		{
 			archive(isActive);
-
+			archive(m_life);
 		}
 
 		void SetVelocity(const Vector3& arg_velocity) { m_velocity = arg_velocity; }
@@ -26,6 +26,7 @@ namespace ButiEngine {
 		void Dead();
 	private:
 		Value_ptr<RelativeTimer> m_vlp_lifeTimer;
+		std::int32_t m_life = 90;
 		Vector3 m_velocity;
 	};
 

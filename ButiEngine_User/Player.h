@@ -34,13 +34,13 @@ namespace ButiEngine {
 
 		void PowerUp(const std::string& arg_gunName);
 		void Dead();
-		Value_weak_ptr<GameObject> ChangeGun(const std::string& arg_gunName);
+		Value_weak_ptr<GameObject> ChangeGun(const std::string& arg_gunName, const bool arg_isThrow = false);
 
 		//武器変更
 		void EquipAssaultRifle();
 		void EquipGrenadeLauncher();
 		void EquipShotgun();
-		void EquipAllGun();
+		void EquipLastAttackGun();
 	private:
 		void Control();
 		void Move();
@@ -61,6 +61,7 @@ namespace ButiEngine {
 		//銃関連
 		Value_weak_ptr<Gun> m_vwp_gunComponent;
 		Value_weak_ptr<EquipGun> m_vwp_equipGunComponent;
+		Value_weak_ptr<GameObject> m_vwp_laserSight;
 
 		//プレイヤーの向く方向設定関連
 		Value_weak_ptr<LookAtComponent> m_vwp_lookAtComponent;

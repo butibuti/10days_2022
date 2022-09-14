@@ -54,7 +54,7 @@ namespace ButiEngine {
 		Value_ptr<RelativeTimer> m_vlp_shootWaitPhaseTimer;
 
 		Value_ptr<RelativeTimer> m_vlp_returnCenterPhaseTimer;
-		Value_ptr<Transform> m_vwp_startTransform;
+		Value_ptr<Transform> m_vlp_startTransform;
 
 		Value_weak_ptr<Player> m_vwp_playerComponent;
 		Value_weak_ptr<Gun> m_vwp_rightGunComponent;

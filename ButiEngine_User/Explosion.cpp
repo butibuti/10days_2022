@@ -1,5 +1,6 @@
 #include "stdafx_u.h"
 #include "Explosion.h"
+#include "Camera.h"
 
 void ButiEngine::Explosion::OnUpdate()
 {
@@ -29,6 +30,8 @@ void ButiEngine::Explosion::Start()
 	//スクロールアニメーションで表現するならライフ持たせる
 	//今はとりあえずここで削除する
 	gameObject.lock()->SetIsRemove(true);
+
+	GetManager().lock()->GetGameObject("CameraMan").lock()->GetGameComponent<Camera>()->StartShake(5, Vector3(1.0f, 1.0f, 0.0f), 3);
 }
 
 void ButiEngine::Explosion::OnRemove()

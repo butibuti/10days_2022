@@ -24,7 +24,7 @@ void ButiEngine::LastAttackItem::PowerUpPlayer(Value_weak_ptr<Player> arg_vwp_pl
 		return;
 	}
 
-	arg_vwp_player.lock()->EquipAllGun();
+	arg_vwp_player.lock()->EquipLastAttackGun();
 }
 
 void ButiEngine::LastAttackItem::Dead()

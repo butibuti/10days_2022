@@ -33,15 +33,19 @@ namespace ButiEngine {
 		void SetOwner(Value_weak_ptr<GameObject> arg_owner) { m_vwp_owner = arg_owner; }
 
 		std::int32_t GetShootIntervalFrame() { return m_shootIntervalFrame; }
+		Vector3 GetOffset() { return m_offset; }
 
 		void ShootStart();
 		void ShootStop();
+		void Dead();
 	private:
 		void Shoot();
 		void SetNormalBulletParameter(Value_weak_ptr<GameObject> arg_bullet);
 		void SetGrenadeLauncherBulletParameter(Value_weak_ptr<GameObject> arg_bullet);
 		void Recoil();
 
+		Value_ptr<RelativeTimer> m_vlp_deadTimer;
+		Vector3 m_velocity;
 
 		Value_weak_ptr<GameObject> m_vwp_owner;
 

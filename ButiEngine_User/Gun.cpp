@@ -6,6 +6,19 @@
 
 void ButiEngine::Gun::OnUpdate()
 {
+	if (m_vlp_deadTimer->IsOn())
+	{
+		gameObject.lock()->transform->RollLocalRotationX_Degrees(-18.0f);
+		gameObject.lock()->transform->Translate(m_velocity * 0.5f);
+		m_velocity.y -= 0.03f;
+
+		if (m_vlp_deadTimer->Update())
+		{
+			gameObject.lock()->SetIsRemove(true);
+		}
+		return;
+	}
+
 	if (m_vlp_shootIntervalTimer->Update())
 	{
 		if (!m_isShoot)
@@ -20,6 +33,9 @@ void ButiEngine::Gun::OnUpdate()
 
 void ButiEngine::Gun::OnSet()
 {
+	m_vlp_deadTimer = ObjectFactory::Create<RelativeTimer>(60);
+	m_velocity = Vector3Const::Zero;
+
 	m_vlp_shootIntervalTimer = ObjectFactory::Create<RelativeTimer>(m_shootIntervalFrame + 1);
 
 	m_isShoot = false;
@@ -141,6 +157,16 @@ void ButiEngine::Gun::ShootStop()
 	if (!m_isShoot) { return; }
 
 	m_isShoot = false;
+}
+
+void ButiEngine::Gun::Dead()
+{
+	if (m_vlp_deadTimer->IsOn()) { return; }
+	m_velocity = -gameObject.lock()->transform->GetBaseTransform()->GetFront();
+	m_velocity.y = 3.0f;
+	m_velocity.Normalize();
+	gameObject.lock()->transform->SetBaseTransform(nullptr);
+	m_vlp_deadTimer->Start();
 }
 
 void ButiEngine::Gun::Shoot()

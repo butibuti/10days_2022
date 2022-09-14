@@ -62,7 +62,11 @@ void ButiEngine::Player::Start()
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock();
 
 	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
-	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
+	auto gun = m_vwp_equipGunComponent.lock()->GetGun();
+	m_vwp_gunComponent = gun.lock()->GetGameComponent<Gun>();
+	m_vwp_laserSight = GetManager().lock()->AddObjectFromCereal("LaserSight");
+	m_vwp_laserSight.lock()->transform->SetLocalPosition(m_vwp_gunComponent.lock()->GetOffset());
+	m_vwp_laserSight.lock()->transform->SetBaseTransform(gun.lock()->transform, true);
 
 	m_hitPoint = m_maxHitPoint;
 	m_vlp_invincibleTime = ObjectFactory::Create<RelativeTimer>(m_invincibleInterval);
@@ -218,34 +222,44 @@ void ButiEngine::Player::Dead()
 	gameObject.lock()->SetIsRemove(true);
 }
 
-ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun(const std::string& arg_gunName)
+ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun(const std::string& arg_gunName, const bool arg_isThrow)
 {
-	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
+	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName, 0, arg_isThrow);
 	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
+	if (arg_gunName == "Gun_Player_Normal")
+	{
+		m_vwp_laserSight.lock()->transform->SetBaseTransform(newGun.lock()->transform, true);
+		m_vwp_laserSight.lock()->GetGameComponent<MeshDrawComponent>()->Regist();
+	}
+	else
+	{
+		m_vwp_laserSight.lock()->GetGameComponent<MeshDrawComponent>()->UnRegist();
+	}
 	return newGun;
 }
 
 void ButiEngine::Player::EquipAssaultRifle()
 {
 	StartGunAction();
-	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::AssaultRifle);
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::AssaultRifle);
 }
 
 void ButiEngine::Player::EquipGrenadeLauncher()
 {
 	StartGunAction();
-	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::GrenadeLauncher);
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::GrenadeLauncher);
 }
 
 void ButiEngine::Player::EquipShotgun()
 {
 	StartGunAction();
-	auto preActionComponent = gameObject.lock()->AddGameComponent<PreAction>(GunActionType::Shotgun);
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::Shotgun);
 }
 
-void ButiEngine::Player::EquipAllGun()
+void ButiEngine::Player::EquipLastAttackGun()
 {
-	//クリア演出用
+	StartGunAction();
+	gameObject.lock()->AddGameComponent<PreAction>(GunActionType::LastAttack);
 }
 
 void ButiEngine::Player::Control()
@@ -307,6 +321,7 @@ void ButiEngine::Player::Shoot()
 		//EquipAssaultRifle();
 		//EquipGrenadeLauncher();
 		//EquipShotgun();
+		EquipLastAttackGun();
 	}
 }
 

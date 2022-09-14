@@ -82,7 +82,4 @@
     <ClInclude Include="Shake.h" />
     <ClInclude Include="GunAction_LastAttack.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />
-  </ItemGroup>
 </Project>

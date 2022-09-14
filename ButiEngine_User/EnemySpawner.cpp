@@ -30,6 +30,7 @@ void ButiEngine::EnemySpawner::OnUpdate()
 
 		Vector3 spawnPosition = playerPosition + spawnDirection * length;
 		RegistSpawnEnemy("LesserEnemy", spawnPosition);
+		AddObjectFromCereal("LineEffect_LesserEnemy", ObjectFactory::Create<Transform>(spawnPosition));
 	}
 }
 

@@ -39,8 +39,8 @@ const std::int32_t splitNum = 8;
 
 #pragma warning(disable:4192)
 
-
-
+#include"ButiMemorySystem/ButiMemorySystem/MemoryAllocator.h"
+#include"ButiEngineHeader/Header/Device/GUI.h"
 #include"ButiRendering_Dx12/ButiRendering/Common.h"
 
 #include"ButiSound/ButiSound/ResourceInterface.h"

@@ -1,7 +1,11 @@
 
 #include"Header/ApplicationCreater.h"
+#include"Header/GameObjects/DefaultGameComponent/ModelDrawComponent.h"
+#include"Header/GameObjects/DefaultGameComponent/SimpleBoneAnimator.Component.h"
+#include"Header/Device//ModelFileConverter.h"
+#include"ButiFont/ButiFont.h"
+//#include"Server/RuntimeServer.h"
 #include"ButiEventSystem/ButiEventSystem/TaskSystem.h"
-#include"ButiEngineHeader/Header/Resources/ResourceSystem.h"
 #define _CRTDBG_MAP_ALLOC
 
 using namespace::ButiEngine;
@@ -55,7 +59,7 @@ std::int32_t APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR arg, std::in
 	vlp_app->PreLoadResources();
 	vlp_app->InitLoadResources();
 	vlp_app->GetSceneManager()->LoadScene_Init(init.initSceneName);
-	vlp_app->GetGraphicDevice()->SetClearColor(ButiColor::DeepOrange());
+	vlp_app->GetGraphicDevice()->SetClearColor(init.backGroundColor);
 	returnCode = vlp_app->Run();
 	vlp_app->Exit();
 
@@ -84,7 +88,7 @@ std::int32_t APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR arg, std::in
 	vlp_app->PreLoadResources();
 	vlp_app->InitLoadResources();
 	vlp_app->GetSceneManager()->LoadScene_Init(init.initSceneName);
-	vlp_app->GetGraphicDevice()->SetClearColor(ButiColor::DeepOrange());
+	vlp_app->GetGraphicDevice()->SetClearColor(init.backGroundColor);
 	returnCode = vlp_app->Run();
 	vlp_app->Exit();
 

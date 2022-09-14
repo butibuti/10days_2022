@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "InputManager.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
+#include "Header/GameObjects/DefaultGameComponent/ButiScriptBehavior.h"
 #include "SeparateDrawObject.h"
 #include "Gun.h"
 #include "EquipGun.h"
@@ -337,6 +338,8 @@ void ButiEngine::Player::Damage(const int32_t arg_power)
 	}
 
 	m_hitPoint -= arg_power;
+
+	GetManager().lock()->GetGameObject("LifeGage").lock()->GetGameComponent<ButiScriptBehavior>()->Execute_void("SetHP",static_cast<float> (m_hitPoint));
 
 	if (m_hitPoint <= 0)
 	{

@@ -26,12 +26,17 @@ void ButiEngine::SeparateDrawObject::Start()
 	m_vwp_drawObject.lock()->SetObjectName("DrawObject_" + gameObject.lock()->GetGameObjectName());
 	m_vwp_drawObject.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
 
-	//GameObject‚©‚çMeshDrawComponent‚Ìî•ñ‚ðŽ‚Á‚Ä‚«‚ÄDrawObject‚É’Ç‰Á
-	auto meshDrawComponent = gameObject.lock()->GetGameComponent<MeshDrawComponent>();
-	m_vwp_drawObject.lock()->AddGameComponent(meshDrawComponent->Clone());
+	for (std::int32_t i = 0; i < 2; i++) {
+		//GameObject‚©‚çMeshDrawComponent‚Ìî•ñ‚ðŽ‚Á‚Ä‚«‚ÄDrawObject‚É’Ç‰Á
+		auto meshDrawComponent = gameObject.lock()->GetGameComponent<MeshDrawComponent>(i);
+		if (!meshDrawComponent) {
+			continue;
+		}
+		m_vwp_drawObject.lock()->AddGameComponent(meshDrawComponent->Clone());
 
-	//’Ç‰ÁŒãGameObject‚É‚Â‚¢‚Ä‚¢‚éMeshDrawComponent‚Ííœ
-	meshDrawComponent->SetIsRemove(true);
+		//’Ç‰ÁŒãGameObject‚É‚Â‚¢‚Ä‚¢‚éMeshDrawComponent‚Ííœ
+		meshDrawComponent->SetIsRemove(true);
+	}
 }
 
 ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::SeparateDrawObject::Clone()

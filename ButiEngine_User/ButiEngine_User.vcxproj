@@ -438,9 +438,6 @@ cd ..\</Command>
     <ClInclude Include="TutorialEnemy.h" />
     <ClInclude Include="WorldSpeedManager.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

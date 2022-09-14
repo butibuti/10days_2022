@@ -125,7 +125,7 @@ void ButiEngine::GunAction_LastAttack::OnSet()
 	m_maxShootCount = 10;
 	m_shootCount = 0;
 	m_vlp_moveShootTimer = ObjectFactory::Create<RelativeTimer>(m_vlp_SG_shootPhaseTimer->GetMaxCountFrame() / m_maxShootCount);
-	m_radius = 5.0f;
+	m_radius = 7.0f;
 
 	m_vlp_SG_GL_waitPhaseTimer = ObjectFactory::Create<RelativeTimer>(60);
 
@@ -170,7 +170,7 @@ void ButiEngine::GunAction_LastAttack::StartMoveToBossPhase()
 	Vector3 bossPos = m_vwp_boss.lock()->transform->GetLocalPosition();
 	Vector3 targetPos = bossPos;
 	targetPos.y = gameObject.lock()->transform->GetLocalPosition().y;
-	targetPos.z -= 4.0f;
+	targetPos.z -= 7.0f;
 	AddPositionAnimation(targetPos, 1.0f / m_vlp_moveToBossPhaseTimer->GetMaxCountFrame(), Easing::EasingType::EaseOutCirc);
 
 	m_vlp_moveToBossPhaseTimer->Start();

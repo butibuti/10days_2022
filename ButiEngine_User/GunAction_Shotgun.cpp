@@ -49,7 +49,7 @@ void ButiEngine::GunAction_Shotgun::OnSet()
 	m_shootCount = 0;
 	m_vlp_moveShootTimer = ObjectFactory::Create<RelativeTimer>(shootPhaseFrame / m_maxShootCount);
 	m_vlp_moveShootCenterTransform = gameObject.lock()->transform->Clone();
-	m_radius = 5.0f;
+	m_radius = 8.0f;
 
 	std::int32_t shootWaitPhaseFrame = 30;
 	m_vlp_returnPhaseTimer = ObjectFactory::Create<RelativeTimer>(shootWaitPhaseFrame);

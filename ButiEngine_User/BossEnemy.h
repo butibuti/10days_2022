@@ -37,6 +37,8 @@ namespace ButiEngine {
 
 		void StartPause()override;
 		void FinishPause()override;
+
+		const bool IsPassedOut()const { return m_isPassedOut; }
 	private:
 		void Control()override;
 		void Move()override;

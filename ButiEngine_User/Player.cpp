@@ -134,7 +134,7 @@ void ButiEngine::Player::StartGunAction()
 		auto bulletGLComponent = bullet->GetGameComponent<Bullet_GrenadeLauncher>();
 		if (bulletGLComponent)
 		{
-			//bulletGLComponent->StartPause();
+			bulletGLComponent->StartPause();
 		}
 	}
 	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
@@ -180,7 +180,7 @@ void ButiEngine::Player::FinishGunAction()
 		auto bulletGLComponent = bullet->GetGameComponent<Bullet_GrenadeLauncher>();
 		if (bulletGLComponent)
 		{
-			//bulletGLComponent->FinishPause();
+			bulletGLComponent->FinishPause();
 		}
 	}
 	auto enemies = GetManager().lock()->GetGameObjects(GameObjectTag("Enemy"));
@@ -199,14 +199,20 @@ void ButiEngine::Player::FinishGunAction()
 			enemy->GetGameComponent<BossEnemy>()->FinishPause();
 		}
 	}
-	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner").lock()->GetGameComponent<EnemySpawner>();
-	enemySpawner->FinishPause();
+
+	auto enemySpawner = GetManager().lock()->GetGameObject("EnemySpawner");
+	auto bossEnemy = GetManager().lock()->GetGameObject("BossEnemy");
+	if (bossEnemy.lock() && !bossEnemy.lock()->GetGameComponent<BossEnemy>()->IsPassedOut())
+	{
+		enemySpawner.lock()->GetGameComponent<EnemySpawner>()->FinishPause();
+	}
 
 	//チュートリアル終了
 	if (!m_isFinishTutorial)
 	{
 		m_isFinishTutorial = true;
-		enemySpawner->FinishTutorial();
+		enemySpawner.lock()->GetGameComponent<EnemySpawner>()->FinishTutorial();
+		enemySpawner.lock()->GetGameComponent<EnemySpawner>()->FinishPause();
 	}
 }
 

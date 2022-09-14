@@ -74,6 +74,7 @@ void ButiEngine::BaseEnemy::Start()
 	m_vec_vwp_hitComponent.clear();
 	m_vlp_attackTime = ObjectFactory::Create<RelativeTimer>(m_attackInterval);
 	m_vlp_attackTime->Start();
+	m_vlp_attackTime->SetCount(1);
 	m_direction = Vector3();
 	m_isPause;
 	SetLookAtParameter();
@@ -179,6 +180,7 @@ void ButiEngine::BaseEnemy::FinishPause()
 
 	m_isPause = false;
 	m_vlp_attackTime->Start();
+	m_vlp_attackTime->SetCount(1);
 	m_vlp_directionDicisionTime->Start();
 	m_vwp_lookAt.lock()->SetIsActive(true);
 }

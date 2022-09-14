@@ -24,10 +24,19 @@ namespace ButiEngine {
 		void SetVelocity(const Vector3& arg_velocity) { m_velocity = arg_velocity; }
 
 		void Dead();
+
+		void StartPause();
+		void FinishPause();
 	private:
+		void Explode();
+
 		Value_ptr<RelativeTimer> m_vlp_lifeTimer;
 		std::int32_t m_life = 90;
 		Vector3 m_velocity;
+
+		//‹Z”­“®Žž‚Évelocity‚ð•Û‘¶‚·‚é‚æ‚¤
+		bool m_isPause;
+		Vector3 m_beforePauseVelocity;
 	};
 
 }

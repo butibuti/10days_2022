@@ -4,8 +4,15 @@
 
 void ButiEngine::Bullet_GrenadeLauncher::OnUpdate()
 {
+	//‹Z”­“®’†‚Í“®‚©‚È‚¢
+	if (m_isPause)
+	{
+		return;
+	}
+
 	if (m_vlp_lifeTimer->Update())
 	{
+		Explode();
 		Dead();
 	}
 }
@@ -20,6 +27,9 @@ void ButiEngine::Bullet_GrenadeLauncher::Start()
 	m_vlp_lifeTimer->Start();
 
 	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->ApplyImpulse(m_velocity);
+
+	m_isPause = false;
+	m_beforePauseVelocity = Vector3();
 }
 
 void ButiEngine::Bullet_GrenadeLauncher::OnRemove()
@@ -47,6 +57,32 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Bullet_GrenadeLaunc
 
 void ButiEngine::Bullet_GrenadeLauncher::Dead()
 {
+	gameObject.lock()->SetIsRemove(true);
+}
+
+void ButiEngine::Bullet_GrenadeLauncher::StartPause()
+{
+	m_isPause = true;
+	m_beforePauseVelocity = m_velocity;
+	m_vlp_lifeTimer->Stop();
+	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->SetVelocity(Vector3());
+}
+
+void ButiEngine::Bullet_GrenadeLauncher::FinishPause()
+{
+	if (!m_isPause)
+	{
+		return;
+	}
+
+	m_isPause = false;
+	m_velocity = m_beforePauseVelocity;
+	m_vlp_lifeTimer->Start();
+	gameObject.lock()->GetGameComponent<RigidBodyComponent>()->GetRigidBody()->ApplyImpulse(m_velocity);
+}
+
+void ButiEngine::Bullet_GrenadeLauncher::Explode()
+{
 	std::string explosionName;
 	if (gameObject.lock()->HasGameObjectTag("Bullet_Player"))
 	{
@@ -59,6 +95,4 @@ void ButiEngine::Bullet_GrenadeLauncher::Dead()
 	}
 	auto explosion = GetManager().lock()->AddObjectFromCereal(explosionName);
 	explosion.lock()->transform->SetLocalPosition(gameObject.lock()->transform->GetLocalPosition());
-
-	gameObject.lock()->SetIsRemove(true);
 }

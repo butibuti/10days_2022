@@ -91,9 +91,7 @@ void ButiEngine::LesserEnemy::DecideDirection()
 	{
 		m_speed = m_defaultSpeed * 0.5f;
 
-		float sin, cos;
-		MathHelper::SinCos(sin, cos, MathHelper::ToRadian(ButiRandom::GetInt(0, 360)));
-		m_direction = Vector3(cos, 0, sin);
+		m_direction = Vector3(0, 0, 0);
 		m_direction.Normalize();
 	}
 	else

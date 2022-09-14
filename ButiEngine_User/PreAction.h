@@ -7,6 +7,7 @@ namespace ButiEngine {
 		AssaultRifle,
 		GrenadeLauncher,
 		Shotgun,
+		LastAttack,
 	};
 
 	enum class PreActioinPhase

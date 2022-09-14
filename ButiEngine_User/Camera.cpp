@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Header/GameObjects/DefaultGameComponent/PositionAnimationComponent.h"
 #include "Header/GameObjects/DefaultGameComponent/RotationAnimationComponent.h"
+#include "Shake.h"
 
 void ButiEngine::Camera::OnUpdate()
 {
@@ -34,12 +35,13 @@ ButiEngine::Value_ptr<ButiEngine::GameComponent> ButiEngine::Camera::Clone()
 
 void ButiEngine::Camera::StartChasePlayer()
 {
-	m_vwp_parent.lock()->GetGameComponent<ChaseComponent>()->SetIsActive(true);
+	m_vwp_parent.lock()->transform->SetBaseTransform(GetManager().lock()->GetGameObject("Player").lock()->transform);
+	m_vwp_parent.lock()->transform->SetLocalPosition(0.0f);
 }
 
 void ButiEngine::Camera::StopChasePlayer()
 {
-	m_vwp_parent.lock()->GetGameComponent<ChaseComponent>()->SetIsActive(false);
+	m_vwp_parent.lock()->transform->SetBaseTransform(nullptr);
 }
 
 void ButiEngine::Camera::Approach(const std::int32_t arg_frame)
@@ -76,4 +78,15 @@ void ButiEngine::Camera::ReturnDefault(const std::int32_t arg_frame)
 	parentAnim->SetTargetRotate(m_vlp_parentDefaultTransform->GetLocalRotation());
 	parentAnim->SetSpeed(1.0f / arg_frame);
 	parentAnim->SetEaseType(Easing::EasingType::EaseOutCirc);
+}
+
+void ButiEngine::Camera::StartShake(const std::int32_t arg_shakeFrame, const Vector3& arg_amplitude, const std::int32_t arg_shakeIntervalFrame)
+{
+	auto shakeComponent = gameObject.lock()->GetGameComponent<Shake>();
+	if (shakeComponent)
+	{
+		shakeComponent->Dead();
+	}
+
+	gameObject.lock()->AddGameComponent<Shake>(arg_shakeFrame, arg_amplitude, arg_shakeIntervalFrame);
 }

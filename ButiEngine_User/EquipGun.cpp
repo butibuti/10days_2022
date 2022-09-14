@@ -79,12 +79,19 @@ void ButiEngine::EquipGun::Dead()
 	gameObject.lock()->SetIsRemove(true);
 }
 
-ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::EquipGun::ChangeGun(const std::string& arg_gunName, const std::int32_t arg_index)
+ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::EquipGun::ChangeGun(const std::string& arg_gunName, const std::int32_t arg_index, const bool arg_isThrow)
 {
 	m_vec_equipGunNames[arg_index] = arg_gunName;
 	if (m_vec_vwp_guns[arg_index].lock())
 	{
-		m_vec_vwp_guns[arg_index].lock()->SetIsRemove(true);
+		if (arg_isThrow)
+		{
+			m_vec_vwp_guns[arg_index].lock()->GetGameComponent<Gun>()->Dead();
+		}
+		else
+		{
+			m_vec_vwp_guns[arg_index].lock()->SetIsRemove(true);
+		}
 	}
 
 	return CreateGun(arg_index);
@@ -98,11 +105,18 @@ ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::EquipGun::AddGun(
 	return CreateGun(m_vec_vwp_guns.size() - 1);
 }
 
-void ButiEngine::EquipGun::RemoveGun(const std::int32_t arg_index)
+void ButiEngine::EquipGun::RemoveGun(const std::int32_t arg_index, const bool arg_isThrow)
 {
 	m_vec_equipGunNames.erase(m_vec_equipGunNames.begin() + arg_index);
 
-	m_vec_vwp_guns[arg_index].lock()->SetIsRemove(true);
+	if (arg_isThrow)
+	{
+		m_vec_vwp_guns[arg_index].lock()->GetGameComponent<Gun>()->Dead();
+	}
+	else
+	{
+		m_vec_vwp_guns[arg_index].lock()->SetIsRemove(true);
+	}
 	m_vec_vwp_guns.erase(m_vec_vwp_guns.begin() + arg_index);
 }
 

@@ -119,7 +119,7 @@ void ButiEngine::TutorialEnemy::Control()
 
 void ButiEngine::TutorialEnemy::Attack()
 {
-	m_vwp_gunComponent.lock()->ShootStart();
+	//m_vwp_gunComponent.lock()->ShootStart();
 }
 
 void ButiEngine::TutorialEnemy::Damage(const int32_t arg_power)

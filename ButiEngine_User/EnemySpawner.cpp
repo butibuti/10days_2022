@@ -26,11 +26,13 @@ void ButiEngine::EnemySpawner::OnUpdate()
 		{
 			Vector3 spawnPosition = playerPosition + spawnDirection * length;
 			RegistSpawnEnemy("BaseEnemy", spawnPosition);
+			AddObjectFromCereal("LineEffect_BaseEnemy", ObjectFactory::Create<Transform>(spawnPosition));
 		}
 		else if (rnd % 2 == 1)
 		{
 			Vector3 spawnPosition = playerPosition + spawnDirection * length;
 			RegistSpawnEnemy("LesserEnemy", spawnPosition);
+			AddObjectFromCereal("LineEffect_LesserEnemy", ObjectFactory::Create<Transform>(spawnPosition));
 		}
 	}
 
@@ -63,6 +65,7 @@ void ButiEngine::EnemySpawner::Start()
 			}*/
 
 			RegistSpawnEnemy(m_vec_vec_emitObjectParameter[0][i].first, m_vec_vec_emitObjectParameter[0][i].second);
+			AddObjectFromCereal("LineEffect_"+ m_vec_vec_emitObjectParameter[0][i].first, ObjectFactory::Create<Transform>(m_vec_vec_emitObjectParameter[0][i].second));
 		}
 	}
 

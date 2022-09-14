@@ -70,7 +70,4 @@
     <ClInclude Include="PreAction.h" />
     <ClInclude Include="Camera.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\output\UserSample\Debug\Resources\Application\ButiEngine.ini" />
-  </ItemGroup>
 </Project>

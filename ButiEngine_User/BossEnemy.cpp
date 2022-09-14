@@ -2,6 +2,7 @@
 #include "BossEnemy.h"
 #include "InputManager.h"
 #include "Header/GameObjects/DefaultGameComponent/RigidBodyComponent.h"
+#include "Header/GameObjects/DefaultGameComponent/ButiScriptBehavior.h"
 #include "SeparateDrawObject.h"
 #include "Gun.h"
 #include "EquipGun.h"
@@ -52,6 +53,8 @@ void ButiEngine::BossEnemy::Start()
 	m_canMove = true;
 	m_isPassedOut = false;
 	m_phaseCount = 1;
+	auto gage = GetManager().lock()->AddObjectFromCereal("LifeGage_Enemy");
+	gage.lock()->transform->SetBaseTransform(gameObject.lock()->transform, true);
 }
 
 void ButiEngine::BossEnemy::OnShowUI()
@@ -307,6 +310,8 @@ void ButiEngine::BossEnemy::Damage(const int32_t arg_power)
 
 	m_hitPoint -= arg_power;
 	CorrectDamageOnPhase();
+
+	GetManager().lock()->GetGameObject("LifeGage_Enemy").lock()->GetGameComponent<ButiScriptBehavior>()->Execute_void("SetHP", static_cast<float> (m_hitPoint));
 
 	if (m_hitPoint <= 0)
 	{

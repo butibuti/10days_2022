@@ -24,7 +24,7 @@ void ButiEngine::TitleSceneManager::OnUpdate()
 	{
 		GetManager().lock()->GetGameObject("TitleObjectManager").lock()->GetGameComponent<TitleObjectManager>()->Disappear();
 		m_vlp_endTimer->Start();
-		PlaySE("Sound/Decide.wav", 0.025f);
+		PlaySE("Sound/Decide.wav", 0.05f);
 	}
 
 	if (m_vlp_endTimer->Update())

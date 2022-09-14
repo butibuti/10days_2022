@@ -64,7 +64,7 @@ void ButiEngine::Bullet::Start()
 	}
 	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Player_Shotgun"))
 	{
-		PlaySE("Sound/ShotGun.wav", 0.02f);
+		PlaySE("Sound/ShotGun.wav", 0.01f);
 	}
 	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Player_Normal"))
 	{
@@ -84,7 +84,7 @@ void ButiEngine::Bullet::Start()
 	}
 	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Boss_Normal"))
 	{
-		PlaySE("Sound/ShotGun.wav", 0.02f);
+		PlaySE("Sound/ShotGun.wav", 0.01f);
 	}
 	else if (StringHelper::Contains(gameObject.lock()->GetGameObjectName(), "Bullet_Boss_GrenadeLauncher"))
 	{

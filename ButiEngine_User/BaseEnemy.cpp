@@ -156,7 +156,7 @@ void ButiEngine::BaseEnemy::Dead()
 
 ButiEngine::Value_weak_ptr<ButiEngine::Gun> ButiEngine::BaseEnemy::ChangeGun(const std::string& arg_gunName)
 {
-	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName);
+	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName, 0, true);
 	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
 	return m_vwp_gunComponent;
 }

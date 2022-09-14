@@ -162,6 +162,11 @@ void ButiEngine::Gun::ShootStop()
 void ButiEngine::Gun::Dead()
 {
 	if (m_vlp_deadTimer->IsOn()) { return; }
+	auto anim = gameObject.lock()->GetGameComponent<TransformAnimation>();
+	if (anim)
+	{
+		anim->SetIsRemove(true);
+	}
 	m_velocity = -gameObject.lock()->transform->GetBaseTransform()->GetFront();
 	m_velocity.y = 3.0f;
 	m_velocity.Normalize();

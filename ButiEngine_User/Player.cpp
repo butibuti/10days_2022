@@ -271,6 +271,10 @@ void ButiEngine::Player::EquipLastAttackGun()
 
 void ButiEngine::Player::Control()
 {
+	if (m_hitPoint <= 0)
+	{
+		return;
+	}
 	if (!m_canAcceptInput)
 	{ 
 		m_isInvincible = true;
@@ -350,6 +354,8 @@ void ButiEngine::Player::Damage(const int32_t arg_power)
 	if (m_hitPoint <= 0)
 	{
 		//Dead();
+		StartGunAction();
+		GetManager().lock()->AddObjectFromCereal("GameOverManager");
 		m_hitPoint = 0;
 	}
 }

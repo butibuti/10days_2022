@@ -140,8 +140,8 @@ void ButiEngine::PreAction::ChangeGun()
 		m_vwp_rightGun = playerComponent->ChangeGun("Gun_Player_Shotgun");
 		break;
 	case ButiEngine::GunActionType::LastAttack:
-		m_vwp_rightGun = playerComponent->ChangeGun("Gun_Player_AssaultRifle_Right");
-		m_vwp_leftGun = equipGunComponent->AddGun("Gun_Player_AssaultRifle_Left");
+		m_vwp_rightGun = playerComponent->ChangeGun("Gun_Player_SpecialAssaultRifle_Right");
+		m_vwp_leftGun = equipGunComponent->AddGun("Gun_Player_SpecialAssaultRifle_Left");
 		break;
 	default:
 		break;

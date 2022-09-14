@@ -23,6 +23,7 @@ namespace ButiEngine {
 		GL_SecondShoot,
 		GL_ShootWait,
 		GL_ReturnCenter,
+		GL_Wait,
 	};
 
 	class GunAction_LastAttack :public GameComponent
@@ -91,6 +92,9 @@ namespace ButiEngine {
 		void StartGL_ReturnCenterPhase();
 		void UpdateGL_ReturnCenterPhase();
 
+		void StartGL_WaitPhase();
+		void UpdateGL_WaitPhase();
+
 		void AddPositionAnimation(const Vector3& arg_targetPos, const float arg_speed, const Easing::EasingType arg_easeType);
 		void SG_AddShootAnimation();
 
@@ -133,8 +137,10 @@ namespace ButiEngine {
 
 		Value_ptr<RelativeTimer> m_vlp_GL_returnCenterPhaseTimer;
 
+		Value_ptr<RelativeTimer> m_vlp_GL_waitPhaseTimer;
 
-		Value_ptr<Transform> m_vwp_startTransform;
+
+		Value_ptr<Transform> m_vlp_startTransform;
 		Value_weak_ptr<GameObject> m_vwp_boss;
 
 		Value_weak_ptr<Gun> m_vwp_rightGunComponent;

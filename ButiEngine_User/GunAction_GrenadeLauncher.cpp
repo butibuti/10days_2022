@@ -57,8 +57,8 @@ void ButiEngine::GunAction_GrenadeLauncher::OnSet()
 	std::int32_t returnCenterPhaseFrame = 20;
 	m_vlp_returnCenterPhaseTimer = ObjectFactory::Create<RelativeTimer>(returnCenterPhaseFrame);
 
-	m_vwp_startTransform = gameObject.lock()->transform->Clone();
-	m_vwp_startTransform->SetLocalRotation(m_vwp_drawObject.lock()->transform->GetLocalRotation());
+	m_vlp_startTransform = gameObject.lock()->transform->Clone();
+	m_vlp_startTransform->SetLocalRotation(m_vwp_drawObject.lock()->transform->GetLocalRotation());
 
 	StartMoveOffScreenPhase();
 }
@@ -84,18 +84,18 @@ void ButiEngine::GunAction_GrenadeLauncher::StartMoveOffScreenPhase()
 {
 	m_phase = GunAction_GrenadeLauncherPhase::MoveOffScreen;
 
-	auto target = m_vwp_startTransform->Clone();
+	auto target = m_vlp_startTransform->Clone();
 	target->TranslateX(-25.0f);
 	target->SetLocalRotationY_Degrees(-90.0f);
 
 	auto rotAnim = m_vwp_drawObject.lock()->AddGameComponent<RotationAnimation>();
-	rotAnim->SetInitRotate(m_vwp_startTransform->GetLocalRotation());
+	rotAnim->SetInitRotate(m_vlp_startTransform->GetLocalRotation());
 	rotAnim->SetTargetRotate(target->GetLocalRotation());
 	rotAnim->SetSpeed((1.0f / m_vlp_moveOffScreenPhaseTimer->GetMaxCountFrame()) * 2.0f);
 	rotAnim->SetEaseType(Easing::EasingType::EaseOutCirc);
 
 	auto posAnim = gameObject.lock()->AddGameComponent<PositionAnimation>();
-	posAnim->SetInitPosition(m_vwp_startTransform->GetLocalPosition());
+	posAnim->SetInitPosition(m_vlp_startTransform->GetLocalPosition());
 	posAnim->SetTargetPosition(target->GetLocalPosition());
 	posAnim->SetSpeed(1.0f / m_vlp_moveOffScreenPhaseTimer->GetMaxCountFrame());
 	posAnim->SetEaseType(Easing::EasingType::EaseOutCirc);
@@ -185,10 +185,10 @@ void ButiEngine::GunAction_GrenadeLauncher::StartReturnCenterPhase()
 	m_vwp_drawObject.lock()->transform->SetLocalRotationY_Degrees(180.0f);
 
 	auto anim = gameObject.lock()->AddGameComponent<PositionAnimation>();
-	Vector3 initPos = m_vwp_startTransform->GetLocalPosition();
+	Vector3 initPos = m_vlp_startTransform->GetLocalPosition();
 	initPos.z += 20.0f;
 	anim->SetInitPosition(initPos);
-	anim->SetTargetPosition(m_vwp_startTransform->GetLocalPosition());
+	anim->SetTargetPosition(m_vlp_startTransform->GetLocalPosition());
 	anim->SetSpeed(1.0f / m_vlp_returnCenterPhaseTimer->GetMaxCountFrame());
 	anim->SetEaseType(Easing::EasingType::EaseOutExpo);
 

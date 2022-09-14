@@ -61,6 +61,7 @@ namespace ButiEngine {
 		//銃関連
 		Value_weak_ptr<Gun> m_vwp_gunComponent;
 		Value_weak_ptr<EquipGun> m_vwp_equipGunComponent;
+		Value_weak_ptr<GameObject> m_vwp_laserSight;
 
 		//プレイヤーの向く方向設定関連
 		Value_weak_ptr<LookAtComponent> m_vwp_lookAtComponent;

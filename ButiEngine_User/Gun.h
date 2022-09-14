@@ -33,6 +33,7 @@ namespace ButiEngine {
 		void SetOwner(Value_weak_ptr<GameObject> arg_owner) { m_vwp_owner = arg_owner; }
 
 		std::int32_t GetShootIntervalFrame() { return m_shootIntervalFrame; }
+		Vector3 GetOffset() { return m_offset; }
 
 		void ShootStart();
 		void ShootStop();

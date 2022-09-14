@@ -50,7 +50,11 @@ void ButiEngine::Player::Start()
 	m_vwp_drawObject = gameObject.lock()->GetGameComponent<SeparateDrawObject>()->GetDrawObject().lock();
 
 	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
-	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
+	auto gun = m_vwp_equipGunComponent.lock()->GetGun();
+	m_vwp_gunComponent = gun.lock()->GetGameComponent<Gun>();
+	m_vwp_laserSight = GetManager().lock()->AddObjectFromCereal("LaserSight");
+	m_vwp_laserSight.lock()->transform->SetLocalPosition(m_vwp_gunComponent.lock()->GetOffset());
+	m_vwp_laserSight.lock()->transform->SetBaseTransform(gun.lock()->transform, true);
 
 	m_hitPoint = m_maxHitPoint;
 	m_vlp_invincibleTime = ObjectFactory::Create<RelativeTimer>(m_invincibleInterval);
@@ -184,6 +188,15 @@ ButiEngine::Value_weak_ptr<ButiEngine::GameObject> ButiEngine::Player::ChangeGun
 {
 	auto newGun = m_vwp_equipGunComponent.lock()->ChangeGun(arg_gunName, 0, arg_isThrow);
 	m_vwp_gunComponent = newGun.lock()->GetGameComponent<Gun>();
+	if (arg_gunName == "Gun_Player_Normal")
+	{
+		m_vwp_laserSight.lock()->transform->SetBaseTransform(newGun.lock()->transform, true);
+		m_vwp_laserSight.lock()->GetGameComponent<MeshDrawComponent>()->Regist();
+	}
+	else
+	{
+		m_vwp_laserSight.lock()->GetGameComponent<MeshDrawComponent>()->UnRegist();
+	}
 	return newGun;
 }
 

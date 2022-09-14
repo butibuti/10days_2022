@@ -45,6 +45,8 @@ namespace ButiEngine {
 		bool m_isPause;
 		bool m_isFinishTutorial;
 
+		std::int32_t m_maxSpawnCount;
+
 		Value_weak_ptr<RigidBodyComponent> m_vwp_playerRigidBody;
 	};
 

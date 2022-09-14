@@ -64,6 +64,7 @@ void ButiEngine::TutorialEnemy::Start()
 	m_vwp_drawObject.lock()->transform->SetLocalRotation(Vector3());
 	m_vwp_equipGunComponent = gameObject.lock()->GetGameComponent<EquipGun>();
 	m_vwp_gunComponent = m_vwp_equipGunComponent.lock()->GetGun().lock()->GetGameComponent<Gun>();
+	m_vwp_equipGunComponent.lock()->GetGun().lock()->transform->SetBaseTransform(gameObject.lock()->transform);
 	m_vwp_player = GetManager().lock()->GetGameObject("Player");
 	m_speed = m_defaultSpeed;
 	m_directionDicisionInterval = m_defaultDirectionDicisionInterval;

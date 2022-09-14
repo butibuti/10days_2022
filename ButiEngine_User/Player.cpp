@@ -328,7 +328,7 @@ void ButiEngine::Player::Shoot()
 		//EquipAssaultRifle();
 		//EquipGrenadeLauncher();
 		//EquipShotgun();
-		EquipLastAttackGun();
+		//EquipLastAttackGun();
 	}
 }
 

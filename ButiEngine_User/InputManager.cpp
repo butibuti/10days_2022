@@ -16,6 +16,10 @@ void ButiEngine::InputManager::OnUpdate()
 
 	g_currentRightStick = GameDevice::GetInput()->GetRightStick();
 	g_currentLeftStick = GameDevice::GetInput()->GetLeftStick();
+
+	if (IsTriggerPauseKey()) {
+		GameDevice::SetIsEnd(true);
+	}
 }
 
 void ButiEngine::InputManager::OnSet()
@@ -155,7 +159,7 @@ bool ButiEngine::InputManager::IsReleaseShootKey()
 bool ButiEngine::InputManager::IsTriggerPauseKey()
 {
 	return (GameDevice::GetInput()->TriggerKey(Keys::Esc) ||
-		GameDevice::GetInput()->GetPadButtonTrigger(PadButtons::XBOX_START));
+		GameDevice::GetInput()->GetPadButtonTrigger(PadButtons::XBOX_BACK));
 }
 
 ButiEngine::Vector2 ButiEngine::InputManager::GetRightStick()
